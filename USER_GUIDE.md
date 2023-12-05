@@ -12,7 +12,7 @@ TODO: Will follow soon
 
 ## Bugtracker and Feature Requests
 
-Please use the [Github Issues](https://github.com/kussin/OxidChatGotContentCreator/issues) for bug reports and feature requests.
+Please use the [Github Issues](https://github.com/kussin/OxidChatGptContentCreator/issues) for bug reports and feature requests.
 
 ## Support
 

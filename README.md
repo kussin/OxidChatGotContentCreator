@@ -17,7 +17,7 @@ TODO: Will follow soon
 To install the module, please execute the following commands in OXID eShop root directory:
 
    ```bash
-   composer config repositories.kussin_chatgpt vcs https://github.com/kussin/OxidChatGotContentCreator.git
+   composer config repositories.kussin_chatgpt vcs https://github.com/kussin/OxidChatGptContentCreator.git
    composer require kussin/chatgpt-content-creator --no-update
    composer clearcache
    composer update --no-interaction
@@ -34,7 +34,7 @@ To install the module, please execute the following commands in OXID eShop root 
 
 ## Bugtracker and Feature Requests
 
-Please use the [Github Issues](https://github.com/kussin/OxidChatGotContentCreator/issues) for bug reports and feature requests.
+Please use the [Github Issues](https://github.com/kussin/OxidChatGptContentCreator/issues) for bug reports and feature requests.
 
 ## Support
 
