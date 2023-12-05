@@ -42,13 +42,13 @@ $aModule = array(
             'group' => 'sKussinChatGptSettings',
             'name' => 'sKussinChatGptApiModel',
             'type' => 'str',
-            'value' => 'text-davinci-003',
+            'value' => 'gpt-3.5-turbo-instruct',
         ),
         array(
             'group' => 'sKussinChatGptSettings',
             'name' => 'dKussinChatGptApiTemperature',
             'type' => 'str',
-            'value' => 0.5,
+            'value' => 0.7,
         ),
         array(
             'group' => 'sKussinChatGptSettings',
