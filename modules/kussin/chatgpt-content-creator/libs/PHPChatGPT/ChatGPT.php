@@ -9,7 +9,7 @@
 //echo $ai->generateImage('a cat on a post lamp')['data'] ?? 'ERROR!'; // print the image URL or error text
 //echo $ai->createTextRequest('what is the weather in Romania?')['data'] ?? 'ERROR!'; // print the text response or error text -->
 
-namespace Kussin\ChatGpt\libs\PHP-ChatGPT;
+namespace Kussin\ChatGpt\libs\PHPChatGPT;
 
 class ChatGPT
 {
