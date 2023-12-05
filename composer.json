@@ -1,0 +1,50 @@
+{
+    "name":        "kussin/chatgpt-content-creator",
+    "version":     "0.0.1",
+    "description": "Kussin | ChatGPT Content Creator for OXID eShop",
+    "type":        "oxideshop-module",
+    "keywords":    [
+        "wmdk",
+        "kussin",
+        "oxid",
+        "modules",
+        "chatgpt",
+        "open.ai"
+    ],
+    "homepage":    "https://www.kussin.de/",
+    "license":     [
+        "EULA"
+    ],
+    "authors":     [
+        {
+            "name": "Daniel Kussin",
+            "email": "daniel.kussin@kussin.de",
+            "homepage": "https://www.kussin.de/",
+            "role": "Project Owner"
+        }
+    ],
+    "support": {
+        "email": "info@kussin.eu",
+        "issues": "https://github.com/kussin/OxidChatGotContentCreator/issues"
+    },
+    "extra":       {
+        "oxideshop": {
+            "target-directory": "kussin/chatgpt-content-creator",
+            "source-directory": "modules/kussin/chatgpt-content-creator",
+            "blacklist-filter": [
+                "build/**/*.*",
+                "grunt/**/*.*",
+                "node_modules/**/*.*"
+            ]
+        }
+    },
+    "require":     {
+        "php": ">=7.4",
+        "oxid-esales/oxideshop-ce": "^6.0"
+    },
+    "autoload":    {
+        "psr-4": {
+            "Kussin\\ChatGpt\\": "../../../source/modules/kussin/chatgpt-content-creator"
+        }
+    }
+}
