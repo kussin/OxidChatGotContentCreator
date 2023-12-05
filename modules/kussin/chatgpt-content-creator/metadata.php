@@ -4,9 +4,7 @@
  */
 $sMetadataVersion = '2.0';
 
-use Kussin\ChatGpt\Core\ModuleEvents;
-use OxidEsales\Eshop\Application\Component\Widget\ArticleDetails;
-use OxidEsales\Eshop\Application\Controller\SearchController;
+use OxidEsales\Eshop\Application\Controller\Admin\ArticleMain;
 
 /**
  * Module information
@@ -20,6 +18,10 @@ $aModule = array(
     'author'       => 'Daniel Kussin',
     'url'          => 'https://www.kussin.de',
     'email'        => 'daniel.kussin@kussin.de',
+
+    'extend'       => array(
+        ArticleMain::class => Kussin\ChatGpt\Controller\Admin\ArticleMain::class,
+    ),
 
     'blocks' => array(
         array(
