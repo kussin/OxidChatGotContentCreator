@@ -1,15 +1,16 @@
-<!-- Simple ChatGPT Class that enables both text and image prompt
-to use this class in another file just import it and call one of the 2 functions createTextRequest() or generateImage() with your prompt (or options)
-
-Code Example:
-
-include_once('ChatGPT.php'); // include class from folder
-$ai = new ChatGPT(); // initialize class object
-echo $ai->generateImage('a cat on a post lamp')['data'] ?? 'ERROR!'; // print the image URL or error text
-echo $ai->createTextRequest('what is the weather in Romania?')['data'] ?? 'ERROR!'; // print the text response or error text -->
-
-
 <?php
+//<!-- Simple ChatGPT Class that enables both text and image prompt
+//to use this class in another file just import it and call one of the 2 functions createTextRequest() or generateImage() with your prompt (or options)
+//
+//Code Example:
+//
+//include_once('ChatGPT.php'); // include class from folder
+//$ai = new ChatGPT(); // initialize class object
+//echo $ai->generateImage('a cat on a post lamp')['data'] ?? 'ERROR!'; // print the image URL or error text
+//echo $ai->createTextRequest('what is the weather in Romania?')['data'] ?? 'ERROR!'; // print the text response or error text -->
+
+namespace Kussin\ChatGpt\libs\PHP-ChatGPT;
+
 class ChatGPT
 {
     private $API_KEY = "ADD_YOUR_API_KEY_HERE";
@@ -21,6 +22,9 @@ class ChatGPT
     public function __construct()
     {
         $this->curl = curl_init();
+
+        // SET CHAT GPT API KEY
+        $this->API_KEY = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sKussinChatGptApiKey');
     }
 
     public function initialize($requestType = "text" || "image")
