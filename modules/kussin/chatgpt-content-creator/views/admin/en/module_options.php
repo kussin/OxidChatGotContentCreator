@@ -2,16 +2,13 @@
 $aLang = array(
     'charset' => 'utf-8',
 
-    'SHOP_MODULE_GROUP_sKussinChatGptSettings' => 'ChatGpt settings',
-    'SHOP_MODULE_sKussinChatGptClientId' => 'ChatGpt if (w/out "SQ-")',
-    'SHOP_MODULE_bKussinChatGptResizeFunction' => 'Enable resize function',
-    'SHOP_MODULE_sKussinChatGptPosition' => 'Suggest position (default: `screen-middle`)',
-    'SHOP_MODULE_sKussinPositionOptions' => 'Suggest position options (default: "{top:0}")',
-    'SHOP_MODULE_sKussinChatGptLocaleCode' => 'Language code (e.g. "en_US")',
-    'SHOP_MODULE_sKussinChatGptExcludePlaceholders' => 'Exclude placeholders (e.g. "Search..")',
+    'SHOP_MODULE_GROUP_sKussinChatGptSettings' => 'ChatGPT api settings',
+    'SHOP_MODULE_sKussinChatGptApiKey' => 'ChatGPT api key',
+    'SHOP_MODULE_sKussinChatGptApiModel' => 'ChatGPT api model',
+    'SHOP_MODULE_dKussinChatGptApiTemperature' => 'ChatGPT api temperature',
+    'SHOP_MODULE_iKussinPositionApiMaxTokens' => 'ChatGPT api max tokens',
 
-    'SHOP_MODULE_GROUP_sKussinChatGptRecommendationsSettings' => 'Recommendations settings',
-    'SHOP_MODULE_blKussinChatGptRecommendationsEnabled' => 'Enable recommendations',
-    'SHOP_MODULE_blKussinChatGptRecommendationsSubheadingEnabled' => 'Enable subheading',
-    'SHOP_MODULE_sKussinChatGptRecommendationsContainerUuid' => 'Personal container uuid',
+    'SHOP_MODULE_GROUP_sKussinChatGptDebugSettings' => 'Debug settings',
+    'SHOP_MODULE_blKussinChatGptDebugEnabled' => 'Enable debug mode',
+    'SHOP_MODULE_sKussinChatGptDebugLogFilename' => 'Define debug log filename',
 );

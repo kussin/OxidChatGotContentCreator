@@ -40,19 +40,19 @@ $aModule = array(
         ),
         array(
             'group' => 'sKussinChatGptSettings',
-            'name' => 'bKussinChatGptApiModel',
+            'name' => 'sKussinChatGptApiModel',
             'type' => 'str',
             'value' => 'text-davinci-003',
         ),
         array(
             'group' => 'sKussinChatGptSettings',
-            'name' => 'sKussinChatGptApiTemperature',
+            'name' => 'dKussinChatGptApiTemperature',
             'type' => 'str',
             'value' => 0.5,
         ),
         array(
             'group' => 'sKussinChatGptSettings',
-            'name' => 'sKussinPositionApiMaxTokens',
+            'name' => 'iKussinPositionApiMaxTokens',
             'type' => 'str',
             'value' => 350,
         ),
