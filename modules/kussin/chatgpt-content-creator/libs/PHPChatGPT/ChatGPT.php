@@ -11,6 +11,8 @@
 
 namespace Kussin\ChatGpt\libs\PHPChatGPT;
 
+use OxidEsales\Eshop\Core\Registry;
+
 class ChatGPT
 {
     private $API_KEY = "ADD_YOUR_API_KEY_HERE";
@@ -24,7 +26,7 @@ class ChatGPT
         $this->curl = curl_init();
 
         // SET CHAT GPT API KEY
-        $this->API_KEY = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sKussinChatGptApiKey');
+        $this->API_KEY = Registry::getConfig()->getConfigParam('sKussinChatGptApiKey');
     }
 
     public function initialize($requestType = "text" || "image")
