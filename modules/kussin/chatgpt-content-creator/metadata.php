@@ -5,6 +5,7 @@
 $sMetadataVersion = '2.0';
 
 use OxidEsales\Eshop\Application\Controller\Admin\ArticleMain;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Module information
@@ -55,6 +56,30 @@ $aModule = array(
             'name' => 'iKussinPositionApiMaxTokens',
             'type' => 'str',
             'value' => 350,
+        ),
+        array(
+            'group' => 'sKussinChatGptPromptSettings',
+            'name' => 'sKussinChatGptPromptLongDescriptionDE',
+            'type' => 'str',
+            'value' => 'Erstelle eine Artikel-Langbeschreibung für "%s" von "%s". - Und bitte ohne Intro und mit max. %s Wörtern.',
+        ),
+        array(
+            'group' => 'sKussinChatGptPromptSettings',
+            'name' => 'sKussinChatGptPromptLongDescriptionEN',
+            'type' => 'str',
+            'value' => 'Create an article long description for "%s" from "%s". - And please without an intro and with max. %s words.',
+        ),
+        array(
+            'group' => 'sKussinChatGptPromptSettings',
+            'name' => 'sKussinChatGptPromptShortDescriptionDE',
+            'type' => 'str',
+            'value' => 'Erstelle eine Artikel-Kurzbeschreibung für "%s" von "%s". - Und bitte ohne Intro und mit max. %s Wörtern.',
+        ),
+        array(
+            'group' => 'sKussinChatGptPromptSettings',
+            'name' => 'sKussinChatGptPromptShortDescriptionEN',
+            'type' => 'str',
+            'value' => 'Create an article short description for "%s" from "%s". - And please without an intro and with max. %s words.',
         ),
         array(
             'group' => 'sKussinChatGptDebugSettings',
