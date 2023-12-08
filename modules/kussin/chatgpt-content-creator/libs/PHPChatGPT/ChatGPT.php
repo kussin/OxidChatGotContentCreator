@@ -11,10 +11,13 @@
 
 namespace Kussin\ChatGpt\libs\PHPChatGPT;
 
+use Kussin\ChatGpt\Traits\LoggerTrait;
 use OxidEsales\Eshop\Core\Registry;
 
 class ChatGPT
 {
+    use LoggerTrait;
+
     private $API_KEY = "ADD_YOUR_API_KEY_HERE";
     private $textURL = "https://api.openai.com/v1/completions";
     private $imageURL = "https://api.openai.com/v1/images/generations";
@@ -68,10 +71,21 @@ class ChatGPT
         $data["temperature"] = $temperature;
         $data["max_tokens"] = $maxTokens;
 
+        $this->_debug(array(
+            'method' => __CLASS__ . '::' . __FUNCTION__,
+            'url' => $this->curl,
+            'data' => $data,
+        ));
+
         curl_setopt($this->curl, CURLOPT_POSTFIELDS, json_encode($data));
 
         $response = curl_exec($this->curl);
         $response = json_decode($response, true);
+
+        $this->_debug(array(
+            'method' => __CLASS__ . '::' . __FUNCTION__,
+            'response' => $response,
+        ));
 
         $output['data'] = $response['choices'][0]['text'] ?? null;
         $output['error'] = $response['error']['code'] ?? null;
@@ -95,10 +109,21 @@ class ChatGPT
         $data["n"] = $numberOfImages;
         $data["size"] = $imageSize;
 
+        $this->_debug(array(
+            'method' => __CLASS__ . '::' . __FUNCTION__,
+            'url' => $this->curl,
+            'data' => $data,
+        ));
+
         curl_setopt($this->curl, CURLOPT_POSTFIELDS, json_encode($data));
 
         $response = curl_exec($this->curl);
         $response = json_decode($response, true);
+
+        $this->_debug(array(
+            'method' => __CLASS__ . '::' . __FUNCTION__,
+            'response' => $response,
+        ));
 
         $output['data'] = $response['data'][0]['url'] ?? null;
         $output['error'] =  $response['error']['code'] ?? null;

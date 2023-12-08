@@ -3,6 +3,7 @@
 namespace Kussin\ChatGpt\Controller\Admin;
 
 use Kussin\ChatGpt\libs\PHPChatGPT\ChatGPT;
+use Kussin\ChatGpt\Traits\LoggerTrait;
 use OxidEsales\Eshop\Application\Model\Article;
 use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Field;
@@ -10,6 +11,8 @@ use OxidEsales\Eshop\Core\Registry;
 
 class ArticleMain extends ArticleMain_parent
 {
+    use LoggerTrait;
+
     private $_oArticle = null;
 
     private $_oChatGptClient = null;
