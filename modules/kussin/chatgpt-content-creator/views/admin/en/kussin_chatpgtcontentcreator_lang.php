@@ -10,4 +10,14 @@ $aLang = array(
 
     'KUSSIN_CHATGPT_LONG_DESCRIPTION_PROMPT' => 'Create an article long description for "%s" from "%s". - And please without an intro and with max. %s words.',
     'KUSSIN_CHATGPT_SHORT_DESCRIPTION_PROMPT' => 'Create an article short description for "%s" from "%s". - And please without an intro and with max. %s words.',
+
+    'KUSSIN_CHATGPT_LONG_DESCRIPTION_INSTRUCTION_PROMPT' => implode(PHP_EOL, array(
+        'Structure as follows:',
+        '1. Main advantage in a short sentence as concise and concrete as possible in `<p>` formatting.',
+        '2. List items with features and the benefit that the feature brings.',
+        '3. One paragraph per feature consisting of a `<h2>` heading (advantage of the feature + metaphor)',
+        'and a short text that underpins the feature with everyday storytelling.',
+        'Important: No `<h1>` heading.',
+    )),
+    'KUSSIN_CHATGPT_LONG_DESCRIPTION_CONTINUE_PROMPT' => 'Continue from your previous response.',
 );
