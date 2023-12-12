@@ -4,44 +4,41 @@ namespace Kussin\ChatGpt\Controller\Admin;
 
 use Kussin\ChatGpt\Traits\ChatGPTClientTrait;
 use Kussin\ChatGpt\Traits\LoggerTrait;
-use OxidEsales\Eshop\Application\Model\Article;
+use OxidEsales\Eshop\Application\Model\Category;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 
-class ArticleMain extends ArticleMain_parent
+class CategoryMain extends CategoryMain_parent
 {
     use ChatGPTClientTrait;
     use LoggerTrait;
 
-    private $_oArticle = null;
+    private $_oCategory = null;
 
-    private function _kussinLoadArticle()
+    private function _kussinLoadCategory()
     {
-        if ($this->_oArticle === null) {
-            $this->_oArticle = oxNew(Article::class);
-            $this->_oArticle->load($this->getEditObjectId());
+        if ($this->_oCategory === null) {
+            $this->_oCategory = oxNew(Category::class);
+            $this->_oCategory->load($this->getEditObjectId());
         }
 
-        return $this->_oArticle;
+        return $this->_oCategory;
     }
 
     public function kussinchatgptlongdesc()
     {
         $iMaxTokens = (int) Registry::getConfig()->getConfigParam('iKussinPositionApiMaxTokens');
-        $sPrompt = trim(Registry::getConfig()->getConfigParam('sKussinChatGptPromptLongDescriptionDE')); // TODO: MULTI-LANGUAL
 
-        if ($sPrompt == '') {
-            // FALLBACK
-            $oLang = Registry::getLang();
-            $sPrompt = $oLang->translateString('KUSSIN_CHATGPT_LONG_DESCRIPTION_PROMPT', $oLang->getBaseLanguage());
-        }
+        // PROMPT
+        $oLang = Registry::getLang();
+        $sPrompt = $oLang->translateString('KUSSIN_CHATGPT_CATGEORY_LONG_DESCRIPTION_PROMPT', $oLang->getBaseLanguage());
 
         $this->_info(array(
             'method' => __CLASS__ . '::' . __FUNCTION__,
             'prompt' => $oException,
             'params' => array(
-                'title' => $this->_kussinLoadArticle()->oxarticles__oxtitle->value,
-                'manufacturer' => $this->_kussinLoadArticle()->getManufacturer()->oxmanufacturers__oxtitle->value,
+                'category' => $this->_kussinLoadCategory()->oxcategories__oxtitle->value,
+                'url' => $this->_kussinLoadCategory()->getLink(),
                 'max_tokens' => $iMaxTokens,
             ),
         ));
@@ -49,8 +46,8 @@ class ArticleMain extends ArticleMain_parent
         // GET PROMPT
         $sPrompt = sprintf(
             $sPrompt,
-            $this->_kussinLoadArticle()->oxarticles__oxtitle->value,
-            $this->_kussinLoadArticle()->getManufacturer()->oxmanufacturers__oxtitle->value,
+            $this->_kussinLoadCategory()->oxcategories__oxtitle->value,
+            $this->_kussinLoadCategory()->getLink(),
             $iMaxTokens
         );
 
@@ -60,17 +57,18 @@ class ArticleMain extends ArticleMain_parent
         if ($aResponse['error'] == NULL) {
 
             try {
-                // SAVE ARTICLE
+                // SAVE CATEGORY
                 parent::save();
 
                 // SAVE DESCRIPTION
-                $oArticle = oxNew(Article::class);
-                $oArticle->load( $this->_kussinLoadArticle()->getId() );
+                $oCategory = oxNew(Category::class);
+                $oCategory->load( $this->_kussinLoadCategory()->getId() );
 
                 $oContent = new Field($aResponse['data']);
-                $oArticle->setArticleLongDesc($oContent->getRawValue());
+//                $oCategory->oxcategories__oxlongdesc = $oContent->getRawValue();
+                $oCategory->oxcategories__oxlongdesc = $oContent;
 
-                $oArticle->save();
+                $oCategory->save();
 
             } catch (\Exception $oException) {
                 // ERROR
@@ -85,20 +83,17 @@ class ArticleMain extends ArticleMain_parent
     public function kussinchatgptshortdesc()
     {
         $iMaxTokens = 150;
-        $sPrompt = trim(Registry::getConfig()->getConfigParam('sKussinChatGptPromptShortDescriptionDE')); // TODO: MULTI-LANGUAL
 
-        if ($sPrompt == '') {
-            // FALLBACK
-            $oLang = Registry::getLang();
-            $sPrompt = $oLang->translateString('KUSSIN_CHATGPT_SHORT_DESCRIPTION_PROMPT', $oLang->getBaseLanguage());
-        }
+        // PROMPT
+        $oLang = Registry::getLang();
+        $sPrompt = $oLang->translateString('KUSSIN_CHATGPT_CATGEORY_SHORT_DESCRIPTION_PROMPT', $oLang->getBaseLanguage());
 
         $this->_info(array(
             'method' => __CLASS__ . '::' . __FUNCTION__,
             'prompt' => $oException,
             'params' => array(
-                'title' => $this->_kussinLoadArticle()->oxarticles__oxtitle->value,
-                'manufacturer' => $this->_kussinLoadArticle()->getManufacturer()->oxmanufacturers__oxtitle->value,
+                'category' => $this->_kussinLoadCategory()->oxcategories__oxtitle->value,
+                'url' => $this->_kussinLoadCategory()->getLink(),
                 'max_tokens' => $iMaxTokens,
             ),
         ));
@@ -106,9 +101,8 @@ class ArticleMain extends ArticleMain_parent
         // GET PROMPT
         $sPrompt = sprintf(
             $sPrompt,
-            $this->_kussinLoadArticle()->oxarticles__oxtitle->value,
-            $this->_kussinLoadArticle()->getManufacturer()->oxmanufacturers__oxtitle->value,
-            $iMaxTokens
+            $this->_kussinLoadCategory()->oxcategories__oxtitle->value,
+            $this->_kussinLoadCategory()->getLink()
         );
 
         // GET CHATGPT CONTENT
@@ -117,17 +111,17 @@ class ArticleMain extends ArticleMain_parent
         if ($aResponse['error'] == NULL) {
 
             try {
-                // SAVE ARTICLE
+                // SAVE CATEGORY
                 parent::save();
 
                 // SAVE DESCRIPTION
-                $oArticle = oxNew(Article::class);
-                $oArticle->load( $this->_kussinLoadArticle()->getId() );
+                $oCategory = oxNew(Category::class);
+                $oCategory->load( $this->_kussinLoadCategory()->getId() );
 
                 $oContent = new Field($aResponse['data']);
-                $oArticle->oxarticles__oxshortdesc = new Field($oContent);
+                $oCategory->oxcategories__oxdesc = $oContent;
 
-                $oArticle->save();
+                $oCategory->save();
 
             } catch (\Exception $oException) {
                 // ERROR

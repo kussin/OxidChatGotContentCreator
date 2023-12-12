@@ -5,7 +5,10 @@
 $sMetadataVersion = '2.0';
 
 use OxidEsales\Eshop\Application\Controller\Admin\ArticleMain;
-use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Application\Controller\Admin\CategoryMain;
+use OxidEsales\Eshop\Application\Controller\Admin\CategoryText;
+use OxidEsales\Eshop\Application\Controller\Admin\ManufacturerMain;
+use OxidEsales\Eshop\Application\Controller\Admin\VendorMain;
 
 /**
  * Module information
@@ -22,6 +25,10 @@ $aModule = array(
 
     'extend'       => array(
         ArticleMain::class => Kussin\ChatGpt\Controller\Admin\ArticleMain::class,
+        CategoryMain::class => Kussin\ChatGpt\Controller\Admin\CategoryMain::class,
+//        CategoryText::class => Kussin\ChatGpt\Controller\Admin\CategoryText::class,
+        ManufacturerMain::class => Kussin\ChatGpt\Controller\Admin\ManufacturerMain::class,
+        VendorMain::class => Kussin\ChatGpt\Controller\Admin\VendorMain::class,
     ),
 
     'blocks' => array(
@@ -29,6 +36,21 @@ $aModule = array(
             'template' => 'article_main.tpl',
             'block' => 'admin_article_main_form',
             'file' => 'views/blocks/admin/admin_article_main_form.tpl',
+        ),
+        array(
+            'template' => 'include/category_main_form.tpl',
+            'block' => 'admin_category_main_form',
+            'file' => 'views/blocks/admin/admin_category_main_form.tpl',
+        ),
+        array(
+            'template' => 'manufacturer_main.tpl',
+            'block' => 'admin_manufacturer_main_form',
+            'file' => 'views/blocks/admin/admin_manufacturer_main_form.tpl',
+        ),
+        array(
+            'template' => 'vendor_main.tpl',
+            'block' => 'admin_vendor_main_form',
+            'file' => 'views/blocks/admin/admin_vendor_main_form.tpl',
         ),
     ),
 
