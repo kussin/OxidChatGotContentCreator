@@ -21,6 +21,7 @@ class ChatGPT
     use LoggerTrait;
 
     const MIN_TOKENS = 375;
+    const MAX_TOKENS = 5000;
 
     const MAX_CONTINUE_REQUESTS = 3;
 
@@ -173,6 +174,10 @@ class ChatGPT
     {
         if ($iMaxTokens < self::MIN_TOKENS) {
             $iMaxTokens = self::MIN_TOKENS;
+        }
+
+        if (($iMaxTokens * 1.1) > self::MAX_TOKENS) {
+            $iMaxTokens = self::MAX_TOKENS;
         }
 
         return $iMaxTokens;

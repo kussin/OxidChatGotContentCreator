@@ -38,6 +38,16 @@ class ArticleMain extends ArticleMain_parent
             $sPrompt = $oLang->translateString('KUSSIN_CHATGPT_LONG_DESCRIPTION_PROMPT', $oLang->getBaseLanguage());
         }
 
+        $this->_info(array(
+            'method' => __CLASS__ . '::' . __FUNCTION__,
+            'prompt' => $oException,
+            'params' => array(
+                'title' => $this->_kussinLoadArticle()->oxarticles__oxtitle->value,
+                'manufacturer' => $this->_kussinLoadArticle()->getManufacturer()->oxmanufacturers__oxtitle->value,
+                'max_tokens' => $iMaxTokens,
+            ),
+        ));
+
         // GET PROMPT
         $sPrompt = sprintf(
             $sPrompt,
@@ -77,13 +87,23 @@ class ArticleMain extends ArticleMain_parent
     public function kussinchatgptshortdesc()
     {
         $iMaxTokens = 150;
-        $sPrompt = trim(Registry::getConfig()->getConfigParam('sKussinChatGptPromptLongDescriptionDE')); // TODO: MULTI-LANGUAL
+        $sPrompt = trim(Registry::getConfig()->getConfigParam('sKussinChatGptPromptShortDescriptionDE')); // TODO: MULTI-LANGUAL
 
         if ($sPrompt == '') {
             // FALLBACK
             $oLang = Registry::getLang();
             $sPrompt = $oLang->translateString('KUSSIN_CHATGPT_SHORT_DESCRIPTION_PROMPT', $oLang->getBaseLanguage());
         }
+
+        $this->_info(array(
+            'method' => __CLASS__ . '::' . __FUNCTION__,
+            'prompt' => $oException,
+            'params' => array(
+                'title' => $this->_kussinLoadArticle()->oxarticles__oxtitle->value,
+                'manufacturer' => $this->_kussinLoadArticle()->getManufacturer()->oxmanufacturers__oxtitle->value,
+                'max_tokens' => $iMaxTokens,
+            ),
+        ));
 
         // GET PROMPT
         $sPrompt = sprintf(
