@@ -80,7 +80,7 @@ class ChatGPT
 
         // CHECK HTML PROMPT
         if ($bHtml && ($iMaxTokens >= self::MIN_TOKENS) ) {
-            $sPrompt = $sPrompt . ' ' . $this->_getChatGptInstruction();
+            $sPrompt = $sPrompt . PHP_EOL . $this->_getChatGptInstruction();
         }
 
         $data["model"] = $sModel;

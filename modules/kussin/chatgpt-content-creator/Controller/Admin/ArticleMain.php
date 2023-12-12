@@ -57,7 +57,7 @@ class ArticleMain extends ArticleMain_parent
         );
 
         // GET CHATGPT CONTENT
-        $aResponse = $this->_kussinGetChatGptContent($sPrompt, FALSE, FALSE, floor($iMaxTokens * 1.1), true);
+        $aResponse = $this->_kussinGetChatGptContent($sPrompt, FALSE, FALSE, floor($iMaxTokens * 1.1), TRUE);
 
         if ($aResponse['error'] == NULL) {
 
@@ -70,7 +70,7 @@ class ArticleMain extends ArticleMain_parent
                 $oArticle->load( $this->_kussinLoadArticle()->getId() );
 
                 $oContent = new Field($aResponse['data']);
-                $oArticle->setArticleLongDesc($oContent);
+                $oArticle->setArticleLongDesc($oContent->getRawValue());
 
                 $oArticle->save();
 
@@ -141,7 +141,7 @@ class ArticleMain extends ArticleMain_parent
         }
     }
 
-    private function _kussinGetChatGptContent($sPrompt, $sModel = FALSE, $dTemperature = FALSE, $iMaxTokens = FALSE)
+    private function _kussinGetChatGptContent($sPrompt, $sModel = FALSE, $dTemperature = FALSE, $iMaxTokens = FALSE, $bHtml = FALSE)
     {
         // LOAD CHATGPT CLIENT
         if ($this->_oChatGptClient === null) {
@@ -152,7 +152,8 @@ class ArticleMain extends ArticleMain_parent
             $sPrompt,
             ($sModel !== FALSE ? $sModel : Registry::getConfig()->getConfigParam('sKussinChatGptApiModel')),
             ($dTemperature !== FALSE ? $dTemperature : (double) Registry::getConfig()->getConfigParam('dKussinChatGptApiTemperature')),
-            ($iMaxTokens !== FALSE ? $iMaxTokens : (int) Registry::getConfig()->getConfigParam('iKussinPositionApiMaxTokens'))
+            ($iMaxTokens !== FALSE ? $iMaxTokens : (int) Registry::getConfig()->getConfigParam('iKussinPositionApiMaxTokens')),
+            $bHtml
         );
     }
 }
