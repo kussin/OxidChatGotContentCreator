@@ -66,8 +66,10 @@ class ArticleMain extends ArticleMain_parent
 
             } catch (\Exception $oException) {
                 // ERROR
-                echo $oException->getMessage();
-                die();
+                $this->_error(array(
+                    'method' => __CLASS__ . '::' . __FUNCTION__,
+                    'response' => $oException,
+                ));
             }
         }
     }
@@ -111,8 +113,10 @@ class ArticleMain extends ArticleMain_parent
 
             } catch (\Exception $oException) {
                 // ERROR
-                echo $oException->getMessage();
-                die();
+                $this->_error(array(
+                    'method' => __CLASS__ . '::' . __FUNCTION__,
+                    'response' => $oException,
+                ));
             }
         }
     }
@@ -124,7 +128,7 @@ class ArticleMain extends ArticleMain_parent
             $this->_oChatGptClient = new ChatGPT();
         }
 
-        return $this->_oChatGptClient->createTextRequest(
+        return $this->_oChatGptClient->getCompleteTextResponse(
             $sPrompt,
             ($sModel !== FALSE ? $sModel : Registry::getConfig()->getConfigParam('sKussinChatGptApiModel')),
             ($dTemperature !== FALSE ? $dTemperature : (double) Registry::getConfig()->getConfigParam('dKussinChatGptApiTemperature')),
