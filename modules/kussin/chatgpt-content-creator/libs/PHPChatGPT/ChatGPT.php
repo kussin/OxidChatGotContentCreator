@@ -22,38 +22,42 @@ class ChatGPT
 
     const MIN_TOKENS = 375;
 
-    private $API_KEY = "ADD_YOUR_API_KEY_HERE";
-    private $textURL = "https://api.openai.com/v1/completions";
-    private $imageURL = "https://api.openai.com/v1/images/generations";
+    const MAX_CONTINUE_REQUESTS = 3;
 
-    public $curl;
+    private $_API_KEY = "ADD_YOUR_API_KEY_HERE";
+    private $_sOpenAiApiUrl = "https://api.openai.com/v1/completions";
+    private $_sOpenAiApiImageUrl = "https://api.openai.com/v1/images/generations";
+
+    public $oCurl;
+
+    private $_iInfinityLoopCount = 0;
 
     public function __construct()
     {
-        $this->curl = curl_init();
+        $this->oCurl = curl_init();
 
         // SET CHAT GPT API KEY
-        $this->API_KEY = Registry::getConfig()->getConfigParam('sKussinChatGptApiKey');
+        $this->_API_KEY = Registry::getConfig()->getConfigParam('sKussinChatGptApiKey');
     }
 
     public function initialize($requestType = "text" || "image")
     {
-        $this->curl = curl_init();
+        $this->oCurl = curl_init();
 
         if ($requestType === 'image')
-            curl_setopt($this->curl, CURLOPT_URL, $this->imageURL);
+            curl_setopt($this->oCurl, CURLOPT_URL, $this->_sOpenAiApiImageUrl);
         if ($requestType === 'text')
-            curl_setopt($this->curl, CURLOPT_URL, $this->textURL);
+            curl_setopt($this->oCurl, CURLOPT_URL, $this->_sOpenAiApiUrl);
 
-        curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($this->curl, CURLOPT_POST, true);
+        curl_setopt($this->oCurl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($this->oCurl, CURLOPT_POST, true);
 
         $headers = array(
             "Content-Type: application/json",
-            "Authorization: Bearer $this->API_KEY"
+            "Authorization: Bearer $this->_API_KEY"
         );
 
-        curl_setopt($this->curl, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($this->oCurl, CURLOPT_HTTPHEADER, $headers);
     }
 
     /**
@@ -65,25 +69,33 @@ class ChatGPT
      * @param int $iMaxTokens The maximum number of tokens in the generated text (default: 1000).
      * @return array An array containing 'data' and 'error' keys, representing the generated text and any errors.
      */
-    public function createTextRequest($sPrompt, $sModel = 'gpt-3.5-turbo-instruct', $sTemperature = 0.7, $iMaxTokens = 1000)
+    public function createTextRequest($sPrompt, $sModel = 'gpt-3.5-turbo-instruct', $sTemperature = 0.7, $iMaxTokens = 1000, $bHtml = false)
     {
-        curl_reset($this->curl);
+        curl_reset($this->oCurl);
         $this->initialize('text');
 
+        // CHECK MAX TOKENS
+        $iMaxTokens = $this->_checkMaxTokens((int) $iMaxTokens);
+
+        // CHECK HTML PROMPT
+        if ($bHtml && ($iMaxTokens >= self::MIN_TOKENS) ) {
+            $sPrompt = $sPrompt . ' ' . $this->_getChatGptInstruction();
+        }
+
         $data["model"] = $sModel;
-        $data["prompt"] = $sPrompt . ' ' . $this->_getChatGptInstruction();
+        $data["prompt"] = $sPrompt;
         $data["temperature"] = (double) $sTemperature;
-        $data["max_tokens"] = $this->_checkMaxTokens((int) $iMaxTokens);
+        $data["max_tokens"] = $iMaxTokens;
 
         $this->_debug(array(
             'method' => __CLASS__ . '::' . __FUNCTION__,
-            'url' => $this->curl,
+            'url' => $this->oCurl,
             'data' => $data,
         ));
 
-        curl_setopt($this->curl, CURLOPT_POSTFIELDS, json_encode($data));
+        curl_setopt($this->oCurl, CURLOPT_POSTFIELDS, json_encode($data));
 
-        $response = curl_exec($this->curl);
+        $response = curl_exec($this->oCurl);
         $response = json_decode($response, true);
 
         $this->_debug(array(
@@ -107,7 +119,7 @@ class ChatGPT
      */
     public function generateImage($sPrompt, $sImageSize = '512x512', $iNumberOfImages = 1)
     {
-        curl_reset($this->curl);
+        curl_reset($this->oCurl);
         $this->initialize('image');
 
         $data["prompt"] = $sPrompt;
@@ -116,13 +128,13 @@ class ChatGPT
 
         $this->_debug(array(
             'method' => __CLASS__ . '::' . __FUNCTION__,
-            'url' => $this->curl,
+            'url' => $this->oCurl,
             'data' => $data,
         ));
 
-        curl_setopt($this->curl, CURLOPT_POSTFIELDS, json_encode($data));
+        curl_setopt($this->oCurl, CURLOPT_POSTFIELDS, json_encode($data));
 
-        $response = curl_exec($this->curl);
+        $response = curl_exec($this->oCurl);
         $response = json_decode($response, true);
 
         $this->_debug(array(
@@ -135,20 +147,23 @@ class ChatGPT
         return $output;
     }
 
-    public function getCompleteTextResponse($sPrompt, $sModel = 'gpt-3.5-turbo-instruct', $dTemperature = 0.7, $iMaxTokens = 1000)
+    public function getCompleteTextResponse($sPrompt, $sModel = 'gpt-3.5-turbo-instruct', $dTemperature = 0.7, $iMaxTokens = 1000, $bHtml = false)
     {
-        $aCompleteTextResponse = array();
-
-        $aCompleteTextResponse = $this->createTextRequest($sPrompt, $sModel, $dTemperature, $iMaxTokens);
+        $aCompleteTextResponse = $this->createTextRequest($sPrompt, $sModel, $dTemperature, $iMaxTokens, $bHtml);
 
         $this->_debug(array(
             'method' => __CLASS__ . '::' . __FUNCTION__,
             'response' => $aCompleteTextResponse,
         ));
 
-        if ($aCompleteTextResponse['continue'] === true) {
-            $aContinueTextResponse = $this->getCompleteTextResponse($this->_getContinuePrompt(), $sModel, $dTemperature, $iMaxTokens);
+        if (
+            ($aCompleteTextResponse['continue'] === true)
+            && ($this->_iInfinityLoopCount < self::MAX_CONTINUE_REQUESTS)
+        ) {
+            $aContinueTextResponse = $this->getCompleteTextResponse($this->_getContinuePrompt(), $sModel, $dTemperature, $iMaxTokens, $bHtml);
             $aCompleteTextResponse['data'] .= $aContinueTextResponse['data'];
+
+            $this->_iInfinityLoopCount++;
         }
 
         return $aCompleteTextResponse;

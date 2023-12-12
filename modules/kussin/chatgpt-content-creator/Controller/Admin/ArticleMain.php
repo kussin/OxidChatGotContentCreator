@@ -47,7 +47,7 @@ class ArticleMain extends ArticleMain_parent
         );
 
         // GET CHATGPT CONTENT
-        $aResponse = $this->_kussinGetChatGptContent($sPrompt, FALSE, FALSE, floor($iMaxTokens * 1.1));
+        $aResponse = $this->_kussinGetChatGptContent($sPrompt, FALSE, FALSE, floor($iMaxTokens * 1.1), true);
 
         if ($aResponse['error'] == NULL) {
 
