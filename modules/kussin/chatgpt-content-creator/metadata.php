@@ -10,6 +10,9 @@ use OxidEsales\Eshop\Application\Controller\Admin\CategoryText;
 use OxidEsales\Eshop\Application\Controller\Admin\ManufacturerMain;
 use OxidEsales\Eshop\Application\Controller\Admin\VendorMain;
 
+// FILE PATH
+$sModulePath = dirname(__FILE__);
+
 /**
  * Module information
  */
@@ -29,6 +32,10 @@ $aModule = array(
 //        CategoryText::class => Kussin\ChatGpt\Controller\Admin\CategoryText::class,
         ManufacturerMain::class => Kussin\ChatGpt\Controller\Admin\ManufacturerMain::class,
         VendorMain::class => Kussin\ChatGpt\Controller\Admin\VendorMain::class,
+    ),
+
+    'controllers' => array(
+        'process' => Kussin\ChatGpt\Cron\Process::class,
     ),
 
     'blocks' => array(
@@ -102,6 +109,12 @@ $aModule = array(
             'name' => 'sKussinChatGptPromptShortDescriptionEN',
             'type' => 'str',
             'value' => 'Create an article short description for "%s" from "%s". - And please without an intro and with max. %s words.',
+        ),
+        array(
+            'group' => 'sKussinChatGptProcessSettings',
+            'name' => 'sKussinChatGptProcessSelectionQuery',
+            'type' => 'textarea',
+            'value' => file_get_contents($sModulePath . '/sql/oxartextends.example.sql'),
         ),
         array(
             'group' => 'sKussinChatGptDebugSettings',
