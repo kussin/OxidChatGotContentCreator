@@ -168,11 +168,16 @@ class Process extends FrontendController
             // TODO: BACKUP CONTENT
             $sContent = null;
 
-            // SAVE PROMPT
-            $sUpdateQuery = 'UPDATE kussin_chatgpt_content_creator_queue SET `content` = "' . $sContent . '", `generated` = "' . $sGenerated . '", `process_ip` = "' . $this->_getClientIp() . '", `status` = "' . self::PROCESS_GENERATED_STATUS . '" WHERE (`id` = "' . $aItem[0] . '");';
-            DatabaseProvider::getDb()->execute($sUpdateQuery);
+            if ($sGenerated != '') {
+                // SAVE PROMPT
+                $sUpdateQuery = 'UPDATE kussin_chatgpt_content_creator_queue SET `content` = "' . $sContent . '", `generated` = "' . $sGenerated . '", `process_ip` = "' . $this->_getClientIp() . '", `status` = "' . self::PROCESS_GENERATED_STATUS . '" WHERE (`id` = "' . $aItem[0] . '");';
+                DatabaseProvider::getDb()->execute($sUpdateQuery);
 
-            $this->_debug('Generated ChatGPT ai content for: ' . $sOxid);
+                $this->_debug('Generated ChatGPT ai content for: ' . $sOxid);
+            } else {
+                // ERROR
+                $this->_warning('Could not generate ChatGPT ai content for: ' . $sOxid);
+            }
 
             // CLEAR
             $oObject = null;
@@ -183,7 +188,7 @@ class Process extends FrontendController
     protected function _replaceContent() {
         $iLimit = (int) Registry::getConfig()->getConfigParam('iKussinChatGptProcessLimitMaxReplacements');
 
-        $sQuery = 'SELECT `id`, `object`, `object_id`, `field`, `shop_id`, `lang_id`, `generated` FROM kussin_chatgpt_content_creator_queue WHERE (`status` = "' . self::PROCESS_GENERATED_STATUS . '") ORDER BY `updated_at` ASC LIMIT ' . $iLimit . ';';
+        $sQuery = 'SELECT `id`, `object`, `object_id`, `field`, `shop_id`, `lang_id`, `generated` FROM kussin_chatgpt_content_creator_queue WHERE ( (`generated` IS NOT NULL) AND (`generated` NOT LIKE "") ) AND (`status` = "' . self::PROCESS_GENERATED_STATUS . '") ORDER BY `updated_at` ASC LIMIT ' . $iLimit . ';';
 
         foreach ($this->_getCustomDbResult($sQuery) as $aItem) {
             $oObject = $this->_getOxidObject($aItem[1]);
