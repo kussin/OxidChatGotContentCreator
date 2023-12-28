@@ -6,9 +6,37 @@ use OxidEsales\Eshop\Core\Registry;
 
 trait ChatGPTProcessPromptsTrait
 {
-    private function _getProcessPrompts($oObject, $SFieldId, $iLang = 0, $iMaxTokens = 350)
+    private function _getProcessMaxTokens($sFieldId, $iMaxTokens = 350) : int
     {
-        switch ($SFieldId) {
+        switch ($sFieldId) {
+            case 'oxshortdesc':
+                $dFactor = 0.9;
+                break;
+
+            default:
+            case 'oxlongdesc':
+                $dFactor = 1.1;
+                break;
+        }
+
+        return floor((int) $iMaxTokens * $dFactor);
+    }
+
+    private function _useHtml($sFieldId) : bool
+    {
+        switch ($sFieldId) {
+            case 'oxlongdesc':
+                return true;
+
+            default:
+            case 'oxshortdesc':
+                return false;
+        }
+    }
+
+    private function _getProcessPrompts($oObject, $sFieldId, $iLang = 0, $iMaxTokens = 350)
+    {
+        switch ($sFieldId) {
             case 'oxshortdesc':
                 $sPrompt = $this->_getChatGptProcessPrompt4ShortDescription($iLang);
                 $sTitle = $oObject->oxarticles__oxtitle->value;

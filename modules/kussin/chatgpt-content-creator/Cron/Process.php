@@ -2,17 +2,21 @@
 
 namespace Kussin\ChatGpt\Cron;
 
+use Kussin\ChatGpt\Traits\ChatGPTClientTrait;
 use Kussin\ChatGpt\Traits\ChatGPTProcessPromptsTrait;
 use Kussin\ChatGpt\Traits\CustomDbTrait;
 use Kussin\ChatGpt\Traits\LoggerTrait;
 use Kussin\ChatGpt\Traits\OxidObjectsTrait;
 use Kussin\ChatGpt\Traits\ProcessFlagTrait;
 use OxidEsales\Eshop\Application\Controller\FrontendController;
+use OxidEsales\Eshop\Application\Model\Article;
 use OxidEsales\Eshop\Core\DatabaseProvider;
+use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 
 class Process extends FrontendController
 {
+    use ChatGPTClientTrait;
     use ChatGPTProcessPromptsTrait;
     use CustomDbTrait;
     use LoggerTrait;
@@ -116,14 +120,14 @@ class Process extends FrontendController
         foreach ($this->_getCustomDbResult($sQuery) as $aItem) {
             $oObject = $this->_getOxidObject($aItem[1]);
             $sOxid = $aItem[2];
-            $SFieldId = $this->_getOxidFieldId($aItem[1], $aItem[3], $aItem[5]);
+            $sFieldId = $this->_getOxidFieldId($aItem[1], $aItem[3], $aItem[5]);
             $iLang = (int) $aItem[5];
 
             // LOAD OBJECT
             $oObject->loadInLang($iLang, $sOxid);
 
             // GET PROMPT
-            $sPrompt = $this->_getProcessPrompts($oObject, $SFieldId, $iLang, $aItem[6]);
+            $sPrompt = $this->_getProcessPrompts($oObject, $sFieldId, $iLang, $aItem[6]);
 
             $this->_debug([
                 'method' => __CLASS__ . '::' . __METHOD__,
@@ -140,48 +144,63 @@ class Process extends FrontendController
 
             // CLEAR
             $oObject = null;
-            $SFieldId = null;
+            $sFieldId = null;
         }
     }
 
     protected function _generateContent() {
         $iLimit = (int) Registry::getConfig()->getConfigParam('iKussinChatGptProcessLimitMaxGenerations');
 
-        $sQuery = 'SELECT `id`, `object`, `object_id`, `field`, `shop_id`, `lang_id`, `prompt`, `model`, `max_tokens`, `max_tokens`, `temperature` FROM kussin_chatgpt_content_creator_queue WHERE (`status` = "' . self::PROCESS_PROCESSING_STATUS . '") ORDER BY `updated_at` ASC LIMIT ' . $iLimit . ';';
+        $sQuery = 'SELECT `id`, `object`, `object_id`, `field`, `shop_id`, `lang_id`, `prompt`, `model`, `max_tokens`, `temperature` FROM kussin_chatgpt_content_creator_queue WHERE (`status` = "' . self::PROCESS_PROCESSING_STATUS . '") ORDER BY `updated_at` ASC LIMIT ' . $iLimit . ';';
 
         foreach ($this->_getCustomDbResult($sQuery) as $aItem) {
             $oObject = $this->_getOxidObject($aItem[1]);
             $sOxid = $aItem[2];
-            $SFieldId = $this->_getOxidFieldId($aItem[1], $aItem[3], $aItem[5]);
+            $sFieldId = $this->_getOxidFieldId($aItem[1], $aItem[3], $aItem[5]);
             $iLang = (int) $aItem[5];
             $sPrompt = $aItem[6];
             $sModel = $aItem[7];
-            $iMaxTokens = (int) $aItem[8];
+            $iMaxTokens = $this->_getProcessMaxTokens($aItem[3], (int) $aItem[8]);
             $dTemperature = (double) $aItem[9];
 
             // LOAD OBJECT
             $oObject->loadInLang($iLang, $sOxid);
 
-            // TODO: GENERATE CONTENT
-            $sGenerated = null;
+            // ChatGPT API REQUEST
+            $aResponse = $this->_kussinGetChatGptContent($sPrompt, $sModel, $dTemperature, $iMaxTokens, $this->_useHtml($aItem[3]));
 
-            // TODO: BACKUP CONTENT
-            $sContent = null;
+            if ($aResponse['error'] == NULL) {
 
-            if ($sGenerated != '') {
-                // SAVE PROMPT
-                $sUpdateQuery = 'UPDATE kussin_chatgpt_content_creator_queue SET `content` = "' . $sContent . '", `generated` = "' . $sGenerated . '", `process_ip` = "' . $this->_getClientIp() . '", `status` = "' . self::PROCESS_GENERATED_STATUS . '" WHERE (`id` = "' . $aItem[0] . '");';
-                DatabaseProvider::getDb()->execute($sUpdateQuery);
+                try {
+                    // GENERATE CONTENT
+                    $sGenerated = htmlentities($aResponse['data'], ENT_QUOTES, "UTF-8");
 
-                $this->_debug('Generated ChatGPT ai content for: ' . $sOxid);
-            } else {
-                // ERROR
-                $this->_warning('Could not generate ChatGPT ai content for: ' . $sOxid);
+                    // GET CURRENT CONTENT
+                    $sContent = ($aItem[3] == 'oxlongdesc') ? $oObject->getLongDescription()->getRawValue() : $oObject->{$sFieldId}->value;
+
+                    if ( ($sGenerated != '') && ($sGenerated != null) ) {
+                        // SAVE PROMPT
+                        $sUpdateQuery = 'UPDATE kussin_chatgpt_content_creator_queue SET `content` = ' . ( ($sContent == null) ? 'NULL' : '"' . htmlentities($sContent, ENT_QUOTES, "UTF-8") . '"' ) . ', `generated` = "' . $sGenerated . '", `process_ip` = "' . $this->_getClientIp() . '", `status` = "' . self::PROCESS_GENERATED_STATUS . '" WHERE (`id` = "' . $aItem[0] . '");';
+                        DatabaseProvider::getDb()->execute($sUpdateQuery);
+
+                        $this->_debug('Generated ChatGPT ai content for: ' . $sOxid);
+                    } else {
+                        // ERROR
+                        $this->_warning('Could not generate ChatGPT ai content for: ' . $sOxid);
+                    }
+
+                } catch (\Exception $oException) {
+                    // ERROR
+                    $this->_error(array(
+                        'method' => __CLASS__ . '::' . __FUNCTION__,
+                        'response' => $oException,
+                    ));
+                }
             }
 
             // CLEAR
             $oObject = null;
-            $SFieldId = null;
+            $sFieldId = null;
         }
     }
 
@@ -193,7 +212,7 @@ class Process extends FrontendController
         foreach ($this->_getCustomDbResult($sQuery) as $aItem) {
             $oObject = $this->_getOxidObject($aItem[1]);
             $sOxid = $aItem[2];
-            $SFieldId = $this->_getOxidFieldId($aItem[1], $aItem[3], $aItem[5]);
+            $sFieldId = $this->_getOxidFieldId($aItem[1], $aItem[3], $aItem[5]);
             $iLang = (int) $aItem[5];
             $sGeneratedContent = $aItem[6];
 
@@ -210,7 +229,7 @@ class Process extends FrontendController
 
             // CLEAR
             $oObject = null;
-            $SFieldId = null;
+            $sFieldId = null;
         }
     }
 
