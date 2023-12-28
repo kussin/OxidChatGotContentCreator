@@ -80,6 +80,9 @@ class Process extends FrontendController
                 ));
 
                 DatabaseProvider::getDb()->execute($sQuery);
+
+                // FIX QUEUE TIMESTAMP
+                $this->_fixConfigTimestamp('sKussinChatGptProcessSelectionQuery');
             }
         }
     }
@@ -212,5 +215,14 @@ class Process extends FrontendController
         $iLastProcessTimestamp = strtotime($this->_getCustomDbValue($sQuery));
 
         return ((time() - (15*60)) < $iLastProcessTimestamp);
+    }
+
+    private function _fixConfigTimestamp($sOxVarname = 'sKussinChatGptProcessSelectionQuery', $sTimeChange = '-3 hours'): bool
+    {
+        $sTimestamp = date('Y-m-d H:i:s', strtotime($sTimeChange));
+
+        $sQuery = 'UPDATE oxconfig SET OXTIMESTAMP = "' . $sTimestamp . '" WHERE (OXVARNAME LIKE "' . $sOxVarname . '");';
+
+        return (bool) DatabaseProvider::getDb()->execute($sQuery);
     }
 }
