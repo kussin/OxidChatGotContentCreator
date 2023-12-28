@@ -14,6 +14,7 @@ trait ChatGPTProcessPromptsTrait
                 $sTitle = $oObject->oxarticles__oxtitle->value;
                 $sManufacturer = $oObject->getManufacturer()->oxmanufacturers__oxtitle->value;
                 break;
+
             default:
             case 'oxlongdesc':
                 $sPrompt = $this->_getChatGptProcessPrompt4LongDescription($iLang);
@@ -21,6 +22,9 @@ trait ChatGPTProcessPromptsTrait
                 $sManufacturer = $oObject->getManufacturer()->oxmanufacturers__oxtitle->value;
                 break;
         }
+
+        // FIX PROMPT
+        $sPrompt = str_replace(['"', '"', '&quot;',], '`', $sPrompt);
 
         return sprintf(
             $sPrompt,

@@ -22,6 +22,7 @@ $aLang = array(
     'SHOP_MODULE_iKussinChatGptProcessMaxTokens' => 'ChatGPT api max tokens',
     'SHOP_MODULE_iKussinChatGptProcessLimitMaxPrompts' => 'Max. data rows to create prompts',
     'SHOP_MODULE_iKussinChatGptProcessLimitMaxGenerations' => 'Max. data rows to generate ai content',
+    'SHOP_MODULE_iKussinChatGptProcessLimitMaxReplacements' => 'Max. data rows to replace with ai content',
 
     'SHOP_MODULE_GROUP_sKussinChatGptDebugSettings' => 'Debug settings',
     'SHOP_MODULE_blKussinChatGptDebugEnabled' => 'Enable debug mode',

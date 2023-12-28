@@ -6,7 +6,7 @@ use OxidEsales\Eshop\Core\Registry;
 
 trait LoggerTrait
 {
-    private $_oLogger = null;
+    private $_sFilename = null;
 
     private function _getLogger()
     {
@@ -32,28 +32,36 @@ trait LoggerTrait
         // DEBUG MODE
         $bDebugMode = (bool) Registry::getConfig()->getConfigParam('blKussinChatGptDebugEnabled');
 
-        // MESSAGE
-        if (is_array($sMessage) || is_object($sMessage)) {
-            $sMessage = json_encode($sMessage);
-        }
-
         if ($bDebugMode && ($sLevel == 'DEBUG' || $sLevel == 'INFO' || $sLevel == 'WARNING')) {
-            switch ($sLevel) {
-                case 'DEBUG':
-                    $this->_getLogger()->debug($sMessage);
-                    break;
-                case 'WARNING':
-                    $this->_getLogger()->notice($sMessage);
-                    break;
-                case 'INFO':
-                default:
-                    $this->_getLogger()->info($sMessage);
-                    break;
-            }
+            $this->_log2file($sMessage, $sLevel);
 
         } else if ($sLevel == 'ERROR') {
             // ERROR
-            $this->_getLogger()->error($sMessage);
+            $this->_log2file($sMessage, $sLevel);
+        }
+    }
+
+    protected function _log2file($sMessage, $sLevel = 'INFO')
+    {
+        $sLogfilePath = trim(Registry::getConfig()->getConfigParam('sKussinChatGptDebugLogFilename'));
+
+        if (($sLogfilePath != '') && ($this->_sFilename === null)) {
+            $this->_sFilename = str_replace('//', '/', implode('/', array(
+                Registry::getConfig()->getConfigParam('sShopDir'),
+                $sLogfilePath,
+            )));
+        }
+
+        if ($this->_sFilename != null) {
+            $aLogEntry = array(
+                '[' . date('Y-m-d H:i:s') . ']',
+                '[type ' . $sLevel . ']',
+                print_r($sMessage, true),
+            );
+
+            $rFile = fopen($this->_sFilename, 'a');
+            fputs($rFile, implode(' ', $aLogEntry) . PHP_EOL);
+            return fclose($rFile);
         }
     }
 
@@ -75,5 +83,21 @@ trait LoggerTrait
     protected function _error($sMessage)
     {
         $this->_log($sMessage, 'ERROR');
+    }
+
+    private function _getClientIp($sIp = FALSE) {
+        $sClientIp = NULL;
+
+        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+            $sClientIp = $_SERVER['HTTP_CLIENT_IP'];
+
+        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $sClientIp = $_SERVER['HTTP_X_FORWARDED_FOR'];
+
+        } else {
+            $sClientIp = $_SERVER['REMOTE_ADDR'];
+        }
+
+        return ($sIp != FALSE) ? $sIp : $sClientIp;
     }
 }

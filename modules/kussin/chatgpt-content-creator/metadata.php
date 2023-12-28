@@ -158,6 +158,12 @@ $aModule = array(
             'value' => 1,
         ),
         array(
+            'group' => 'sKussinChatGptProcessSettings',
+            'name' => 'iKussinChatGptProcessLimitMaxReplacements',
+            'type' => 'str',
+            'value' => 10,
+        ),
+        array(
             'group' => 'sKussinChatGptDebugSettings',
             'name' => 'blKussinChatGptDebugEnabled',
             'type' => 'bool',
