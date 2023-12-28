@@ -6,7 +6,7 @@ use OxidEsales\Eshop\Core\Registry;
 
 trait ChatGPTProcessPromptsTrait
 {
-    private function _getProcessMaxTokens($sFieldId, $iMaxTokens = 350) : int
+    protected function _getProcessMaxTokens($sFieldId, $iMaxTokens = 350) : int
     {
         switch ($sFieldId) {
             case 'oxshortdesc':
@@ -22,7 +22,7 @@ trait ChatGPTProcessPromptsTrait
         return floor((int) $iMaxTokens * $dFactor);
     }
 
-    private function _useHtml($sFieldId) : bool
+    protected function _useHtml($sFieldId) : bool
     {
         switch ($sFieldId) {
             case 'oxlongdesc':
@@ -39,15 +39,15 @@ trait ChatGPTProcessPromptsTrait
         switch ($sFieldId) {
             case 'oxshortdesc':
                 $sPrompt = $this->_getChatGptProcessPrompt4ShortDescription($iLang);
-                $sTitle = $oObject->oxarticles__oxtitle->value;
-                $sManufacturer = $oObject->getManufacturer()->oxmanufacturers__oxtitle->value;
+                $sTitle = $this->_encodeProcessSpecialChars($oObject->oxarticles__oxtitle->value);
+                $sManufacturer = $this->_encodeProcessSpecialChars($oObject->getManufacturer()->oxmanufacturers__oxtitle->value);
                 break;
 
             default:
             case 'oxlongdesc':
                 $sPrompt = $this->_getChatGptProcessPrompt4LongDescription($iLang);
-                $sTitle = $oObject->oxarticles__oxtitle->value;
-                $sManufacturer = $oObject->getManufacturer()->oxmanufacturers__oxtitle->value;
+                $sTitle = $this->_encodeProcessSpecialChars($oObject->oxarticles__oxtitle->value);
+                $sManufacturer = $this->_encodeProcessSpecialChars($oObject->getManufacturer()->oxmanufacturers__oxtitle->value);
                 break;
         }
 
@@ -60,6 +60,23 @@ trait ChatGPTProcessPromptsTrait
             $sManufacturer,
             $iMaxTokens
         );
+    }
+
+    protected function _encodeProcessSpecialChars($sString, $sCharset = 'UTF-8') : string
+    {
+        $sStringUtf8 = mb_convert_encoding($sString, $sCharset, mb_detect_encoding($sString));
+
+        return htmlspecialchars($sStringUtf8, ENT_QUOTES, $sCharset);
+    }
+
+    protected function _encodeProcessContent($sString, $sCharset = 'UTF-8') : string
+    {
+        return base64_encode($sString);
+    }
+
+    protected function _decodeProcessContent($sString) : string
+    {
+        return base64_decode($sString);
     }
 
     protected function _getChatGptProcessPrompt4ShortDescription($iLang = 0)

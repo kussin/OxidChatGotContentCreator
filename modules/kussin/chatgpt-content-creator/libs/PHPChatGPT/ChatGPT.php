@@ -70,7 +70,7 @@ class ChatGPT
      * @param int $iMaxTokens The maximum number of tokens in the generated text (default: 1000).
      * @return array An array containing 'data' and 'error' keys, representing the generated text and any errors.
      */
-    public function createTextRequest($sPrompt, $sModel = 'gpt-3.5-turbo-instruct', $sTemperature = 0.7, $iMaxTokens = 1000, $bHtml = false)
+    public function createTextRequest($sPrompt, $sModel = 'gpt-3.5-turbo-instruct', $sTemperature = 0.7, $iMaxTokens = 1000, $bHtml = false, $iLang = null)
     {
         curl_reset($this->oCurl);
         $this->initialize('text');
@@ -80,7 +80,7 @@ class ChatGPT
 
         // CHECK HTML PROMPT
         if ($bHtml && ($iMaxTokens >= self::MIN_TOKENS) ) {
-            $sPrompt = $sPrompt . PHP_EOL . $this->_getChatGptInstruction();
+            $sPrompt = $sPrompt . PHP_EOL . $this->_getChatGptInstruction($iLang);
         }
 
         $data["model"] = $sModel;
@@ -148,9 +148,9 @@ class ChatGPT
         return $output;
     }
 
-    public function getCompleteTextResponse($sPrompt, $sModel = 'gpt-3.5-turbo-instruct', $dTemperature = 0.7, $iMaxTokens = 1000, $bHtml = false)
+    public function getCompleteTextResponse($sPrompt, $sModel = 'gpt-3.5-turbo-instruct', $dTemperature = 0.7, $iMaxTokens = 1000, $bHtml = false, $iLang = null)
     {
-        $aCompleteTextResponse = $this->createTextRequest($sPrompt, $sModel, $dTemperature, $iMaxTokens, $bHtml);
+        $aCompleteTextResponse = $this->createTextRequest($sPrompt, $sModel, $dTemperature, $iMaxTokens, $bHtml, $iLang);
 
         $this->_debug(array(
             'method' => __CLASS__ . '::' . __FUNCTION__,
@@ -161,7 +161,7 @@ class ChatGPT
             ($aCompleteTextResponse['continue'] === true)
             && ($this->_iInfinityLoopCount < self::MAX_CONTINUE_REQUESTS)
         ) {
-            $aContinueTextResponse = $this->getCompleteTextResponse($this->_getContinuePrompt(), $sModel, $dTemperature, $iMaxTokens, $bHtml);
+            $aContinueTextResponse = $this->getCompleteTextResponse($this->_getContinuePrompt($iLang), $sModel, $dTemperature, $iMaxTokens, $bHtml);
             $aCompleteTextResponse['data'] .= $aContinueTextResponse['data'];
 
             $this->_iInfinityLoopCount++;

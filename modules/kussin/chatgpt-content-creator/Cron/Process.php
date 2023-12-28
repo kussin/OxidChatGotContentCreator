@@ -173,14 +173,14 @@ class Process extends FrontendController
 
                 try {
                     // GENERATE CONTENT
-                    $sGenerated = htmlentities($aResponse['data'], ENT_QUOTES, "UTF-8");
+                    $sGenerated = $aResponse['data'];
 
                     // GET CURRENT CONTENT
                     $sContent = ($aItem[3] == 'oxlongdesc') ? $oObject->getLongDescription()->getRawValue() : $oObject->{$sFieldId}->value;
 
                     if ( ($sGenerated != '') && ($sGenerated != null) ) {
                         // SAVE PROMPT
-                        $sUpdateQuery = 'UPDATE kussin_chatgpt_content_creator_queue SET `content` = ' . ( ($sContent == null) ? 'NULL' : '"' . htmlentities($sContent, ENT_QUOTES, "UTF-8") . '"' ) . ', `generated` = "' . $sGenerated . '", `process_ip` = "' . $this->_getClientIp() . '", `status` = "' . self::PROCESS_GENERATED_STATUS . '" WHERE (`id` = "' . $aItem[0] . '");';
+                        $sUpdateQuery = 'UPDATE kussin_chatgpt_content_creator_queue SET `content` = ' . ( ($sContent == null) ? 'NULL' : '"' . $this->_encodeProcessContent($sContent) . '"' ) . ', `generated` = "' . $this->_encodeProcessContent($sGenerated) . '", `process_ip` = "' . $this->_getClientIp() . '", `status` = "' . self::PROCESS_GENERATED_STATUS . '" WHERE (`id` = "' . $aItem[0] . '");';
                         DatabaseProvider::getDb()->execute($sUpdateQuery);
 
                         $this->_debug('Generated ChatGPT ai content for: ' . $sOxid);
@@ -195,6 +195,10 @@ class Process extends FrontendController
                         'method' => __CLASS__ . '::' . __FUNCTION__,
                         'response' => $oException,
                     ));
+
+                    // SAVE PROMPT
+                    $sUpdateQuery = 'UPDATE kussin_chatgpt_content_creator_queue SET `process_ip` = "' . $this->_getClientIp() . '", `status` = "' . self::PROCESS_ERROR_STATUS . '" WHERE (`id` = "' . $aItem[0] . '");';
+                    DatabaseProvider::getDb()->execute($sUpdateQuery);
                 }
             }
 
@@ -214,18 +218,21 @@ class Process extends FrontendController
             $sOxid = $aItem[2];
             $sFieldId = $this->_getOxidFieldId($aItem[1], $aItem[3], $aItem[5]);
             $iLang = (int) $aItem[5];
-            $sGeneratedContent = $aItem[6];
+            $sGeneratedContent = $this->_decodeProcessContent($aItem[6]);
 
             // LOAD OBJECT
             $oObject->loadInLang($iLang, $sOxid);
 
             // TODO: SAVE CONTENT
 
+            // OBJECT LINK
+            $sObjectLink = $oObject->getLink();
+
             // UPDATE STATUS
-            $sUpdateQuery = 'UPDATE kussin_chatgpt_content_creator_queue SET `process_ip` = "' . $this->_getClientIp() . '", `status` = "' . self::PROCESS_COMPLETE_STATUS . '" WHERE (`id` = "' . $aItem[0] . '");';
+            $sUpdateQuery = 'UPDATE kussin_chatgpt_content_creator_queue SET `link` = "' . $sObjectLink . '", `process_ip` = "' . $this->_getClientIp() . '", `status` = "' . self::PROCESS_COMPLETE_STATUS . '" WHERE (`id` = "' . $aItem[0] . '");';
             DatabaseProvider::getDb()->execute($sUpdateQuery);
 
-            $this->_debug('Saved ai content for: ' . $sOxid);
+            $this->_debug('Saved ai content for: ' . $sOxid . ' (Link: ' . $sObjectLink . ')');
 
             // CLEAR
             $oObject = null;

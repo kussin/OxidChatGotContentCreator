@@ -6,15 +6,25 @@ use OxidEsales\Eshop\Core\Registry;
 
 trait ChatGPTInstructionTrait
 {
-    private function _getChatGptInstruction()
+    private function _getChatGptInstruction($iLang = null)
     {
         $oLang = Registry::getLang();
-        return $oLang->translateString('KUSSIN_CHATGPT_LONG_DESCRIPTION_INSTRUCTION_PROMPT', $oLang->getBaseLanguage());
+
+        if ($iLang === null) {
+            $iLang = $oLang->getBaseLanguage();
+        }
+
+        return $oLang->translateString('KUSSIN_CHATGPT_LONG_DESCRIPTION_INSTRUCTION_PROMPT', $iLang);
     }
 
-    private function _getContinuePrompt()
+    private function _getContinuePrompt($iLang = null)
     {
         $oLang = Registry::getLang();
-        return $oLang->translateString('KUSSIN_CHATGPT_LONG_DESCRIPTION_CONTINUE_PROMPT', $oLang->getBaseLanguage());
+
+        if ($iLang === null) {
+            $iLang = $oLang->getBaseLanguage();
+        }
+
+        return $oLang->translateString('KUSSIN_CHATGPT_LONG_DESCRIPTION_CONTINUE_PROMPT', $iLang);
     }
 }

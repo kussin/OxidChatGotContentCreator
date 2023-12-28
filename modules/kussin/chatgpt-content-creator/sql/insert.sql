@@ -12,6 +12,7 @@ CREATE TABLE `kussin_chatgpt_content_creator_queue`
     `max_tokens`  INT(5) NOT NULL DEFAULT '350' COMMENT 'ChatGPT API Max Tokens',
     `temperature` DOUBLE      NOT NULL DEFAULT '0.7' COMMENT 'ChatGPT API Temperature',
     `generated`   TEXT NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
+    `link`        TEXT NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
     `process_ip`  VARCHAR(55) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
     `status`      VARCHAR(16) NOT NULL DEFAULT 'pending' COLLATE 'utf8_unicode_ci',
     `created_at`  DATETIME NULL DEFAULT CURRENT_TIMESTAMP,

@@ -9,7 +9,7 @@ trait ChatGPTClientTrait
 {
     private $_oChatGptClient = null;
 
-    private function _kussinGetChatGptContent($sPrompt, $sModel = FALSE, $dTemperature = FALSE, $iMaxTokens = FALSE, $bHtml = FALSE)
+    private function _kussinGetChatGptContent($sPrompt, $sModel = FALSE, $dTemperature = FALSE, $iMaxTokens = FALSE, $bHtml = FALSE, $iLang = null)
     {
         // LOAD CHATGPT CLIENT
         if ($this->_oChatGptClient === null) {
@@ -21,7 +21,8 @@ trait ChatGPTClientTrait
             ($sModel !== FALSE ? $sModel : Registry::getConfig()->getConfigParam('sKussinChatGptApiModel')),
             ($dTemperature !== FALSE ? $dTemperature : (double) Registry::getConfig()->getConfigParam('dKussinChatGptApiTemperature')),
             ($iMaxTokens !== FALSE ? $iMaxTokens : (int) Registry::getConfig()->getConfigParam('iKussinPositionApiMaxTokens')),
-            $bHtml
+            $bHtml,
+            $iLang
         );
     }
 }
