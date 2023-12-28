@@ -32,7 +32,20 @@ class Process extends FrontendController
      * @return string
      */
     public function render() {
-        $this->_cron();
+        $bProcessQueue = (bool) Registry::getConfig()->getConfigParam('blKussinChatGptProcessQueueEnabled');
+
+        if ($bProcessQueue) {
+            $this->_cron();
+
+        } else {
+            // CLEANUP
+            $this->_removeFlag();
+
+            $this->_info('ChatGPT Process Queue disabled.');
+
+            echo 'ChatGPT Process Queue disabled.';
+        }
+
         exit;
     }
     
@@ -42,6 +55,7 @@ class Process extends FrontendController
 
             // PROCESS STEPS
             $this->_fillQueue();
+            $this->_adjustApiSettings();
             $this->_preparePrompt();
 
             $this->_removeFlag();
@@ -68,8 +82,29 @@ class Process extends FrontendController
         }
     }
 
-    protected function _preparePrompt($sLimit = 10) {
-        $sQuery = 'SELECT `id`, `object`, `object_id`, `field`, `shop_id`, `lang_id`, `max_tokens` FROM kussin_chatgpt_content_creator_queue WHERE (`status` = "' . self::PROCESS_NEW_STATUS . '") ORDER BY `updated_at` ASC LIMIT ' . $sLimit . ';';
+    protected function _adjustApiSettings() {
+        $sModel = trim(Registry::getConfig()->getConfigParam('sKussinChatGptProcessModel'));
+        $iMaxTokens = (int) Registry::getConfig()->getConfigParam('iKussinChatGptProcessMaxTokens');
+        $dTemperature = (double) Registry::getConfig()->getConfigParam('dKussinChatGptProcessTemperature');
+
+        if (
+            ($sModel !== '')
+            && ($iMaxTokens > 100)
+            && ($dTemperature >= 0.25)
+        ) {
+            $sQuery = 'UPDATE IGNORE `kussin_chatgpt_content_creator_queue` SET `model` = "' . $sModel . '", `max_tokens` = "' . $iMaxTokens . '", `temperature` = "' . $dTemperature . '" WHERE (`status` = "' . self::PROCESS_NEW_STATUS . '");';
+
+            DatabaseProvider::getDb()->execute($sQuery);
+        } else {
+            // ERROR
+            $this->_warning('API settings incomplete or wrong.');
+        }
+    }
+
+    protected function _preparePrompt() {
+        $iLimit = (int) Registry::getConfig()->getConfigParam('iKussinChatGptProcessLimitMaxPrompts');
+
+        $sQuery = 'SELECT `id`, `object`, `object_id`, `field`, `shop_id`, `lang_id`, `max_tokens` FROM kussin_chatgpt_content_creator_queue WHERE (`status` = "' . self::PROCESS_NEW_STATUS . '") ORDER BY `updated_at` ASC LIMIT ' . $iLimit . ';';
 
         foreach ($this->_getCustomDbResult($sQuery) as $aItem) {
             $oObject = $this->_getOxidObject($aItem[1]);
@@ -92,8 +127,10 @@ class Process extends FrontendController
         }
     }
 
-    protected function _generateContent($sLimit = 1) {
-        $sQuery = 'SELECT `id`, `object`, `object_id`, `field`, `shop_id`, `lang_id`, `prompt`, `model`, `max_tokens`, `max_tokens`, `temperature` FROM kussin_chatgpt_content_creator_queue WHERE (`status` = "' . self::PROCESS_PROCESSING_STATUS . '") ORDER BY `updated_at` ASC LIMIT ' . $sLimit . ';';
+    protected function _generateContent() {
+        $iLimit = (int) Registry::getConfig()->getConfigParam('iKussinChatGptProcessLimitMaxGenerations');
+
+        $sQuery = 'SELECT `id`, `object`, `object_id`, `field`, `shop_id`, `lang_id`, `prompt`, `model`, `max_tokens`, `max_tokens`, `temperature` FROM kussin_chatgpt_content_creator_queue WHERE (`status` = "' . self::PROCESS_PROCESSING_STATUS . '") ORDER BY `updated_at` ASC LIMIT ' . $iLimit . ';';
 
         foreach ($this->_getCustomDbResult($sQuery) as $aItem) {
             $oObject = $this->_getOxidObject($aItem[1]);

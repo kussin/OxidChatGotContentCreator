@@ -14,6 +14,15 @@ $aLang = array(
     'SHOP_MODULE_sKussinChatGptPromptShortDescriptionDE' => 'Prompt für Artikel-Kurzbeschreibung (Deutsch)',
     'SHOP_MODULE_sKussinChatGptPromptShortDescriptionEN' => 'Prompt für Artikel-Kurzbeschreibung (Englisch)',
 
+    'SHOP_MODULE_GROUP_sKussinChatGptProcessSettings' => 'Process Queue Einstellungen',
+    'SHOP_MODULE_blKussinChatGptProcessQueueEnabled' => 'Aktivere Process Queue',
+    'SHOP_MODULE_sKussinChatGptProcessSelectionQuery' => 'ChatGPT Content Selection SQL Statement',
+    'SHOP_MODULE_sKussinChatGptProcessModel' => 'ChatGPT API Model',
+    'SHOP_MODULE_dKussinChatGptProcessTemperature' => 'ChatGPT API Temperature',
+    'SHOP_MODULE_iKussinChatGptProcessMaxTokens' => 'ChatGPT API max. Tokens',
+    'SHOP_MODULE_iKussinChatGptProcessLimitMaxPrompts' => 'Max. Datensätze zur Erstellung von Prompts',
+    'SHOP_MODULE_iKussinChatGptProcessLimitMaxGenerations' => 'Max. Datensätze zur Generierung von AI Content',
+
     'SHOP_MODULE_GROUP_sKussinChatGptDebugSettings' => 'Debug Einstellungen',
     'SHOP_MODULE_blKussinChatGptDebugEnabled' => 'Aktivere Debug Mode',
     'SHOP_MODULE_sKussinChatGptDebugLogFilename' => 'Debug Log Dateiname',

@@ -117,9 +117,45 @@ $aModule = array(
         ),
         array(
             'group' => 'sKussinChatGptProcessSettings',
+            'name' => 'blKussinChatGptProcessQueueEnabled',
+            'type' => 'bool',
+            'value' => 0,
+        ),
+        array(
+            'group' => 'sKussinChatGptProcessSettings',
             'name' => 'sKussinChatGptProcessSelectionQuery',
-            'type' => 'textarea',
+            'type' => 'str',
             'value' => file_get_contents($sModulePath . '/sql/oxartextends.example.sql'),
+        ),
+        array(
+            'group' => 'sKussinChatGptProcessSettings',
+            'name' => 'sKussinChatGptProcessModel',
+            'type' => 'str',
+            'value' => 'gpt-3.5-turbo-instruct',
+        ),
+        array(
+            'group' => 'sKussinChatGptProcessSettings',
+            'name' => 'dKussinChatGptProcessTemperature',
+            'type' => 'str',
+            'value' => 0.7,
+        ),
+        array(
+            'group' => 'sKussinChatGptProcessSettings',
+            'name' => 'iKussinChatGptProcessMaxTokens',
+            'type' => 'str',
+            'value' => 350,
+        ),
+        array(
+            'group' => 'sKussinChatGptProcessSettings',
+            'name' => 'iKussinChatGptProcessLimitMaxPrompts',
+            'type' => 'str',
+            'value' => 10,
+        ),
+        array(
+            'group' => 'sKussinChatGptProcessSettings',
+            'name' => 'iKussinChatGptProcessLimitMaxGenerations',
+            'type' => 'str',
+            'value' => 1,
         ),
         array(
             'group' => 'sKussinChatGptDebugSettings',
