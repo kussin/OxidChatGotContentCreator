@@ -221,9 +221,21 @@ class Process extends FrontendController
             $sGeneratedContent = $this->_decodeProcessContent($aItem[6]);
 
             // LOAD OBJECT
-            $oObject->loadInLang($iLang, $sOxid);
+            $oObject->load($sOxid);
 
-            // TODO: SAVE CONTENT
+            // SAVE CONTENT
+            $oContent = new Field($sGeneratedContent);
+
+            if ($aItem[3] == 'oxlongdesc') {
+                $oObject->setArticleLongDesc($oContent->getRawValue());
+            } else {
+                $oObject->{$sFieldId} = new Field($oContent);
+            }
+
+            // TOUCH TIMESTAMP
+            $this->_touchTimestamp($sOxid, ( ($aItem[1] == 'oxartextends') ? 'oxarticles' : $aItem[1] ));
+
+            $oObject->save();
 
             // OBJECT LINK
             $sObjectLink = $oObject->getLink();
@@ -252,7 +264,14 @@ class Process extends FrontendController
     {
         $sTimestamp = date('Y-m-d H:i:s', strtotime($sTimeChange));
 
-        $sQuery = 'UPDATE oxconfig SET OXTIMESTAMP = "' . $sTimestamp . '" WHERE (OXVARNAME LIKE "' . $sOxVarname . '");';
+        $sQuery = 'UPDATE `oxconfig` SET `OXTIMESTAMP` = "' . $sTimestamp . '" WHERE (`OXVARNAME` LIKE "' . $sOxVarname . '");';
+
+        return (bool) DatabaseProvider::getDb()->execute($sQuery);
+    }
+
+    private function _touchTimestamp($sOxid, $sTable = 'oxarticles'): bool
+    {
+        $sQuery = 'UPDATE IGNORE `' . $sTable . '` SET `OXTIMESTAMP` = NOW() WHERE (`OXID` LIKE "' . $sOxid . '");';
 
         return (bool) DatabaseProvider::getDb()->execute($sQuery);
     }
