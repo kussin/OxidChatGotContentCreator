@@ -7,7 +7,8 @@ OXID eShop Admin Panel.
 
 **NOTE:** The module requires a valid [OpenAI Subscription](https://platform.openai.com/) to work.
 
-The USP of this module is the **Process Queue**, which allows you to create a large amount of Content based on SQL Statements.<br>
+The USP of this module is the [**Process Queue**](https://github.com/kussin/OxidChatGptContentCreator/blob/dev/USER_GUIDE.md#process-queue), 
+which allows you to create a large amount of Content based on SQL Statements.<br>
 The module will simply process in the background 24/7 until the Queue is done. It's also possible that the Process Queue
 automatically creates Content for new Articles, Categories, Manufacturer and Vendors, directly after they are created.
 (CMS Pages are not supported yet, but [planed for I/2024](https://github.com/kussin/OxidChatGptContentCreator/issues/8).

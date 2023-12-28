@@ -7,13 +7,18 @@ based on provided data with the help of [ChatGPT](https://chat.openai.com/).<br>
 The module comes with predefined Prompts for each type of Content, but you can also create your own Prompts inside the
 OXID eShop Admin Panel.
 
-Besides the recommended Process Queue, it's also possible to generate Content directly inside each Content Type.
-Currently two options are available:
+Besides the recommended [Process Queue](https://github.com/kussin/OxidChatGptContentCreator/blob/dev/USER_GUIDE.md#process-queue), 
+it's also possible to generate Content directly inside each Content Type. Currently two options are available:
 
 * **Create new Long Description**, which will generate a new Long Description based on the provided data (e.g. Object Title).
 * **Create new Short Description**, which will generate a new Short Description based on the provided data (e.g. Object Title).
 
 **NOTE:** The module requires a valid [OpenAI Subscription](https://platform.openai.com/) to work.
+
+Btw. [Kussin | ChatGPT Content Creator for OXID eShop](https://github.com/kussin/OxidChatGptContentCreator) 100% supports
+[Kussin | OXID 6 FACT Finder Export Queue](https://github.com/kussin/OxidFactFinderExportQueue), which allows you to 
+easily integrate [FACT Finder](https://www.fact-finder.de/), [Sooqr](https://www.sooqr.com/) and [Doofinder](https://www.doofinder.com/) 
+into your OXID eShop.
 
 ## Module Settings
 
