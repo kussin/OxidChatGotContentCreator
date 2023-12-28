@@ -4,6 +4,7 @@
  */
 $sMetadataVersion = '2.0';
 
+use Kussin\ChatGpt\Core\ModuleEvents;
 use OxidEsales\Eshop\Application\Controller\Admin\ArticleMain;
 use OxidEsales\Eshop\Application\Controller\Admin\CategoryMain;
 use OxidEsales\Eshop\Application\Controller\Admin\CategoryText;
@@ -32,6 +33,10 @@ $aModule = array(
 //        CategoryText::class => Kussin\ChatGpt\Controller\Admin\CategoryText::class,
         ManufacturerMain::class => Kussin\ChatGpt\Controller\Admin\ManufacturerMain::class,
         VendorMain::class => Kussin\ChatGpt\Controller\Admin\VendorMain::class,
+    ),
+
+    'events' => array(
+        'onActivate' => ModuleEvents::class . '::onActivate',
     ),
 
     'controllers' => array(
