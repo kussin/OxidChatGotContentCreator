@@ -24,9 +24,81 @@ into your OXID eShop.
 
 ![OXID 6 Admin > Module > ChatGPT Content Creator > Settings Tab](docs/img/Module_ChatGPT_Settings.png)
 
-TODO: Will follow soon
+**NOTE:** By default, the module uses the [OpenAI Model](https://platform.openai.com/docs/models) [`gpt-3.5-turbo-instruct`](https://platform.openai.com/docs/models/gpt-3-5)
+but you can change it to any other Model in the Admin Panel.
+
+To change any of the following settings, goto **OXID 6 Admin > Module > ChatGPT Content Creator > Settings Tab > Section "ChatGPT API Settings"**.
+
+1. **ChatGPT API KEY**, must be created at [OpenAI API Keys Portal](https://platform.openai.com/api-keys)
+2. **ChatGPT API Model (Default: `gpt-3.5-turbo-instruct`)**
+3. **ChatGPT API Temperature (Default: `0.7`)**
+4. **ChatGPT API max. Tokens (Default: `350`)**
 
 ### General Configuration
+
+#### Prompt Settings
+
+To optimize the ai results goto **OXID 6 Admin > Module > ChatGPT Content Creator > Settings Tab > Section "Prompt Settings"**
+and adjust the following settings to your needs.
+
+TODO: Will follow soon
+
+#### Process Queue Settings
+
+To enable the [Process Queue](https://github.com/kussin/OxidChatGptContentCreator/blob/dev/USER_GUIDE.md#process-queue)
+goto **OXID 6 Admin > Module > ChatGPT Content Creator > Settings Tab > Section "Process Queue Settings"** and enable 
+Process Queue.<br>
+Depending on your Infrastructure and your Catalog, you should adjust the following options to your needs:
+
+1. **ChatGPT API Model (Default: `gpt-3.5-turbo-instruct`)**
+2. **ChatGPT API Temperature (Default: `0.7`)**
+3. **ChatGPT API max. Tokens (Default: `350`)**
+4. **Max. data rows to create prompts (Default: `10`)**
+5. **Max. data rows to generate ai content (Default: `1`)**
+6. **Max. data rows to replace with ai content (Default: `10`)**
+
+##### ChatGPT Content Selection SQL Statement
+
+To fill the Process Queue with data goto **OXID 6 Admin > Module > ChatGPT Content Creator > Settings Tab > Section "Process Queue Settings"**
+and adjust the **ChatGPT Content Selection SQL Statement** to your needs. - By default, the module will automatically add
+all Articles to the Process Queue, which have a shorter long description than 250 characters.
+
+**Default SQL Statement:**
+
+```sql
+SELECT DISTINCT 
+    'oxartextends' AS `object`,
+    oxartextends.OXID AS `object_id`,
+    'oxlongdesc' AS `field`,
+    oxarticles.OXSHOPID AS `shop_id`,
+    0 AS `lang_id`,
+    'pending' AS `status`
+FROM oxartextends
+LEFT JOIN 
+    oxarticles 
+ON 
+    (oxartextends.OXID = oxarticles.OXID)
+WHERE 
+    (oxarticles.OXPARENTID = '')
+  AND (LENGTH(oxartextends.OXLONGDESC) < 250)
+ORDER BY 
+    oxarticles.OXTIMESTAMP DESC;
+```
+
+FYI: You can add any other Content Type to the Process Queue, by simply adding a new SQL Statement you only have to ensure
+that the result contains the following columns:
+
+* `object` - The Content Type (e.g. `oxartextends`)
+* `object_id` - The Content ID (e.g. `OXID`)
+* `field` - The Content Field (e.g. `oxlongdesc`)
+* `shop_id` - The Shop ID (e.g. `OXSHOPID`)
+* `lang_id` - The Language ID (e.g. `0`)
+* `status` - The Status (e.g. `pending`)
+
+#### Debug Settings
+
+To enable detailed Logging goto **OXID 6 Admin > Module > ChatGPT Content Creator > Settings Tab > Section "Debug Settings"**
+and enable Debug Mode.
 
 TODO: Will follow soon
 
