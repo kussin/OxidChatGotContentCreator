@@ -118,6 +118,17 @@ automatically creates Content for new Articles, Categories, Manufacturer and Ven
 
 * [Article - Long Description](docs/examples/oxartextends_oxlongdesc.html)
 
+### Cron
+
+To process the Process Queue, you have to set up the following Request as Cronjob to your Server:
+
+```bash
+curl -i -X GET \
+ 'https://www.domain.tld/index.php?cl=Process'
+```
+
+**RECOMMENDATION:** The Cronjob should be executed every 1 minute.
+
 ## Bugtracker and Feature Requests
 
 Please use the [Github Issues](https://github.com/kussin/OxidChatGptContentCreator/issues) for bug reports and feature requests.
