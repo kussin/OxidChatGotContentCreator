@@ -43,6 +43,12 @@ trait ChatGPTProcessPromptsTrait
                 $sManufacturer = $this->_encodeProcessSpecialChars($oObject->getManufacturer()->oxmanufacturers__oxtitle->value);
                 break;
 
+            case 'oxsearchkeys':
+                $sPrompt = $this->_getChatGptProcessPrompt4SearchKeys($iLang);
+                $sTitle = $this->_encodeProcessSpecialChars($oObject->oxarticles__oxtitle->value);
+                $sManufacturer = $this->_encodeProcessSpecialChars($oObject->getManufacturer()->oxmanufacturers__oxtitle->value);
+                break;
+
             default:
             case 'oxlongdesc':
                 $sPrompt = $this->_getChatGptProcessPrompt4LongDescription($iLang);
@@ -79,9 +85,14 @@ trait ChatGPTProcessPromptsTrait
         return base64_decode($sString);
     }
 
+    protected function _getLanguageCode($iLang) : string
+    {
+        return "DE"; // TODO: MULTI-LANGUAL
+    }
+
     protected function _getChatGptProcessPrompt4ShortDescription($iLang = 0)
     {
-        $sPrompt = trim(Registry::getConfig()->getConfigParam('sKussinChatGptPromptShortDescriptionDE')); // TODO: MULTI-LANGUAL
+        $sPrompt = trim(Registry::getConfig()->getConfigParam('sKussinChatGptPromptShortDescription' . $this->_getLanguageCode($iLang)));
 
         if ($sPrompt == '') {
             // FALLBACK
@@ -94,12 +105,25 @@ trait ChatGPTProcessPromptsTrait
 
     protected function _getChatGptProcessPrompt4LongDescription($iLang = 0)
     {
-        $sPrompt = trim(Registry::getConfig()->getConfigParam('sKussinChatGptPromptLongDescriptionDE')); // TODO: MULTI-LANGUAL
+        $sPrompt = trim(Registry::getConfig()->getConfigParam('sKussinChatGptPromptLongDescription' . $this->_getLanguageCode($iLang)));
 
         if ($sPrompt == '') {
             // FALLBACK
             $oLang = Registry::getLang();
             $sPrompt = $oLang->translateString('KUSSIN_CHATGPT_LONG_DESCRIPTION_PROMPT', $iLang);
+        }
+
+        return $sPrompt;
+    }
+
+    protected function _getChatGptProcessPrompt4SearchKeys($iLang = 0)
+    {
+        $sPrompt = trim(Registry::getConfig()->getConfigParam('sKussinChatGptPromptProductSearchKeys' . $this->_getLanguageCode($iLang)));
+
+        if ($sPrompt == '') {
+            // FALLBACK
+            $oLang = Registry::getLang();
+            $sPrompt = $oLang->translateString('KUSSIN_CHATGPT_PRODUCT_SEARCHKEYS_PROMPT', $iLang);
         }
 
         return $sPrompt;

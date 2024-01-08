@@ -122,6 +122,18 @@ $aModule = array(
             'value' => 'Create an article short description for "%s" from "%s". - And please without an intro and with max. %s words.',
         ),
         array(
+            'group' => 'sKussinChatGptPromptSettings',
+            'name' => 'sKussinChatGptPromptProductSearchKeysDE',
+            'type' => 'str',
+            'value' => 'Erstelle eine kommaseparierte CSV-Liste von Synonymen für "%s" vom "%s" ohne Größen-, Volumen, Liter- oder Mengenangaben, ohne Marke/Hersteller oder individuelle Produktmerkmale wie Farbe und ohne Dopplungen.',
+        ),
+        array(
+            'group' => 'sKussinChatGptPromptSettings',
+            'name' => 'sKussinChatGptPromptProductSearchKeysEN',
+            'type' => 'str',
+            'value' => 'Create a comma-separated CSV list of synonyms for "%s" from "%s" without size, volume, liter, or quantity indications, without brand/manufacturer or individual product features such as color, and without duplicates.',
+        ),
+        array(
             'group' => 'sKussinChatGptProcessSettings',
             'name' => 'blKussinChatGptProcessQueueEnabled',
             'type' => 'bool',
