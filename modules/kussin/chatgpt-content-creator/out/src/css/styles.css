@@ -1,0 +1,18 @@
+.wysiwyg h1,
+.wysiwyg h2,
+.wysiwyg h3,
+.wysiwyg h4,
+.wysiwyg h5,
+.wysiwyg h6 {
+  font-size: 100%;
+  font-weight: bold;
+}
+body .content-box #content #details_container #description h1,
+body .content-box #content #details_container #description h2,
+body .content-box #content #details_container #description h3,
+body .content-box #content #details_container #description h4,
+body .content-box #content #details_container #description h5,
+body .content-box #content #details_container #description h6 {
+  font-size: 100%;
+  font-weight: bold;
+}
