@@ -50,12 +50,80 @@ final class ModuleEvents
         }
     }
 
+    private static function _hasDbEntry($sTable, $sOxid): bool
+    {
+        $sQuery = "SELECT * FROM `$sTable` WHERE OXID LIKE '$sOxid';";
+        $oResult = DatabaseProvider::getDb()->getAll($sQuery);
+
+        return ($oResult == FALSE) ? FALSE : TRUE;
+    }
+
     private static function _createProcessQueue(): void
     {
         if (!self::_hasDbTable('kussin_chatgpt_content_creator_queue')) {
             $sQuery = file_get_contents(__DIR__ . '/../sql/insert.sql');
             DatabaseProvider::getDb()->execute($sQuery);
         }
+    }
+
+    private static function _addDisclaimer(): void
+    {
+        if (!self::_hasDbEntry('oxcontents', 'kussin_chatgpt_disclaimer')) {
+            $sQuery = file_get_contents(__DIR__ . '/../sql/disclaimer.sql');
+            DatabaseProvider::getDb()->execute($sQuery);
+        }
+    }
+
+    private static function _updateOxvendor(): void
+    {
+        self::_addNewColumn(
+            'oxvendor',
+            [
+                array(
+                    'name' => 'KUSSINCHATGPTGENERATED',
+                    'settings' => 'TINYINT(1) NULL DEFAULT \'0\' COMMENT \'KUSSIN ChatGPT generated flag\'',
+                )
+            ]
+        );
+    }
+
+    private static function _updateOxmanufacturers(): void
+    {
+        self::_addNewColumn(
+            'oxmanufacturers',
+            [
+                array(
+                    'name' => 'KUSSINCHATGPTGENERATED',
+                    'settings' => 'TINYINT(1) NULL DEFAULT \'0\' COMMENT \'KUSSIN ChatGPT generated flag\'',
+                )
+            ]
+        );
+    }
+
+    private static function _updateOxcategories(): void
+    {
+        self::_addNewColumn(
+            'oxcategories',
+            [
+                array(
+                    'name' => 'KUSSINCHATGPTGENERATED',
+                    'settings' => 'TINYINT(1) NULL DEFAULT \'0\' COMMENT \'KUSSIN ChatGPT generated flag\'',
+                )
+            ]
+        );
+    }
+
+    private static function _updateOxarticles(): void
+    {
+        self::_addNewColumn(
+            'oxarticles',
+            [
+                array(
+                    'name' => 'KUSSINCHATGPTGENERATED',
+                    'settings' => 'TINYINT(1) NULL DEFAULT \'0\' COMMENT \'KUSSIN ChatGPT generated flag\'',
+                )
+            ]
+        );
     }
 
 }

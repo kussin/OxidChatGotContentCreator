@@ -1,3 +1,12 @@
+.disclaimer .kussin-chatgpt-disclaimer.link {
+  position: absolute;
+  bottom: -20px;
+  right: -5px;
+  z-index: 5;
+}
+.disclaimer .kussin-chatgpt-disclaimer.link a {
+  opacity: 0.5;
+}
 .wysiwyg h1,
 .wysiwyg h2,
 .wysiwyg h3,
@@ -7,6 +16,9 @@
   font-size: 100%;
   font-weight: bold;
 }
+body .content-box #content #details_container #description {
+  position: relative;
+}
 body .content-box #content #details_container #description h1,
 body .content-box #content #details_container #description h2,
 body .content-box #content #details_container #description h3,
@@ -15,4 +27,13 @@ body .content-box #content #details_container #description h5,
 body .content-box #content #details_container #description h6 {
   font-size: 100%;
   font-weight: bold;
+}
+body .content-box #content #details_container #description .kussin-chatgpt-disclaimer.link {
+  position: absolute;
+  bottom: -20px;
+  right: -5px;
+  z-index: 5;
+}
+body .content-box #content #details_container #description .kussin-chatgpt-disclaimer.link a {
+  opacity: 0.5;
 }

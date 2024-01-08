@@ -1,4 +1,5 @@
 // Theme components
+@import "components/disclaimer";
 @import "components/wysiwyg";
 
 body {
@@ -8,7 +9,11 @@ body {
     #content {
 
       #details_container #description {
+        position: relative;
+
         .wysiwyg();
+
+        .disclaimer();
       }
     }
   }

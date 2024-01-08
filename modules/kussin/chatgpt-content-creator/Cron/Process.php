@@ -271,7 +271,7 @@ class Process extends FrontendController
 
     private function _touchTimestamp($sOxid, $sTable = 'oxarticles'): bool
     {
-        $sQuery = 'UPDATE IGNORE `' . $sTable . '` SET `OXTIMESTAMP` = NOW() WHERE (`OXID` LIKE "' . $sOxid . '");';
+        $sQuery = 'UPDATE IGNORE `' . $sTable . '` SET `KUSSINCHATGPTGENERATED` = 1, `OXTIMESTAMP` = NOW() WHERE (`OXID` LIKE "' . $sOxid . '");';
 
         return (bool) DatabaseProvider::getDb()->execute($sQuery);
     }

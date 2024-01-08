@@ -27,4 +27,6 @@ $aLang = array(
         '4. Do not use any HTML entities like `&uuml;` or `&auml;` and also no single or double quotes.',
     )),
     'KUSSIN_CHATGPT_LONG_DESCRIPTION_CONTINUE_PROMPT' => 'Continue from your previous response.',
+
+    'KUSSIN_CHATGPT_DISCLAIMER_LINK' => 'KI-generated content',
 );

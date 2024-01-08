@@ -70,6 +70,11 @@ $aModule = array(
             'block' => 'base_style',
             'file' => 'views/blocks/base_style.tpl',
         ),
+        array(
+            'template' => 'page/details/inc/tabs.tpl',
+            'block' => 'details_tabs_longdescription',
+            'file' => 'views/blocks/details_tabs_longdescription.tpl',
+        ),
     ),
 
     'settings' => array(
@@ -96,6 +101,18 @@ $aModule = array(
             'name' => 'iKussinPositionApiMaxTokens',
             'type' => 'str',
             'value' => 350,
+        ),
+        array(
+            'group' => 'sKussinChatGptFrontendSettings',
+            'name' => 'blKussinChatGptFrontendDisclaimerEnabled',
+            'type' => 'bool',
+            'value' => 1,
+        ),
+        array(
+            'group' => 'sKussinChatGptFrontendSettings',
+            'name' => 'sKussinChatGptFrontendDisclaimerCmsId',
+            'type' => 'str',
+            'value' => 'Erstelle eine Artikel-Langbeschreibung für "%s" von "%s". - Und bitte ohne Intro und mit max. %s Wörtern.',
         ),
         array(
             'group' => 'sKussinChatGptPromptSettings',
