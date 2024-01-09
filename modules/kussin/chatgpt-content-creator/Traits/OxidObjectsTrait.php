@@ -33,6 +33,6 @@ trait OxidObjectsTrait
         // SET LANG SUFFIX
         $sLangSuffix = ($iLang > 0) ? '_' . $iLang : '';
 
-        return strtolower($sObjectId . '_' . $sFieldId . $sLangSuffix);
+        return strtolower($sObjectId . '__' . $sFieldId . $sLangSuffix);
     }
 }

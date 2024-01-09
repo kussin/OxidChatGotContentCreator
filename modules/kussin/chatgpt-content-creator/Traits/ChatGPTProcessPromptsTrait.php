@@ -38,12 +38,14 @@ trait ChatGPTProcessPromptsTrait
     {
         switch ($sFieldId) {
             case 'oxshortdesc':
+            case 'oxarticles__oxshortdesc':
                 $sPrompt = $this->_getChatGptProcessPrompt4ShortDescription($iLang);
                 $sTitle = $this->_encodeProcessSpecialChars($oObject->oxarticles__oxtitle->value);
                 $sManufacturer = $this->_encodeProcessSpecialChars($oObject->getManufacturer()->oxmanufacturers__oxtitle->value);
                 break;
 
             case 'oxsearchkeys':
+            case 'oxarticles__oxsearchkeys':
                 $sPrompt = $this->_getChatGptProcessPrompt4SearchKeys($iLang);
                 $sTitle = $this->_encodeProcessSpecialChars($oObject->oxarticles__oxtitle->value);
                 $sManufacturer = $this->_encodeProcessSpecialChars($oObject->getManufacturer()->oxmanufacturers__oxtitle->value);
@@ -51,6 +53,7 @@ trait ChatGPTProcessPromptsTrait
 
             default:
             case 'oxlongdesc':
+            case 'oxartextends__oxsearchkeys':
                 $sPrompt = $this->_getChatGptProcessPrompt4LongDescription($iLang);
                 $sTitle = $this->_encodeProcessSpecialChars($oObject->oxarticles__oxtitle->value);
                 $sManufacturer = $this->_encodeProcessSpecialChars($oObject->getManufacturer()->oxmanufacturers__oxtitle->value);
@@ -77,12 +80,12 @@ trait ChatGPTProcessPromptsTrait
 
     protected function _encodeProcessContent($sString, $sCharset = 'UTF-8') : string
     {
-        return base64_encode($sString);
+        return base64_encode(trim($sString));
     }
 
     protected function _decodeProcessContent($sString) : string
     {
-        return base64_decode($sString);
+        return trim(base64_decode($sString));
     }
 
     protected function _getLanguageCode($iLang) : string
