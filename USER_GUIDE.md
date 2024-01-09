@@ -45,7 +45,9 @@ TODO: Will follow soon
 
 #### Frontend Settings (Disclaimer)
 
-Any generated Content will be marked with a Disclaimer by default, which informs the user that the Content was generated
+![OXID 6 Admin > Module > ChatGPT Content Creator > Frontend Settings Tab](docs/img/Module_ChatGPT_Disclaimer_PDP.png)
+
+Any generated Content will be marked with a [Disclaimer by default](https://github.com/kussin/OxidChatGptContentCreator/blob/dev/modules/kussin/chatgpt-content-creator/sql/disclaimer.sql), which informs the user that the Content was generated
 by ChatGPT. - Please compare the [Module Disclaimer](https://github.com/kussin/OxidChatGptContentCreator?tab=readme-ov-file#disclaimer-for-the-use-of-kussin--chatgpt-content-creator-for-oxid-eshop), too.
 
 To disable or change any of the following settings, goto **OXID 6 Admin > Module > ChatGPT Content Creator > Settings Tab > Section "Frontend Settings"**.
