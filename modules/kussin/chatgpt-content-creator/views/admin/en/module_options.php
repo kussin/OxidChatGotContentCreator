@@ -8,6 +8,10 @@ $aLang = array(
     'SHOP_MODULE_dKussinChatGptApiTemperature' => 'ChatGPT api temperature',
     'SHOP_MODULE_iKussinPositionApiMaxTokens' => 'ChatGPT api max tokens',
 
+    'SHOP_MODULE_GROUP_sKussinChatGptFrontendSettings' => 'Frontend settings',
+    'SHOP_MODULE_blKussinChatGptFrontendDisclaimerEnabled' => 'Enable disclaimer',
+    'SHOP_MODULE_sKussinChatGptFrontendDisclaimerCmsId' => 'Disclaimer content id',
+
     'SHOP_MODULE_GROUP_sKussinChatGptPromptSettings' => 'Prompt settings',
     'SHOP_MODULE_sKussinChatGptPromptLongDescriptionDE' => 'Prompt for article long description (German)',
     'SHOP_MODULE_sKussinChatGptPromptLongDescriptionEN' => 'Prompt for article long description (English)',

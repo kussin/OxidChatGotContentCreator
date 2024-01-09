@@ -112,7 +112,7 @@ $aModule = array(
             'group' => 'sKussinChatGptFrontendSettings',
             'name' => 'sKussinChatGptFrontendDisclaimerCmsId',
             'type' => 'str',
-            'value' => 'Erstelle eine Artikel-Langbeschreibung für "%s" von "%s". - Und bitte ohne Intro und mit max. %s Wörtern.',
+            'value' => 'kussin_chatgpt_disclaimer',
         ),
         array(
             'group' => 'sKussinChatGptPromptSettings',

@@ -15,10 +15,22 @@ final class ModuleEvents
 
         // UPDATE
         self::_addMissingConfigurationFields();
+
+        // CMS CONTENT
+        self::_addCmsContent();
     }
 
     private static function _addMissingConfigurationFields(): void
     {
+        self::_updateOxvendor();
+        self::_updateOxmanufacturers();
+        self::_updateOxarticles();
+        self::_updateOxcategories();
+    }
+
+    private static function _addCmsContent(): void
+    {
+        self::_addDisclaimer();
     }
 
     private static function _hasDbTable($sTable): bool

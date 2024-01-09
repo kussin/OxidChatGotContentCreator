@@ -43,6 +43,19 @@ and adjust the following settings to your needs.
 
 TODO: Will follow soon
 
+#### Frontend Settings (Disclaimer)
+
+Any generated Content will be marked with a Disclaimer by default, which informs the user that the Content was generated
+by ChatGPT. - Please compare the [Module Disclaimer](https://github.com/kussin/OxidChatGptContentCreator/blob/dev/USER_GUIDE.md#frontend-settings-disclaimer), too.
+
+To disable or change any of the following settings, goto **OXID 6 Admin > Module > ChatGPT Content Creator > Settings Tab > Section "Frontend Settings"**.
+
+1. **Enable disclaimer (Default: `Enabled`)**
+2. **Disclaimer content id (Default: `kussin_chatgpt_disclaimer`)**
+
+**NOTE:** To change the Disclaimer Content, goto **OXID 6 Admin > Customer Info > Visual CMS > CMS content `kussin_chatgpt_disclaimer`**
+after enabling the Module.
+
 #### Process Queue Settings
 
 To enable the [Process Queue](https://github.com/kussin/OxidChatGptContentCreator/blob/dev/USER_GUIDE.md#process-queue)
