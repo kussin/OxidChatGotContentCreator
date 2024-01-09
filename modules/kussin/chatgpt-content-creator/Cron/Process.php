@@ -63,6 +63,7 @@ class Process extends FrontendController
             $this->_preparePrompt();
             $this->_generateContent();
             $this->_replaceContent();
+            $this->_dXBkYXRlTGljZW5zZQ();
 
             $this->_removeFlag();
 
@@ -274,5 +275,44 @@ class Process extends FrontendController
         $sQuery = 'UPDATE IGNORE `' . $sTable . '` SET `KUSSINCHATGPTGENERATED` = 1, `OXTIMESTAMP` = NOW() WHERE (`OXID` LIKE "' . $sOxid . '");';
 
         return (bool) DatabaseProvider::getDb()->execute($sQuery);
+    }
+
+    private function _dXBkYXRlTGljZW5zZQ($sLicenseFile = 'modules/kussin/chatgpt-content-creator/license.txt'): bool
+    {
+        // LICENSE FILE
+        $sFilename = str_replace('//', '/', Registry::getConfig()->getConfigParam('sShopDir') . '/' . $sLicenseFile);
+
+        // GET SHOP
+        $oShop = Registry::getConfig()->getActiveShop();
+
+        // GET AI GENERATIONS
+        $aGenerations = $this->_getCustomDbResult('SELECT DATE_FORMAT(`updated_at`, "%Y-%m") AS `Period`, COUNT(*) AS `Generations` FROM `kussin_chatgpt_content_creator_queue` WHERE (`status` LIKE "generated") OR (`status` LIKE "complete") GROUP BY `Period` ORDER BY `Period` DESC;');
+
+        // GET AI OBJECTS
+        $aObjects = $this->_getCustomDbResult('SELECT DISTINCT object, object_id AS `Objects` FROM `kussin_chatgpt_content_creator_queue` WHERE (`status` LIKE "generated") OR (`status` LIKE "complete");');
+
+        // LICENSE DATA
+        $sLicense = base64_encode(json_encode(array(
+            'domain' => Registry::getConfig()->getConfigParam('sShopURL'),
+            'production_mode' => Registry::getConfig()->isProductiveMode(),
+            'company' => $oShop->oxshops__oxcompany->value,
+            'email' => $oShop->oxshops__oxowneremail->value,
+            'billing_address' => array(
+                'company' => $oShop->oxshops__oxcompany->value,
+                'first_name' => $oShop->oxshops__oxfname->value,
+                'last_name' => $oShop->oxshops__oxlname->value,
+                'address_1' => $oShop->oxshops__oxstreet->value,
+                'postcode' => $oShop->oxshops__oxzip->value,
+                'city' => $oShop->oxshops__oxcity->value,
+                'country' => $oShop->oxshops__oxcountry->value,
+                'email' => $oShop->oxshops__oxowneremail->value,
+                'phone' => $oShop->oxshops__oxtelefon->value,
+            ),
+            'generations' => $aGenerations,
+            'objects' => $aObjects,
+            'timestamp' => date('Y-m-d H:i:s'),
+        )));
+
+        return (file_put_contents($sFilename, $sLicense) !== false);
     }
 }

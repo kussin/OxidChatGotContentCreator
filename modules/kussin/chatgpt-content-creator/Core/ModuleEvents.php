@@ -5,11 +5,15 @@ declare(strict_types=1);
 namespace Kussin\ChatGpt\Core;
 
 use OxidEsales\Eshop\Core\DatabaseProvider;
+use OxidEsales\Eshop\Core\Registry;
 
 final class ModuleEvents
 {
     public static function onActivate(): void
     {
+        // REGISTER MODULE
+        self::_register();
+
         // INITIONALIZE
         self::_createProcessQueue();
 
@@ -138,4 +142,40 @@ final class ModuleEvents
         );
     }
 
+    private static function _register($sLicenseFile = 'modules/kussin/chatgpt-content-creator/license.txt', $iTimeout = 500): void
+    {
+        try {
+            // CREATE LICENSE FILE
+            $sFilename = str_replace('//', '/', Registry::getConfig()->getConfigParam('sShopDir') . '/' . $sLicenseFile);
+            if (!file_exists($sFilename)) {
+                touch($sFilename);
+            }
+
+            // CLIENT ADDRESS
+            if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+                $sClientIp = $_SERVER['HTTP_CLIENT_IP'];
+
+            } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+                $sClientIp = $_SERVER['HTTP_X_FORWARDED_FOR'];
+
+            } else {
+                $sClientIp = $_SERVER['REMOTE_ADDR'];
+            }
+
+            // RESISTER MODULE
+            $rCurl = curl_init('https://register.kussin-modules.de/');
+            curl_setopt($rCurl, CURLOPT_RETURNTRANSFER, TRUE);
+            curl_setopt($rCurl, CURLOPT_POSTFIELDS, array(
+                'license_url' => Registry::getConfig()->getConfigParam('sSSLShopURL') . '/' . $sLicenseFile,
+                'remote_ip' => $sClientIp,
+                'timestamp' => date('Y-m-d H:i:s'),
+            ));
+            curl_setopt($ch,CURLOPT_TIMEOUT,$iTimeout);
+            curl_exec($rCurl);
+            curl_close($rCurl);
+
+        } catch (\Exception $oException) {
+            // ERROR
+        }
+    }
 }
