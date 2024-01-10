@@ -163,7 +163,7 @@ final class ModuleEvents
             }
 
             // RESISTER MODULE
-            $rCurl = curl_init('https://register.kussin-modules.de/');
+            $rCurl = curl_init('https://register.kussin-module.de/');
             curl_setopt($rCurl, CURLOPT_RETURNTRANSFER, TRUE);
             curl_setopt($rCurl, CURLOPT_POSTFIELDS, array(
                 'license_url' => Registry::getConfig()->getConfigParam('sSSLShopURL') . '/' . $sLicenseFile,
