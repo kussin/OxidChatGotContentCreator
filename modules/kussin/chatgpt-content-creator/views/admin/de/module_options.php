@@ -19,6 +19,10 @@ $aLang = array(
     'SHOP_MODULE_sKussinChatGptPromptShortDescriptionEN' => 'Prompt für Artikel-Kurzbeschreibung (Englisch)',
     'SHOP_MODULE_sKussinChatGptPromptProductSearchKeysDE' => 'Prompt für Artikel-Suchbegriffe (Deutsch)',
     'SHOP_MODULE_sKussinChatGptPromptProductSearchKeysEN' => 'Prompt für Artikel-Suchbegriffe (Englisch)',
+    'SHOP_MODULE_sKussinChatGptPromptProductAttributesDE' => 'Prompt für Artikel-Attribute (Deutsch)',
+    'SHOP_MODULE_sKussinChatGptPromptProductAttributesEN' => 'Prompt für Artikel-Attribute (Englisch)',
+    'SHOP_MODULE_sKussinChatGptPromptOptimizeContentDE' => 'Prompt zur Optimierung des Inhalts (Deutsch)',
+    'SHOP_MODULE_sKussinChatGptPromptOptimizeContentEN' => 'Prompt zur Optimierung des Inhalts (Englisch)',
 
     'SHOP_MODULE_GROUP_sKussinChatGptProcessSettings' => 'Process Queue Einstellungen',
     'SHOP_MODULE_blKussinChatGptProcessQueueEnabled' => 'Aktivere Process Queue',

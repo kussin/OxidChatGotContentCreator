@@ -116,9 +116,10 @@ class Process extends FrontendController
     protected function _preparePrompt() {
         $iLimit = (int) Registry::getConfig()->getConfigParam('iKussinChatGptProcessLimitMaxPrompts');
 
-        $sQuery = 'SELECT `id`, `object`, `object_id`, `field`, `shop_id`, `lang_id`, `max_tokens` FROM kussin_chatgpt_content_creator_queue WHERE (`status` = "' . self::PROCESS_NEW_STATUS . '") ORDER BY `updated_at` ASC LIMIT ' . $iLimit . ';';
+        $sQuery = 'SELECT `id`, `object`, `object_id`, `field`, `shop_id`, `lang_id`, `mode`, `max_tokens` FROM kussin_chatgpt_content_creator_queue WHERE (`status` = "' . self::PROCESS_NEW_STATUS . '") ORDER BY `updated_at` ASC LIMIT ' . $iLimit . ';';
 
         foreach ($this->_getCustomDbResult($sQuery) as $aItem) {
+            $sMode = trim($aItem[6]) != '' ? trim($aItem[6]) : 'create';
             $oObject = $this->_getOxidObject($aItem[1]);
             $sOxid = $aItem[2];
             $sFieldId = $this->_getOxidFieldId($aItem[1], $aItem[3], $aItem[5]);
@@ -128,7 +129,7 @@ class Process extends FrontendController
             $oObject->loadInLang($iLang, $sOxid);
 
             // GET PROMPT
-            $sPrompt = $this->_getProcessPrompts($oObject, $sFieldId, $iLang, $aItem[6]);
+            $sPrompt = $this->_getProcessPrompts($sMode, $oObject, $sFieldId, $iLang, $aItem[7]);
 
             $this->_debug([
                 'method' => __CLASS__ . '::' . __METHOD__,

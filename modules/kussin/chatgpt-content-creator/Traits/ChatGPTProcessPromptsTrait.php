@@ -6,6 +6,8 @@ use OxidEsales\Eshop\Core\Registry;
 
 trait ChatGPTProcessPromptsTrait
 {
+    use LanguageTrait;
+
     protected function _getProcessMaxTokens($sFieldId, $iMaxTokens = 350) : int
     {
         switch ($sFieldId) {
@@ -34,30 +36,39 @@ trait ChatGPTProcessPromptsTrait
         }
     }
 
-    private function _getProcessPrompts($oObject, $sFieldId, $iLang = 0, $iMaxTokens = 350)
+    private function _getProcessPrompts($sMode, $oObject, $sFieldId, $iLang = 0, $iMaxTokens = 350)
     {
-        switch ($sFieldId) {
-            case 'oxshortdesc':
-            case 'oxarticles__oxshortdesc':
-                $sPrompt = $this->_getChatGptProcessPrompt4ShortDescription($iLang);
-                $sTitle = $this->_encodeProcessSpecialChars($oObject->oxarticles__oxtitle->value);
-                $sManufacturer = $this->_encodeProcessSpecialChars($oObject->getManufacturer()->oxmanufacturers__oxtitle->value);
-                break;
+        if ($sMode == 'optimize') {
+            // OPTIMIZE CONTENT
+            $sPrompt = $this->_getChatGptProcessPrompt4OptimizeContent($iLang);
+            $sTitle = $this->_encodeProcessSpecialChars($oObject->{$sFieldId}->value);
+            $sManufacturer = NULL;
 
-            case 'oxsearchkeys':
-            case 'oxarticles__oxsearchkeys':
-                $sPrompt = $this->_getChatGptProcessPrompt4SearchKeys($iLang);
-                $sTitle = $this->_encodeProcessSpecialChars($oObject->oxarticles__oxtitle->value);
-                $sManufacturer = $this->_encodeProcessSpecialChars($oObject->getManufacturer()->oxmanufacturers__oxtitle->value);
-                break;
+        } else {
+            // CREATE CONTENT
+            switch ($sFieldId) {
+                case 'oxshortdesc':
+                case 'oxarticles__oxshortdesc':
+                    $sPrompt = $this->_getChatGptProcessPrompt4ShortDescription($iLang);
+                    $sTitle = $this->_encodeProcessSpecialChars($oObject->oxarticles__oxtitle->value);
+                    $sManufacturer = $this->_encodeProcessSpecialChars($oObject->getManufacturer()->oxmanufacturers__oxtitle->value);
+                    break;
 
-            default:
-            case 'oxlongdesc':
-            case 'oxartextends__oxsearchkeys':
-                $sPrompt = $this->_getChatGptProcessPrompt4LongDescription($iLang);
-                $sTitle = $this->_encodeProcessSpecialChars($oObject->oxarticles__oxtitle->value);
-                $sManufacturer = $this->_encodeProcessSpecialChars($oObject->getManufacturer()->oxmanufacturers__oxtitle->value);
-                break;
+                case 'oxsearchkeys':
+                case 'oxarticles__oxsearchkeys':
+                    $sPrompt = $this->_getChatGptProcessPrompt4SearchKeys($iLang);
+                    $sTitle = $this->_encodeProcessSpecialChars($oObject->oxarticles__oxtitle->value);
+                    $sManufacturer = $this->_encodeProcessSpecialChars($oObject->getManufacturer()->oxmanufacturers__oxtitle->value);
+                    break;
+
+                default:
+                case 'oxlongdesc':
+                case 'oxartextends__oxsearchkeys':
+                    $sPrompt = $this->_getChatGptProcessPrompt4LongDescription($iLang);
+                    $sTitle = $this->_encodeProcessSpecialChars($oObject->oxarticles__oxtitle->value);
+                    $sManufacturer = $this->_encodeProcessSpecialChars($oObject->getManufacturer()->oxmanufacturers__oxtitle->value);
+                    break;
+            }
         }
 
         // FIX PROMPT
@@ -86,11 +97,6 @@ trait ChatGPTProcessPromptsTrait
     protected function _decodeProcessContent($sString) : string
     {
         return trim(base64_decode($sString));
-    }
-
-    protected function _getLanguageCode($iLang) : string
-    {
-        return "DE"; // TODO: MULTI-LANGUAL
     }
 
     protected function _getChatGptProcessPrompt4ShortDescription($iLang = 0)
@@ -127,6 +133,19 @@ trait ChatGPTProcessPromptsTrait
             // FALLBACK
             $oLang = Registry::getLang();
             $sPrompt = $oLang->translateString('KUSSIN_CHATGPT_PRODUCT_SEARCHKEYS_PROMPT', $iLang);
+        }
+
+        return $sPrompt;
+    }
+
+    protected function _getChatGptProcessPrompt4OptimizeContent($iLang = 0)
+    {
+        $sPrompt = trim(Registry::getConfig()->getConfigParam('sKussinChatGptPromptOptimizeContent' . $this->_getLanguageCode($iLang)));
+
+        if ($sPrompt == '') {
+            // FALLBACK
+            $oLang = Registry::getLang();
+            $sPrompt = $oLang->translateString('KUSSIN_CHATGPT_OPTIMIZE_CONTENT_PROMPT', $iLang);
         }
 
         return $sPrompt;

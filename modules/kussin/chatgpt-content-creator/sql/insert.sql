@@ -6,6 +6,7 @@ CREATE TABLE `kussin_chatgpt_content_creator_queue`
     `field`       VARCHAR(55) NULL DEFAULT NULL COMMENT 'DB Table Field or OXID Attribute' COLLATE 'utf8_unicode_ci',
     `shop_id`     INT(11) NOT NULL DEFAULT '1',
     `lang_id`     INT(11) NOT NULL DEFAULT '0',
+    `mode`        VARCHAR(16) NOT NULL DEFAULT 'create' COLLATE 'utf8_unicode_ci',
     `content`     TEXT NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
     `prompt`      TEXT NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
     `model`       VARCHAR(55) NOT NULL DEFAULT 'gpt-3.5-turbo-instruct' COMMENT 'ChatGPT API Model' COLLATE 'utf8_unicode_ci',

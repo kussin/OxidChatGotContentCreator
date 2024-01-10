@@ -19,6 +19,10 @@ $aLang = array(
     'SHOP_MODULE_sKussinChatGptPromptShortDescriptionEN' => 'Prompt for article short description (English)',
     'SHOP_MODULE_sKussinChatGptPromptProductSearchKeysDE' => 'Prompt for article search terms (German)',
     'SHOP_MODULE_sKussinChatGptPromptProductSearchKeysEN' => 'Prompt for article search terms (English)',
+    'SHOP_MODULE_sKussinChatGptPromptProductAttributesDE' => 'Prompt for article attributes (German)',
+    'SHOP_MODULE_sKussinChatGptPromptProductAttributesEN' => 'Prompt for article attributes (English)',
+    'SHOP_MODULE_sKussinChatGptPromptOptimizeContentDE' => 'Prompt for optimize content (German)',
+    'SHOP_MODULE_sKussinChatGptPromptOptimizeContentEN' => 'Prompt for optimize content (English)',
 
     'SHOP_MODULE_GROUP_sKussinChatGptProcessSettings' => 'Process queue settings',
     'SHOP_MODULE_blKussinChatGptProcessQueueEnabled' => 'Enable debug mode',
