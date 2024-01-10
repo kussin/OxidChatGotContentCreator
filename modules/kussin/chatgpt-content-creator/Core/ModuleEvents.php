@@ -170,7 +170,7 @@ final class ModuleEvents
                 'remote_ip' => $sClientIp,
                 'timestamp' => date('Y-m-d H:i:s'),
             ));
-            curl_setopt($ch,CURLOPT_TIMEOUT,$iTimeout);
+            curl_setopt($rCurl,CURLOPT_TIMEOUT,$iTimeout);
             curl_exec($rCurl);
             curl_close($rCurl);
 
