@@ -100,8 +100,6 @@ class ArticleMain extends ArticleMain_parent
             'prompt' => $oException,
             'params' => array(
                 'title' => $this->_kussinLoadArticle()->getLongDescription(),
-                'manufacturer' => NULL,
-                'max_tokens' => $iMaxTokens,
             ),
         ));
 
@@ -109,8 +107,6 @@ class ArticleMain extends ArticleMain_parent
         $sPrompt = sprintf(
             $sPrompt,
             $this->_kussinLoadArticle()->getLongDescription(),
-            NULL,
-            $iMaxTokens
         );
 
         // GET CHATGPT CONTENT

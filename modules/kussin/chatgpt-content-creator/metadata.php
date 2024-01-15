@@ -154,13 +154,13 @@ $aModule = array(
             'group' => 'sKussinChatGptPromptSettings',
             'name' => 'sKussinChatGptPromptProductAttributesDE',
             'type' => 'str',
-            'value' => 'Versuche für die folgenden Attribute, für den Artikel "%s" (Hersteller-SKU: %s) von "%s", Werten zu ermitteln und erstelle ein daraus einen JSON; Werte, die "unbekannt" sind als `null` zurückgeben: %s',
+            'value' => 'Versuche für die folgenden Attribute, für den Artikel "%s" (Hersteller-SKU: %s) von "%s", Werten zu ermitteln und erstelle ein daraus einen JSON; Werte, die "unbekannt" sind als `null` zurückgeben: ',
         ),
         array(
             'group' => 'sKussinChatGptPromptSettings',
             'name' => 'sKussinChatGptPromptProductAttributesEN',
             'type' => 'str',
-            'value' => 'Try to determine values for the following attributes for the article "%s" (Manufacturer SKU: %s) from "%s" and create a JSON from it; return values that are `null` as null: %s',
+            'value' => 'Try to determine values for the following attributes for the article "%s" (Manufacturer SKU: %s) from "%s" and create a JSON from it; return values that are `null` as null: ',
         ),
         array(
             'group' => 'sKussinChatGptPromptSettings',

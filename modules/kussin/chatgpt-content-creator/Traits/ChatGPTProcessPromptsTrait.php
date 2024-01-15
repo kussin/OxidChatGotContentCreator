@@ -2,6 +2,7 @@
 
 namespace Kussin\ChatGpt\Traits;
 
+use OxidEsales\Eshop\Application\Model\Attribute;
 use OxidEsales\Eshop\Core\Registry;
 
 trait ChatGPTProcessPromptsTrait
@@ -38,35 +39,40 @@ trait ChatGPTProcessPromptsTrait
 
     private function _getProcessPrompts($sMode, $oObject, $sFieldId, $iLang = 0, $iMaxTokens = 350)
     {
+        $aValues = array();
+
         if ($sMode == 'optimize') {
             // OPTIMIZE CONTENT
             $sPrompt = $this->_getChatGptProcessPrompt4OptimizeContent($iLang);
-            $sTitle = $this->_encodeProcessSpecialChars($oObject->{$sFieldId}->value);
-            $sManufacturer = NULL;
+            $aValues[] = $this->_encodeProcessSpecialChars($oObject->{$sFieldId}->value);
 
         } else {
             // CREATE CONTENT
-            switch ($sFieldId) {
-                case 'oxshortdesc':
-                case 'oxarticles__oxshortdesc':
-                    $sPrompt = $this->_getChatGptProcessPrompt4ShortDescription($iLang);
-                    $sTitle = $this->_encodeProcessSpecialChars($oObject->oxarticles__oxtitle->value);
-                    $sManufacturer = $this->_encodeProcessSpecialChars($oObject->getManufacturer()->oxmanufacturers__oxtitle->value);
+            switch (str_replace(array('_1', '_2', '_3', '_4', '_5'), '', $sFieldId)) {
+                case 'oxarticles__oxattribute':
+                    $sPrompt = $this->_getChatGptProcessPrompt4Attributes($iLang);
+                    $aValues[] = $this->_encodeProcessSpecialChars($oObject->oxarticles__oxtitle->value);
+                    $aValues[] = $oObject->oxarticles__oxmpn->value;
+                    $aValues[] = $this->_encodeProcessSpecialChars($oObject->getManufacturer()->oxmanufacturers__oxtitle->value);
                     break;
 
-                case 'oxsearchkeys':
                 case 'oxarticles__oxsearchkeys':
                     $sPrompt = $this->_getChatGptProcessPrompt4SearchKeys($iLang);
-                    $sTitle = $this->_encodeProcessSpecialChars($oObject->oxarticles__oxtitle->value);
-                    $sManufacturer = $this->_encodeProcessSpecialChars($oObject->getManufacturer()->oxmanufacturers__oxtitle->value);
+                    $aValues[] = $this->_encodeProcessSpecialChars($oObject->oxarticles__oxtitle->value);
+                    $aValues[] = $this->_encodeProcessSpecialChars($oObject->getManufacturer()->oxmanufacturers__oxtitle->value);
+                    break;
+
+                case 'oxarticles__oxshortdesc':
+                    $sPrompt = $this->_getChatGptProcessPrompt4ShortDescription($iLang);
+                    $aValues[] = $this->_encodeProcessSpecialChars($oObject->oxarticles__oxtitle->value);
+                    $aValues[] = $this->_encodeProcessSpecialChars($oObject->getManufacturer()->oxmanufacturers__oxtitle->value);
                     break;
 
                 default:
-                case 'oxlongdesc':
-                case 'oxartextends__oxsearchkeys':
+                case 'oxartextends__oxlongdesc':
                     $sPrompt = $this->_getChatGptProcessPrompt4LongDescription($iLang);
-                    $sTitle = $this->_encodeProcessSpecialChars($oObject->oxarticles__oxtitle->value);
-                    $sManufacturer = $this->_encodeProcessSpecialChars($oObject->getManufacturer()->oxmanufacturers__oxtitle->value);
+                    $aValues[] = $this->_encodeProcessSpecialChars($oObject->oxarticles__oxtitle->value);
+                    $aValues[] = $this->_encodeProcessSpecialChars($oObject->getManufacturer()->oxmanufacturers__oxtitle->value);
                     break;
             }
         }
@@ -74,11 +80,12 @@ trait ChatGPTProcessPromptsTrait
         // FIX PROMPT
         $sPrompt = str_replace(['"', '"', '&quot;',], '`', $sPrompt);
 
-        return sprintf(
+        // ADD TOKENS
+        $aValues[] = $iMaxTokens;
+
+        return vsprintf(
             $sPrompt,
-            $sTitle,
-            $sManufacturer,
-            $iMaxTokens
+            $aValues
         );
     }
 
@@ -136,6 +143,32 @@ trait ChatGPTProcessPromptsTrait
         }
 
         return $sPrompt;
+    }
+
+    protected function _getChatGptProcessPrompt4Attributes($iLang = 0)
+    {
+        $sPrompt = trim(Registry::getConfig()->getConfigParam('sKussinChatGptPromptProductAttributes' . $this->_getLanguageCode($iLang)));
+
+        if ($sPrompt == '') {
+            // FALLBACK
+            $oLang = Registry::getLang();
+            $sPrompt = $oLang->translateString('KUSSIN_CHATGPT_PRODUCT_ATTRIBUTES_PROMPT', $iLang);
+        }
+
+        // ADD ATTRIBUTE NAMES
+        $aAttributeNames = array();
+        foreach ($this->_getCustomDbResult('SELECT `OXID` FROM `oxattribute`;') as $aAttributeId) {
+            if (isset($aAttributeId)) {
+                $oAttribute = oxNew(Attribute::class);
+//                $oAttribute->loadInLang($aAttributeId, $iLang);
+                $oAttribute->load($aAttributeId);
+
+                // ADD TO PROMPT
+                $aAttributeNames[] = $oAttribute->oxattribute__oxtitle->value;
+            }
+        }
+
+        return $sPrompt . PHP_EOL . implode(', ', $aAttributeNames);
     }
 
     protected function _getChatGptProcessPrompt4OptimizeContent($iLang = 0)

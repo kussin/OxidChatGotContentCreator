@@ -77,17 +77,23 @@ class Process extends FrontendController
             $sSelectQuery = trim(Registry::getConfig()->getConfigParam('sKussinChatGptProcessSelectionQuery'));
 
             if (strlen($sSelectQuery) > '') {
-                $this->_info('Queue filled with new processes.');
+                try {
+                    $this->_info('Queue filled with new processes.');
 
-                $sQuery = implode(' ', array(
-                    'INSERT IGNORE INTO `kussin_chatgpt_content_creator_queue` (`object`, `object_id`, `field`, `shop_id`, `lang_id`, `status`)',
-                    $sSelectQuery,
-                ));
+                    $sQuery = implode(' ', array(
+                        'INSERT IGNORE INTO `kussin_chatgpt_content_creator_queue` (`object`, `object_id`, `field`, `shop_id`, `lang_id`, `mode`, `status`)',
+                        $sSelectQuery,
+                    ));
 
-                DatabaseProvider::getDb()->execute($sQuery);
+                    DatabaseProvider::getDb()->execute($sQuery);
 
-                // FIX QUEUE TIMESTAMP
-                $this->_fixConfigTimestamp('sKussinChatGptProcessSelectionQuery');
+                    // FIX QUEUE TIMESTAMP
+                    $this->_fixConfigTimestamp('sKussinChatGptProcessSelectionQuery');
+
+                } catch (\Exception $oException) {
+                    // ERROR
+                    $this->_error('Error while filling queue: ' . $oException->getMessage());
+                }
             }
         }
     }
@@ -219,28 +225,18 @@ class Process extends FrontendController
             $oObject = $this->_getOxidObject($aItem[1]);
             $sOxid = $aItem[2];
             $sFieldId = $this->_getOxidFieldId($aItem[1], $aItem[3], $aItem[5]);
-            $iLang = (int) $aItem[5];
-            $sGeneratedContent = $this->_decodeProcessContent($aItem[6]);
 
-            // LOAD OBJECT
-            $oObject->load($sOxid);
+            switch (str_replace(array('_1', '_2', '_3', '_4', '_5'), '', $sFieldId)) {
+                case 'oxarticles__oxattribute':
+                    break;
 
-            // SAVE CONTENT
-            $oContent = new Field($sGeneratedContent);
-
-            if ($aItem[3] == 'oxlongdesc') {
-                $oObject->setArticleLongDesc($oContent->getRawValue());
-            } else {
-                $oObject->{$sFieldId} = new Field($oContent);
+                default:
+                case 'oxarticles__oxshortdesc':
+                case 'oxartextends__oxlongdesc':
+                case 'oxarticles__oxsearchkeys':
+                    $sObjectLink = $this->_savingDefaultContentType($oObject, $aItem[2], $sFieldId, (int) $aItem[5], $aItem[6]);
+                    break;
             }
-
-            // TOUCH TIMESTAMP
-            $this->_touchTimestamp($sOxid, ( ($aItem[1] == 'oxartextends') ? 'oxarticles' : $aItem[1] ));
-
-            $oObject->save();
-
-            // OBJECT LINK
-            $sObjectLink = $oObject->getLink();
 
             // UPDATE STATUS
             $sUpdateQuery = 'UPDATE kussin_chatgpt_content_creator_queue SET `link` = "' . $sObjectLink . '", `process_ip` = "' . $this->_getClientIp() . '", `status` = "' . self::PROCESS_COMPLETE_STATUS . '" WHERE (`id` = "' . $aItem[0] . '");';
@@ -267,13 +263,6 @@ class Process extends FrontendController
         $sTimestamp = date('Y-m-d H:i:s', strtotime($sTimeChange));
 
         $sQuery = 'UPDATE `oxconfig` SET `OXTIMESTAMP` = "' . $sTimestamp . '" WHERE (`OXVARNAME` LIKE "' . $sOxVarname . '");';
-
-        return (bool) DatabaseProvider::getDb()->execute($sQuery);
-    }
-
-    private function _touchTimestamp($sOxid, $sTable = 'oxarticles'): bool
-    {
-        $sQuery = 'UPDATE IGNORE `' . $sTable . '` SET `KUSSINCHATGPTGENERATED` = 1, `OXTIMESTAMP` = NOW() WHERE (`OXID` LIKE "' . $sOxid . '");';
 
         return (bool) DatabaseProvider::getDb()->execute($sQuery);
     }
