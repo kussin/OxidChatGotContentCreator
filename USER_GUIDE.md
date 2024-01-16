@@ -12,6 +12,7 @@ it's also possible to generate Content directly inside each Content Type. Curren
 
 * **Create new Long Description**, which will generate a new Long Description based on the provided data (e.g. Object Title).
 * **Create new Short Description**, which will generate a new Short Description based on the provided data (e.g. Object Title).
+* **Optimize Long Description**, which will re-write the existing Long Description.
 
 **NOTE:** The module requires a valid [OpenAI Subscription](https://platform.openai.com/) to work.
 
@@ -87,6 +88,7 @@ SELECT DISTINCT
     'oxlongdesc' AS `field`,
     oxarticles.OXSHOPID AS `shop_id`,
     0 AS `lang_id`,
+    'create' AS `mode`,
     'pending' AS `status`
 FROM oxartextends
 LEFT JOIN 
@@ -108,7 +110,10 @@ that the result contains the following columns:
 * `field` - The Content Field (e.g. `oxlongdesc`)
 * `shop_id` - The Shop ID (e.g. `OXSHOPID`)
 * `lang_id` - The Language ID (e.g. `0`)
+* `mode` - The Mode (`create` or `optimize`)
 * `status` - The Status (e.g. `pending`)
+
+**WARNING:** Attribute generation is available but still in an experimental stage and _might generate wrong data_. 
 
 #### Debug Settings
 
