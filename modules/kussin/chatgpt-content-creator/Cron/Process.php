@@ -8,6 +8,7 @@ use Kussin\ChatGpt\Traits\CustomDbTrait;
 use Kussin\ChatGpt\Traits\LoggerTrait;
 use Kussin\ChatGpt\Traits\OxidObjectsTrait;
 use Kussin\ChatGpt\Traits\ProcessFlagTrait;
+use Kussin\ChatGpt\Traits\SavingContentTypesTrait;
 use OxidEsales\Eshop\Application\Controller\FrontendController;
 use OxidEsales\Eshop\Application\Model\Article;
 use OxidEsales\Eshop\Core\DatabaseProvider;
@@ -22,6 +23,7 @@ class Process extends FrontendController
     use LoggerTrait;
     use OxidObjectsTrait;
     use ProcessFlagTrait;
+    use SavingContentTypesTrait;
 
     protected const PROCESS_NEW_STATUS = 'pending';
     protected const PROCESS_PROCESSING_STATUS = 'processing';
@@ -228,6 +230,7 @@ class Process extends FrontendController
 
             switch (str_replace(array('_1', '_2', '_3', '_4', '_5'), '', $sFieldId)) {
                 case 'oxarticles__oxattribute':
+                    $sObjectLink = $this->_savingProductAttributeContentType($oObject, $aItem[2], (int) $aItem[5], $aItem[6]);
                     break;
 
                 default:
@@ -238,11 +241,20 @@ class Process extends FrontendController
                     break;
             }
 
-            // UPDATE STATUS
-            $sUpdateQuery = 'UPDATE kussin_chatgpt_content_creator_queue SET `link` = "' . $sObjectLink . '", `process_ip` = "' . $this->_getClientIp() . '", `status` = "' . self::PROCESS_COMPLETE_STATUS . '" WHERE (`id` = "' . $aItem[0] . '");';
-            DatabaseProvider::getDb()->execute($sUpdateQuery);
+            if ($sObjectLink == FALSE) {
+                // ERROR
+                // UPDATE STATUS
+                $sUpdateQuery = 'UPDATE kussin_chatgpt_content_creator_queue SET `link` = "' . $sObjectLink . '", `process_ip` = "' . $this->_getClientIp() . '", `status` = "' . self::PROCESS_ERROR_STATUS . '" WHERE (`id` = "' . $aItem[0] . '");';
+                DatabaseProvider::getDb()->execute($sUpdateQuery);
 
-            $this->_debug('Saved ai content for: ' . $sOxid . ' (Link: ' . $sObjectLink . ')');
+                $this->_warning('Could not save ChatGPT ai content for: ' . $sOxid);
+            } else {
+                // UPDATE STATUS
+                $sUpdateQuery = 'UPDATE kussin_chatgpt_content_creator_queue SET `link` = "' . $sObjectLink . '", `process_ip` = "' . $this->_getClientIp() . '", `status` = "' . self::PROCESS_COMPLETE_STATUS . '" WHERE (`id` = "' . $aItem[0] . '");';
+                DatabaseProvider::getDb()->execute($sUpdateQuery);
+
+                $this->_debug('Saved ai content for: ' . $sOxid . ' (Link: ' . $sObjectLink . ')');
+            }
 
             // CLEAR
             $oObject = null;
