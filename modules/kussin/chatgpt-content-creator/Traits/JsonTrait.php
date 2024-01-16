@@ -26,6 +26,8 @@ trait JsonTrait
 
     private function _extractJsonContent($sJson)
     {
-        return preg_replace('~\{(?:[^{}]|(?R))*\}~', '', $sJson);
+        preg_match('~\{(?:[^{}]|(?R))*\}~', $sJson, $aJsons);
+
+        return count($aJsons) > 0 ? $aJsons[0] : FALSE;
     }
 }
