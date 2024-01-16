@@ -5,6 +5,7 @@ $aLang = array(
     'charset' => 'utf-8',
 
     'KUSSIN_CHATGPT_CONTENT_CREATOR_LEGEND' => 'KUSSIN | ChatGPT Content Creator',
+    'KUSSIN_CHATGPT_CONTENT_CREATOR_LONG_DESCRIPTION' => 'Long Description',
     'KUSSIN_ARTICLE_MAIN_CHATGPT_LONG_DESCRIPTION' => 'Create new Long Description',
     'KUSSIN_ARTICLE_MAIN_CHATGPT_OPTIMIZE_LONG_DESCRIPTION' => 'Create optimized Long Description',
     'KUSSIN_ARTICLE_MAIN_CHATGPT_SHORT_DESCRIPTION' => 'Create new Short Description',
@@ -15,6 +16,7 @@ $aLang = array(
     'KUSSIN_CHATGPT_PRODUCT_ATTRIBUTES_PROMPT' => 'Try to determine values for the following attributes for the article "%s" (Manufacturer SKU: %s) from "%s" and create a JSON from it; return values that are `null` as null: ',
     'KUSSIN_CHATGPT_CATGEORY_LONG_DESCRIPTION_PROMPT' => 'Create an category long description for "%s" of "%s". - And please without an intro and with max. %s words.',
     'KUSSIN_CHATGPT_CATGEORY_SHORT_DESCRIPTION_PROMPT' => 'Create an category short description for "%s" of "%s". - And please without an intro and with max. 255 characters.',
+    'KUSSIN_CHATGPT_MANUFACTURER_LONG_DESCRIPTION_PROMPT' => 'Create an manufacturer long description for "%s" of "%s". - And please without an intro and with max. %s words.',
     'KUSSIN_CHATGPT_MANUFACTURER_SHORT_DESCRIPTION_PROMPT' => 'Create an manufacturer short description for "%s" of "%s". - And please without an intro and with max. 255 characters.',
     'KUSSIN_CHATGPT_VENDOR_SHORT_DESCRIPTION_PROMPT' => 'Create an vendor short description for "%s" of "%s". - And please without an intro and with max. 255 characters.',
 

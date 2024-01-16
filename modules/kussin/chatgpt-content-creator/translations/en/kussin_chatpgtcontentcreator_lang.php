@@ -12,6 +12,7 @@ $aLang = array(
     'KUSSIN_CHATGPT_SHORT_DESCRIPTION_PROMPT' => 'Create an article short description for "%s" from "%s". - And please without an intro and with max. %s words.',
     'KUSSIN_CHATGPT_CATGEORY_LONG_DESCRIPTION_PROMPT' => 'Create an category long description for "%s" of "%s". - And please without an intro and with max. %s words.',
     'KUSSIN_CHATGPT_CATGEORY_SHORT_DESCRIPTION_PROMPT' => 'Create an category short description for "%s" of "%s". - And please without an intro and with max. 255 characters.',
+    'KUSSIN_CHATGPT_MANUFACTURER_LONG_DESCRIPTION_PROMPT' => 'Create an manufacturer long description for "%s" of "%s". - And please without an intro and with max. %s words.',
     'KUSSIN_CHATGPT_MANUFACTURER_SHORT_DESCRIPTION_PROMPT' => 'Create an manufacturer short description for "%s" of "%s". - And please without an intro and with max. 255 characters.',
     'KUSSIN_CHATGPT_VENDOR_SHORT_DESCRIPTION_PROMPT' => 'Create an vendor short description for "%s" of "%s". - And please without an intro and with max. 255 characters.',
 

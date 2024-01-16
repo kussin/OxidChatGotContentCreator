@@ -69,7 +69,7 @@ class ArticleMain extends ArticleMain_parent
                 $oArticle = oxNew(Article::class);
                 $oArticle->load( $this->_kussinLoadArticle()->getId() );
 
-                $oContent = new Field($aResponse['data']);
+                $oContent = new Field(trim($aResponse['data']));
                 $oArticle->setArticleLongDesc($oContent->getRawValue());
 
                 $oArticle->save();
@@ -122,8 +122,9 @@ class ArticleMain extends ArticleMain_parent
                 $oArticle = oxNew(Article::class);
                 $oArticle->load( $this->_kussinLoadArticle()->getId() );
 
-                $oContent = new Field($aResponse['data']);
+                $oContent = new Field(trim($aResponse['data']));
                 $oArticle->setArticleLongDesc($oContent->getRawValue());
+                $oArticle->oxarticles__kussinchatgptgenerated = new Field(1);
 
                 $oArticle->save();
 
@@ -179,8 +180,8 @@ class ArticleMain extends ArticleMain_parent
                 $oArticle = oxNew(Article::class);
                 $oArticle->load( $this->_kussinLoadArticle()->getId() );
 
-                $oContent = new Field($aResponse['data']);
-                $oArticle->oxarticles__oxshortdesc = new Field($oContent);
+                $oArticle->oxarticles__oxshortdesc = new Field(trim($aResponse['data']));
+                $oArticle->oxarticles__kussinchatgptgenerated = new Field(1);
 
                 $oArticle->save();
 

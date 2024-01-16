@@ -22,7 +22,7 @@ $aModule = array(
     'title'        => 'Kussin | ChatGPT Content Creator for OXID eShop',
     'description'  => 'ChatGPT Integration for OXID eShop',
     'thumbnail'    => 'module.png',
-    'version'      => '0.0.3',
+    'version'      => '0.0.4',
     'author'       => 'Daniel Kussin',
     'url'          => 'https://www.kussin.de',
     'email'        => 'daniel.kussin@kussin.de',
@@ -74,6 +74,11 @@ $aModule = array(
             'template' => 'page/details/inc/tabs.tpl',
             'block' => 'details_tabs_longdescription',
             'file' => 'views/blocks/details_tabs_longdescription.tpl',
+        ),
+        array(
+            'template' => 'page/list/list.tpl',
+            'block' => 'page_list_listbody',
+            'file' => 'views/blocks/page_list_listbody.tpl',
         ),
     ),
 

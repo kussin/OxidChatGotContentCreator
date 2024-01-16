@@ -98,7 +98,7 @@ final class ModuleEvents
                 array(
                     'name' => 'KUSSINCHATGPTGENERATED',
                     'settings' => 'TINYINT(1) NULL DEFAULT \'0\' COMMENT \'KUSSIN ChatGPT generated flag\'',
-                )
+                ),
             ]
         );
     }
@@ -109,9 +109,25 @@ final class ModuleEvents
             'oxmanufacturers',
             [
                 array(
+                    'name' => 'KUSSINLONGDESC',
+                    'settings' => 'LONGTEXT NOT NULL DEFAULT \'\' COMMENT \'KUSSIN ChatGPT Long Description\' COLLATE \'utf8_general_ci\'',
+                ),
+                array(
+                    'name' => 'KUSSINLONGDESC_1',
+                    'settings' => 'LONGTEXT NOT NULL DEFAULT \'\' COMMENT \'KUSSIN ChatGPT Long Description 1\' COLLATE \'utf8_general_ci\'',
+                ),
+                array(
+                    'name' => 'KUSSINLONGDESC_2',
+                    'settings' => 'LONGTEXT NOT NULL DEFAULT \'\' COMMENT \'KUSSIN ChatGPT Long Description 2\' COLLATE \'utf8_general_ci\'',
+                ),
+                array(
+                    'name' => 'KUSSINLONGDESC_3',
+                    'settings' => 'LONGTEXT NOT NULL DEFAULT \'\' COMMENT \'KUSSIN ChatGPT Long Description 3\' COLLATE \'utf8_general_ci\'',
+                ),
+                array(
                     'name' => 'KUSSINCHATGPTGENERATED',
                     'settings' => 'TINYINT(1) NULL DEFAULT \'0\' COMMENT \'KUSSIN ChatGPT generated flag\'',
-                )
+                ),
             ]
         );
     }
@@ -124,7 +140,7 @@ final class ModuleEvents
                 array(
                     'name' => 'KUSSINCHATGPTGENERATED',
                     'settings' => 'TINYINT(1) NULL DEFAULT \'0\' COMMENT \'KUSSIN ChatGPT generated flag\'',
-                )
+                ),
             ]
         );
     }
@@ -137,7 +153,7 @@ final class ModuleEvents
                 array(
                     'name' => 'KUSSINCHATGPTGENERATED',
                     'settings' => 'TINYINT(1) NULL DEFAULT \'0\' COMMENT \'KUSSIN ChatGPT generated flag\'',
-                )
+                ),
             ]
         );
     }

@@ -60,13 +60,13 @@ class VendorMain extends VendorMain_parent
                 parent::save();
 
                 // SAVE DESCRIPTION
-                $oCategory = oxNew(Vendor::class);
-                $oCategory->load( $this->_kussinLoadVendor()->getId() );
+                $oVendor = oxNew(Vendor::class);
+                $oVendor->load( $this->_kussinLoadVendor()->getId() );
 
-                $oContent = new Field($aResponse['data']);
-                $oCategory->oxvendor__oxshortdesc = $oContent;
+                $oVendor->oxvendor__oxshortdesc = new Field(trim($aResponse['data']));
+                $oVendor->oxvendor__kussinchatgptgenerated = new Field(1);
 
-                $oCategory->save();
+                $oVendor->save();
 
             } catch (\Exception $oException) {
                 // ERROR

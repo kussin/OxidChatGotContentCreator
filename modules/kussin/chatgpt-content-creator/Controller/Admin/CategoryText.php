@@ -64,8 +64,9 @@ class CategoryText extends CategoryText_parent
                 $oCategory = oxNew(Category::class);
                 $oCategory->load( $this->_kussinLoadCategory()->getId() );
 
-                $oContent = new Field($aResponse['data']);
+                $oContent = new Field(trim($aResponse['data']));
                 $oCategory->oxcategories__oxlongdesc = $oContent->getRawValue();
+                $oCategory->oxcategories__kussinchatgptgenerated = new Field(1);
 
                 $oCategory->save();
 
