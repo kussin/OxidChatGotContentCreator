@@ -223,6 +223,12 @@ $aModule = array(
             'value' => 10,
         ),
         array(
+            'group' => 'sKussinChatGptProcessSettings',
+            'name' => 'sKussinChatGptProcessProductAttributesForbiddenValues',
+            'type' => 'str',
+            'value' => 'unknown',
+        ),
+        array(
             'group' => 'sKussinChatGptDebugSettings',
             'name' => 'blKussinChatGptDebugEnabled',
             'type' => 'bool',

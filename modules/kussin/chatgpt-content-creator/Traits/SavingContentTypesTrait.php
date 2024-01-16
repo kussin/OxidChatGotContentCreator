@@ -5,6 +5,7 @@ namespace Kussin\ChatGpt\Traits;
 use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Model\BaseModel;
+use OxidEsales\Eshop\Core\Registry;
 
 trait SavingContentTypesTrait
 {
@@ -145,8 +146,7 @@ trait SavingContentTypesTrait
 
     protected function _forbiddenValues($sValue)
     {
-        // TODO: GET FORBIDDEN VALUES FROM CONFIG
-        $aForbiddenValues = array('unbekannt');
+        $aForbiddenValues = explode(',', Registry::getConfig()->getConfigParam('sKussinChatGptProcessProductAttributesForbiddenValues'));
 
         // COMBINE ARRAYS
         $aForbiddenValues = array_merge($aForbiddenValues, $this->_aForbiddenValues);
