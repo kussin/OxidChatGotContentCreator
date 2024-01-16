@@ -12,6 +12,8 @@ trait SavingContentTypesTrait
     use CustomDbTrait;
     use JsonTrait;
 
+    protected $_aForbiddenValues = array('null', 'n/a', 'n.v.');
+
     protected function _savingDefaultContentType($oObject, $sOxid, $sFieldId, $iLang, $sGeneratedContentHash) : string
     {
         // DECODE CONTENT
@@ -145,6 +147,9 @@ trait SavingContentTypesTrait
     {
         // TODO: GET FORBIDDEN VALUES FROM CONFIG
         $aForbiddenValues = array('unbekannt');
+
+        // COMBINE ARRAYS
+        $aForbiddenValues = array_merge($aForbiddenValues, $this->_aForbiddenValues);
 
         if (in_array(strtolower(trim($sValue)), $aForbiddenValues)) {
             return NULL;
