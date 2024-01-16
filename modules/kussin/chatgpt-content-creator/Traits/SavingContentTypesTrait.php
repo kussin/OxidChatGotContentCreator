@@ -15,7 +15,7 @@ trait SavingContentTypesTrait
 
     protected $_aForbiddenValues = array('null', 'n/a', 'n.v.');
 
-    protected function _savingDefaultContentType($oObject, $sOxid, $sFieldId, $iLang, $sGeneratedContentHash) : string
+    protected function _savingDefaultContentType($oObject, $sOxid, $sFieldId, $iLang, $sGeneratedContentHash, $sTouchTable = 'oxarticles') : string
     {
         // DECODE CONTENT
         $sGeneratedContent = $this->_decodeProcessContent($sGeneratedContentHash);
@@ -33,7 +33,7 @@ trait SavingContentTypesTrait
         }
 
         // TOUCH TIMESTAMP
-        $this->_touchTimestamp($sOxid, ( ($aItem[1] == 'oxartextends') ? 'oxarticles' : $aItem[1] ));
+        $this->_touchTimestamp($sOxid, $sTouchTable);
 
         $oObject->save();
 

@@ -227,6 +227,9 @@ class Process extends FrontendController
             $oObject = $this->_getOxidObject($aItem[1]);
             $sOxid = $aItem[2];
             $sFieldId = $this->_getOxidFieldId($aItem[1], $aItem[3], $aItem[5]);
+            $sTouchTable = ( ($aItem[1] == 'oxartextends') ? 'oxarticles' : $aItem[1] );
+
+            $this->_debug('Current $sFieldId for Object ID ' . $sOxid . ': ' . $sFieldId);
 
             switch (str_replace(array('_1', '_2', '_3', '_4', '_5'), '', $sFieldId)) {
                 case 'oxarticles__oxattribute':
@@ -237,7 +240,7 @@ class Process extends FrontendController
                 case 'oxarticles__oxshortdesc':
                 case 'oxartextends__oxlongdesc':
                 case 'oxarticles__oxsearchkeys':
-                    $sObjectLink = $this->_savingDefaultContentType($oObject, $aItem[2], $sFieldId, (int) $aItem[5], $aItem[6]);
+                    $sObjectLink = $this->_savingDefaultContentType($oObject, $aItem[2], $sFieldId, (int) $aItem[5], $aItem[6], $sTouchTable);
                     break;
             }
 
