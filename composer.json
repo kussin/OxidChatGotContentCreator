@@ -1,6 +1,6 @@
 {
   "name": "kussin/chatgpt-content-creator",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Kussin | ChatGPT Content Creator for OXID eShop",
   "type": "oxideshop-module",
   "keywords": [

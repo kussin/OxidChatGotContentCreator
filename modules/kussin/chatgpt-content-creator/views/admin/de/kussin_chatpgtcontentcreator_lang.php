@@ -4,6 +4,11 @@ $sLangName = 'Deutsch';
 $aLang = array(
     'charset' => 'utf-8',
 
+    // ADMIN MENU
+    'KUSSIN_CHATGPT_CONTENT_CREATOR' => 'KUSSIN | ChatGPT Content Creator',
+    'KUSSIN_CHATGPT_BULK_APPROVAL' => 'Massen-Publikationsfreigabe',
+    'KUSSIN_CHATGPT_ARTICLE_APPROVAL' => 'ChatGPT Publikationsfreigabe',
+
     'KUSSIN_CHATGPT_CONTENT_CREATOR_LEGEND' => 'KUSSIN | ChatGPT Content Creator',
     'KUSSIN_CHATGPT_CONTENT_CREATOR_LONG_DESCRIPTION' => 'Langbeschreibung',
     'KUSSIN_ARTICLE_MAIN_CHATGPT_LONG_DESCRIPTION' => 'Neue Langbeschreibung erstellen',
