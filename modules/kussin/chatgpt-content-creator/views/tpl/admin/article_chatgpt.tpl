@@ -1,4 +1,6 @@
 [{include file="headitem.tpl" title="GENERAL_ADMIN_TITLE"|oxmultilangassign}]
+<link rel="stylesheet" href="[{$oViewConf->getModuleUrl('kussin','chatgpt-content-creator/out/src/css/admin.css')}]">
+
 [{if $readonly}]
     [{assign var="readonly" value="readonly disabled"}]
 [{else}]
@@ -47,7 +49,7 @@ function editThis( sID )
     <input type="hidden" name="oxparentid" value="[{$oxparentid}]">
     <input type="hidden" name="editval[article__oxid]" value="[{$oxid}]">
 
-    <div class="kussin-chatgpt-wrapper">
+    <div class="kussin-chatgpt-wrapper" id="kussin-chatgpt-bulk-approval">
         <h2>[{oxmultilang ident="KUSSIN_CHATGPT_CONTENT_CREATOR"}] - [{oxmultilang ident="KUSSIN_CHATGPT_ARTICLE_APPROVAL"}]</h2>
 
         <p>Will follow soon.</p>

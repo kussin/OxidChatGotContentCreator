@@ -9,9 +9,9 @@ use OxidEsales\Eshop\Application\Model\Vendor;
 
 trait OxidObjectsTrait
 {
-    private function _getOxidObject($sObjectId)
+    private function _getOxidObject($sObject)
     {
-        switch ($sObjectId) {
+        switch ($sObject) {
             case 'oxcategories':
                 return oxNew(Category::class);
 

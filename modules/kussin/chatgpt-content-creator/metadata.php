@@ -57,6 +57,11 @@ $aModule = array(
             'file' => 'views/blocks/admin/admin_article_main_form.tpl',
         ),
         array(
+            'template' => 'headitem.tpl',
+            'block' => 'admin_headitem_inccss',
+            'file' => 'views/blocks/admin/admin_headitem_inccss.tpl',
+        ),
+        array(
             'template' => 'include/category_main_form.tpl',
             'block' => 'admin_category_main_form',
             'file' => 'views/blocks/admin/admin_category_main_form.tpl',
