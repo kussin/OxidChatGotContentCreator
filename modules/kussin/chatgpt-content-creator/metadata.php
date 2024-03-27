@@ -48,6 +48,9 @@ $aModule = array(
     'templates' => array(
         'chatgpt_bulk_approval.tpl' => 'kussin/chatgpt-content-creator/views/tpl/admin/chatgpt_bulk_approval.tpl',
         'article_chatgpt.tpl' => 'kussin/chatgpt-content-creator/views/tpl/admin/article_chatgpt.tpl',
+
+        // INCLUDES
+        'chatgpt_bulk_actions.tpl' => 'kussin/chatgpt-content-creator/views/tpl/admin/inc/chatgpt_bulk_actions.tpl',
     ),
 
     'blocks' => array(

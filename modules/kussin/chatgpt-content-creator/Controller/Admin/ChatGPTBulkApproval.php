@@ -3,6 +3,7 @@
 namespace Kussin\ChatGpt\Controller\Admin;
 
 use Kussin\ChatGpt\Traits\OxidObjectsTrait;
+use Kussin\ChatGpt\Traits\StorageTrait;
 use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Application\Controller\Admin\AdminController;
@@ -10,6 +11,7 @@ use OxidEsales\EshopCommunity\Application\Controller\Admin\AdminController;
 class ChatGPTBulkApproval extends AdminController
 {
     use OxidObjectsTrait;
+    use StorageTrait;
 
     protected $_sThisTemplate = 'chatgpt_bulk_approval.tpl';
 
@@ -17,9 +19,30 @@ class ChatGPTBulkApproval extends AdminController
     {
         parent::render();
 
+        $this->_aViewData['page_limits'] =  $this->_getStorageKey('admin')['chatgpt_bulk_approval']['chatgpt_bulk_actions']['page_limits'];;
         $this->_aViewData['grid'] =  $this->_getGrid();
 
         return $this->_sThisTemplate;
+    }
+
+    public function page_limit()
+    {
+        // GET PAGE LIMIT
+        $iPageLimit = (int) Registry::getRequest()->getRequestEscapedParameter('page_limit');
+
+        // GET PAGE LIMITS
+        $aPageLimits = $this->_getStorageKey('admin')['chatgpt_bulk_approval']['chatgpt_bulk_actions']['page_limits'];
+
+        foreach ($aPageLimits as $iKey => $aPageLimit) {
+            if ($aPageLimit['value'] == $iPageLimit) {
+                $aPageLimits[$iKey]['selected'] = true;
+            } else {
+                $aPageLimits[$iKey]['selected'] = false;
+            }
+        }
+
+        // SAVE PAGE LIMITS
+        $this->_setStorageKey('admin/chatgpt_bulk_approval/chatgpt_bulk_actions/page_limits', $aPageLimits);
     }
 
     private function _getGrid()
@@ -85,6 +108,14 @@ class ChatGPTBulkApproval extends AdminController
 
     private function _getSqlLimit()
     {
+        $_aPageLimits = $this->_getStorageKey('admin')['chatgpt_bulk_approval']['chatgpt_bulk_actions']['page_limits'];
+
+        foreach ($_aPageLimits as $aPageLimit) {
+            if ($aPageLimit['selected']) {
+                return " LIMIT " . $aPageLimit['value'];
+            }
+        }
+
         return " LIMIT 20";
     }
 }

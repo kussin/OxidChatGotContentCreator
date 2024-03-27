@@ -4,7 +4,15 @@
 <div class="kussin-chatgpt-wrapper" id="kussin-article-chatgpt-tab">
     <h2>[{oxmultilang ident="KUSSIN_CHATGPT_CONTENT_CREATOR"}] - [{oxmultilang ident="KUSSIN_CHATGPT_BULK_APPROVAL"}]</h2>
 
-    <form action="[{ $oViewConf->getSelfActionLink() }]" method="post">
+    <form name="myedit" id="myedit" action="[{ $oViewConf->getSelfLink() }]" method="post">
+        [{$oViewConf->getHiddenSid()}]
+        <input type="hidden" name="cl" value="chatgpt_bulk_approval">
+        <input type="hidden" name="fnc" value="">
+        <input type="hidden" name="editlanguage" value="[{$editlanguage}]">
+
+        <div class="kussin-chatgpt-bulk-actions">
+            [{include file="chatgpt_bulk_actions.tpl"}]
+        </div>
 
         <table border="0" cellpadding="2" cellspacing="4" class="kussin-chatgpt-grid">
             <thead>
