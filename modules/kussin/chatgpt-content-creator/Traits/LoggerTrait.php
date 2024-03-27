@@ -100,4 +100,17 @@ trait LoggerTrait
 
         return ($sIp != FALSE) ? $sIp : $sClientIp;
     }
+
+    protected function _output($sMessage, $bExit = TRUE)
+    {
+        echo implode(PHP_EOL, array(
+            '<pre>',
+            print_r($sMessage, TRUE),
+            '</pre>',
+        ));
+
+        if ($bExit) {
+            exit;
+        }
+    }
 }
