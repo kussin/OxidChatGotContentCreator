@@ -22,6 +22,8 @@ class ChatGPTBulkApproval extends AdminController
         // ACTIONS
         $this->_aViewData['page_limits'] =  $this->_getStorageKey('admin')['chatgpt_bulk_approval']['chatgpt_bulk_actions']['page_limits'];
         $this->_aViewData['sorting'] =  $this->_getStorageKey('admin')['chatgpt_bulk_approval']['chatgpt_bulk_actions']['sorting'];
+        $this->_aViewData['page'] = ($this->_getStorageKey('admin')['chatgpt_bulk_approval']['chatgpt_bulk_actions']['page'] + 1);
+        $this->_aViewData['pages'] = $this->_getNumberOfPages();
 
         $this->_aViewData['grid'] =  $this->_getGrid();
 

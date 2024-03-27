@@ -5,6 +5,7 @@ $aStorageDefaults = array(
     'admin' => array(
         'chatgpt_bulk_approval' => array(
             'chatgpt_bulk_actions' => array(
+                'page' => 0,
                 'page_limits' => array(
                     ['value' => 10, 'label' => '10', 'selected' => false],
                     ['value' => 20, 'label' => '20', 'selected' => false],

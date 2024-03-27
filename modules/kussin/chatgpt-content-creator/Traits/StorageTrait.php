@@ -56,6 +56,15 @@ trait StorageTrait
         setcookie($this->_sCookieName, base64_encode(json_encode($this->_aStorage)), time() + 60 * 60 * 24 * $this->_iCookieLifetime, '/');
     }
 
+    private function _resetStorage()
+    {
+        // DELETE STORAGE COOKIE
+        setcookie($this->_sCookieName, '', time() - 3600, '/');
+
+        // RESET STORAGE
+        $this->_initStorage();
+    }
+
     protected function _getStorageKey($sKey)
     {
         $aStorage = $this->_getStorage();

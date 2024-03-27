@@ -10,6 +10,15 @@ trait GridUtilitiesTrait
     use LoggerTrait;
     use StorageTrait;
 
+    private $_iPageLimit = NULL;
+    private $_iNumberOfPages = NULL;
+
+    public function reset()
+    {
+        // RESET
+        $this->_resetStorage();
+    }
+
     public function page_limit()
     {
         // GET PAGE LIMIT
@@ -32,10 +41,10 @@ trait GridUtilitiesTrait
 
     public function sorting()
     {
-        // GET PAGE LIMIT
+        // GET PAGE SORTING
         $sSorting = trim(Registry::getRequest()->getRequestEscapedParameter('sorting'));
 
-        // GET PAGE LIMITS
+        // GET PAGE SORTING
         $aSortings = $this->_getStorageKey('admin')['chatgpt_bulk_approval']['chatgpt_bulk_actions']['sorting'];
 
         foreach ($aSortings as $iKey => $aSorting) {
@@ -46,8 +55,47 @@ trait GridUtilitiesTrait
             }
         }
 
-        // SAVE PAGE LIMITS
+        // SAVE PAGE SORTING
         $this->_setStorageKey('admin/chatgpt_bulk_approval/chatgpt_bulk_actions/sorting', $aSortings);
+    }
+
+    public function previous_page()
+    {
+        // GET PAGE
+        $iPage = $this->_getStorageKey('admin')['chatgpt_bulk_approval']['chatgpt_bulk_actions']['page'];
+
+        // DECREMENT PAGE
+        $iPage--;
+
+        $iPage = ($iPage < 0) ? 0 : $iPage;
+
+        // SAVE PAGE SORTING
+        $this->_setStorageKey('admin/chatgpt_bulk_approval/chatgpt_bulk_actions/page', $iPage);
+    }
+
+    public function next_page()
+    {
+        // GET PAGE
+        $iPage = $this->_getStorageKey('admin')['chatgpt_bulk_approval']['chatgpt_bulk_actions']['page'];
+
+        // INCREMENT PAGE
+        $iPage++;
+
+        $iPage = ($iPage > $this->_getNumberOfPages()) ? $this->_getNumberOfPages() : $iPage;
+
+        // SAVE PAGE SORTING
+        $this->_setStorageKey('admin/chatgpt_bulk_approval/chatgpt_bulk_actions/page', $iPage);
+    }
+
+    public function go_to_page()
+    {
+        // GET PAGE SORTING
+        $iPage = (int) Registry::getRequest()->getRequestEscapedParameter('goto');
+
+        // TODO: Validate page number
+
+        // SAVE PAGE SORTING
+        $this->_setStorageKey('admin/chatgpt_bulk_approval/chatgpt_bulk_actions/page', $iPage);
     }
 
     private function _getGrid()
@@ -124,15 +172,52 @@ trait GridUtilitiesTrait
 
     private function _getSqlLimit()
     {
-        $aPageLimits = $this->_getStorageKey('admin')['chatgpt_bulk_approval']['chatgpt_bulk_actions']['page_limits'];
+        $iPage = $this->_getStorageKey('admin')['chatgpt_bulk_approval']['chatgpt_bulk_actions']['page'];
+        $iPageLimit = $this->_getPageLimit();
+        $iOffset = $iPage * $iPageLimit;
 
-        foreach ($aPageLimits as $aPageLimit) {
-            if ($aPageLimit['selected']) {
-                return " LIMIT " . $aPageLimit['value'];
+        // FALLBACK
+        return " LIMIT " . $iOffset . ", " . $iPageLimit;
+    }
+
+    private function _getPageLimit()
+    {
+        if ($this->_iPageLimit === NULL) {
+            // FALLBACK
+            $this->_iPageLimit = 20;
+
+            // GET PAGE LIMITS
+            $aPageLimits = $this->_getStorageKey('admin')['chatgpt_bulk_approval']['chatgpt_bulk_actions']['page_limits'];
+
+            foreach ($aPageLimits as $aPageLimit) {
+                if ($aPageLimit['selected']) {
+                    $this->_iPageLimit = $aPageLimit['value'];
+                    break;
+                }
             }
         }
 
-        // FALLBACK
-        return " LIMIT 20";
+        return $this->_iPageLimit;
+    }
+
+    private function _getNumberOfPages()
+    {
+        if ($this->_iNumberOfPages === NULL) {
+            $this->_iNumberOfPages = 0;
+
+            // BUILD SQL QUERY
+            $sQuery  = "SELECT COUNT(*) AS count FROM kussin_chatgpt_content_creator_queue";
+            $sQuery .= $this->_getSqlWhere();
+
+            $oResult = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC)->select($sQuery);
+
+            if ($oResult != false && $oResult->count() > 0) {
+                $aData = $oResult->getFields();
+
+                $this->_iNumberOfPages = ceil($aData['count'] / $this->_getPageLimit());
+            }
+        }
+
+        return $this->_iNumberOfPages;
     }
 }
