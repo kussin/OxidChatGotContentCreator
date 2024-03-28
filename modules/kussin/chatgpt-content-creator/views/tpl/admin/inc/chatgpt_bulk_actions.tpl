@@ -15,7 +15,18 @@
 </div>
 
 <div class="kussin-chatgpt-pagination row">
-    <div class="kussin-placeholder col s6">&nbsp;</div>
+    <div class="kussin-chatgpt-pagination-actions input-field col s3">
+        [{if $has_actions}]
+            <select name="actions" id="actions" title="[{oxmultilang ident="KUSSIN_CHATGPT_BULK_ACTION_ACTIONS_TITLE"}]" onchange="Javascript:document.myedit.fnc.value='actions';Javascript:document.myedit.submit();">
+                [{foreach from=$actions item=aAction}]
+                    [{assign var="sLabel" value="KUSSIN_CHATGPT_BULK_ACTION_ACTIONS_`$aAction.value`"}]
+                    <option value="[{$aAction.value}]" [{if $aAction.selected}]selected="SELECTED"[{/if}]>[{oxmultilang ident=$sLabel}]</option>
+                [{/foreach}]
+            </select>
+            <label for="page_limit">[{oxmultilang ident="KUSSIN_CHATGPT_BULK_ACTION_ACTIONS_LABEL"}]</label>
+        [{/if}]
+    </div>
+    <div class="kussin-placeholder col s3">&nbsp;</div>
     <div class="kussin-chatgpt-pagination-limits input-field col s2">
         <select name="page_limit" id="page_limit" title="[{oxmultilang ident="KUSSIN_CHATGPT_BULK_ACTION_PAGE_LIMIT_TITLE"}]" onchange="Javascript:document.myedit.fnc.value='page_limit';Javascript:document.myedit.submit();">
             [{foreach from=$page_limits item=aPageLimit}]

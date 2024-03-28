@@ -49,7 +49,7 @@ function editThis( sID )
     <input type="hidden" name="oxparentid" value="[{$oxparentid}]">
     <input type="hidden" name="editval[article__oxid]" value="[{$oxid}]">
 
-    <div class="kussin-chatgpt-wrapper" id="kussin-chatgpt-bulk-approval">
+    <div class="kussin-chatgpt-wrapper materialize-overrides" id="kussin-article-chatgpt-tab">
         <h2>[{oxmultilang ident="KUSSIN_CHATGPT_CONTENT_CREATOR"}] - [{oxmultilang ident="KUSSIN_CHATGPT_ARTICLE_APPROVAL"}]</h2>
 
         <p>Will follow soon.</p>

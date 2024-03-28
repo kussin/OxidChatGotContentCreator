@@ -28,6 +28,8 @@ class Process extends FrontendController
     protected const PROCESS_NEW_STATUS = 'pending';
     protected const PROCESS_PROCESSING_STATUS = 'processing';
     protected const PROCESS_GENERATED_STATUS = 'generated';
+
+    protected const PROCESS_APPROVED_STATUS = 'approved';
     protected const PROCESS_COMPLETE_STATUS = 'complete';
     protected const PROCESS_CANCELED_STATUS = 'cancaled';
     protected const PROCESS_ERROR_STATUS = 'error';
@@ -221,7 +223,7 @@ class Process extends FrontendController
     protected function _replaceContent() {
         $iLimit = (int) Registry::getConfig()->getConfigParam('iKussinChatGptProcessLimitMaxReplacements');
 
-        $sQuery = 'SELECT `id`, `object`, `object_id`, `field`, `shop_id`, `lang_id`, `generated` FROM kussin_chatgpt_content_creator_queue WHERE ( (`generated` IS NOT NULL) AND (`generated` NOT LIKE "") ) AND (`status` = "' . self::PROCESS_GENERATED_STATUS . '") ORDER BY `updated_at` ASC LIMIT ' . $iLimit . ';';
+        $sQuery = 'SELECT `id`, `object`, `object_id`, `field`, `shop_id`, `lang_id`, `generated` FROM kussin_chatgpt_content_creator_queue WHERE ( (`generated` IS NOT NULL) AND (`generated` NOT LIKE "") ) AND (`status` = "' . self::PROCESS_APPROVED_STATUS . '") ORDER BY `updated_at` ASC LIMIT ' . $iLimit . ';';
 
         foreach ($this->_getCustomDbResult($sQuery) as $aItem) {
             $oObject = $this->_getOxidObject($aItem[1]);

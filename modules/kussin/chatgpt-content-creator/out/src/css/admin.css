@@ -1,3 +1,9 @@
+.bulk-approval#kussin-article-chatgpt-bulk-approval table.kussin-chatgpt-grid tr th label span,
+.bulk-approval#kussin-article-chatgpt-bulk-approval table.kussin-chatgpt-grid tr td label span {
+  width: 0px;
+  color: rgba(255, 255, 255, 0);
+  white-space: nowrap;
+}
 .kussin-chatgpt-pagination .kussin-chatgpt-pagination-pager ul li.kussin-chatgpt-pagination-pager-goto input[type="number"] {
   width: 50px;
 }
@@ -10,6 +16,12 @@
 }
 body .kussin-chatgpt-wrapper {
   /* CHATGPT VIEWS */
+}
+body .kussin-chatgpt-wrapper#kussin-article-chatgpt-bulk-approval table.kussin-chatgpt-grid tr th label span,
+body .kussin-chatgpt-wrapper#kussin-article-chatgpt-bulk-approval table.kussin-chatgpt-grid tr td label span {
+  width: 0px;
+  color: rgba(255, 255, 255, 0);
+  white-space: nowrap;
 }
 html body .materialize-overrides h2 {
   font-size: 1.5em;

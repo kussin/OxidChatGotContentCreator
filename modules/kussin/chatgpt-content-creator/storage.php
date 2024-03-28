@@ -5,6 +5,15 @@ $aStorageDefaults = array(
     'admin' => array(
         'chatgpt_bulk_approval' => array(
             'chatgpt_bulk_actions' => array(
+                'actions' => array(
+                    ['value' => NULL, 'selected' => true],
+                    ['value' => 'status__pending', 'selected' => false],
+                    ['value' => 'status__processing', 'selected' => false],
+                    ['value' => 'status__generated', 'selected' => false],
+                    ['value' => 'status__approved', 'selected' => false],
+                    ['value' => 'status__canceled', 'selected' => false],
+                    ['value' => 'status__skipped', 'selected' => false],
+                ),
                 'page' => 0,
                 'page_limits' => array(
                     ['value' => 10, 'label' => '10', 'selected' => false],

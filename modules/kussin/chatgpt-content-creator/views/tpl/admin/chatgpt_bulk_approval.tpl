@@ -2,7 +2,7 @@
 [{include file="materialize.tpl"}]
 <link type="text/css" rel="stylesheet" href="[{$oViewConf->getModuleUrl('kussin','chatgpt-content-creator/out/src/css/admin.css')}]"  media="screen,projection"/>
 
-<div class="kussin-chatgpt-wrapper materialize-overrides" id="kussin-article-chatgpt-tab">
+<div class="kussin-chatgpt-wrapper materialize-overrides" id="kussin-article-chatgpt-bulk-approval">
     <h2>[{oxmultilang ident="KUSSIN_CHATGPT_CONTENT_CREATOR"}] - [{oxmultilang ident="KUSSIN_CHATGPT_BULK_APPROVAL"}]</h2>
 
     <form name="myedit" id="myedit" action="[{ $oViewConf->getSelfLink() }]" method="post">
@@ -38,7 +38,12 @@
             <tbody>
                 [{foreach from=$grid item=aRow}]
                     <tr>
-                        <td><input class="edittext" type="checkbox" name="editval[[{$aRow.id}]]" value="1"></td>
+                        <td>
+                            <label for="editval[[{$aRow.id}]]">
+                                <input class="edittext" type="checkbox" name="editval[[{$aRow.id}]]" id="editval[[{$aRow.id}]]" value="1">
+                                <span>[{oxmultilang ident="KUSSIN_CHATGPT_BULK_ACTION_ACTIONS_CHECKBOX_LABEL"}]</span>
+                            </label>
+                        </td>
                         <td>[{$aRow.id}]</td>
                         <td>[{$aRow.object}]</td>
                         <td>[{$aRow.name}]</td>
