@@ -33,6 +33,7 @@
                     <th>[{oxmultilang ident="KUSSIN_CHATGPT_BULK_APPROVAL_TABLE_HEADER_STATUS"}]</th>
                     <th>[{oxmultilang ident="KUSSIN_CHATGPT_BULK_APPROVAL_TABLE_HEADER_CREATED_AT"}]</th>
                     <th>[{oxmultilang ident="KUSSIN_CHATGPT_BULK_APPROVAL_TABLE_HEADER_UPDATED_AT"}]</th>
+                    <th>&nbsp;</th>
                 </tr>
             </thead>
             <tbody>
@@ -58,6 +59,13 @@
                         <td>[{$aRow.status}]</td>
                         <td>[{$aRow.created_at}]</td>
                         <td>[{$aRow.updated_at}]</td>
+                        <td>
+                            [{if $aRow.has_preview}]
+                                <a href="[{$aRow.link}]" target="_blank" title="[{oxmultilang ident="KUSSIN_CHATGPT_BULK_APPROVAL_TABLE_PREVIEW_TITLE"}]">
+                                    <i class="material-icons">search</i>
+                                </a>
+                            [{/if}]
+                        </td>
                     </tr>
                 [{/foreach}]
             </tbody>

@@ -131,6 +131,8 @@ trait GridUtilitiesTrait
     {
         $aAdditionalData = array(
             'name' => $sObjectId,
+            'has_preview' => false,
+            'link' => '',
         );
 
         // LOAD OBJECT
@@ -139,7 +141,10 @@ trait GridUtilitiesTrait
 
         switch ($sObject) {
             case 'oxarticles':
+            case 'oxartextends':
                 $aAdditionalData['name'] = $oObject->oxarticles__oxtitle->value;
+                $aAdditionalData['has_preview'] = ((bool) $oObject->oxarticles__oxactive->value && ($oObject->oxarticles__oxstock->value > 0));
+                $aAdditionalData['link'] = $oObject->getLink(NULL, true);
                 break;
 
             default:

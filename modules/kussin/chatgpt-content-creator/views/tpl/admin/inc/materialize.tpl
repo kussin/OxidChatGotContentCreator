@@ -7,3 +7,6 @@
 [{*oxscript include=$oViewConf->getModuleUrl('kussin','chatgpt-content-creator/out/src/materialize/js/init.js')*}]
 <script type="text/javascript" src="[{$oViewConf->getModuleUrl('kussin','chatgpt-content-creator/out/src/materialize/js/materialize.js')}]"></script>
 <script type="text/javascript" src="[{$oViewConf->getModuleUrl('kussin','chatgpt-content-creator/out/src/materialize/js/init.js')}]"></script>
+
+// Google Fonts
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
