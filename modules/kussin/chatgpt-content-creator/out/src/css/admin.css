@@ -1,3 +1,20 @@
+.kussin-chatgpt-pagination .kussin-chatgpt-pagination-pager ul li.kussin-chatgpt-pagination-pager-goto input[type="number"] {
+  width: 50px;
+}
+.overrides body .materialize-overrides h2 {
+  font-size: 1.5em;
+  font-weight: 700;
+}
+.overrides body .materialize-overrides ul li {
+  background: none;
+}
 body .kussin-chatgpt-wrapper {
   /* CHATGPT VIEWS */
+}
+html body .materialize-overrides h2 {
+  font-size: 1.5em;
+  font-weight: 700;
+}
+html body .materialize-overrides ul li {
+  background: none;
 }

@@ -50,6 +50,7 @@ $aModule = array(
         'article_chatgpt.tpl' => 'kussin/chatgpt-content-creator/views/tpl/admin/article_chatgpt.tpl',
 
         // INCLUDES
+        'materialize.tpl' => 'kussin/chatgpt-content-creator/views/tpl/admin/inc/materialize.tpl',
         'chatgpt_bulk_actions.tpl' => 'kussin/chatgpt-content-creator/views/tpl/admin/inc/chatgpt_bulk_actions.tpl',
     ),
 

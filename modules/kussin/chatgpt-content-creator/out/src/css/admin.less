@@ -2,6 +2,10 @@
 @import "components/admin/layout";
 @import "components/admin/article-chatgpt-tab";
 @import "components/admin/bulk-approval";
+@import "components/admin/pagination";
+
+// Overrides
+@import "components/admin/overrides";
 
 body {
   .kussin-chatgpt-wrapper {
@@ -11,4 +15,9 @@ body {
     .article-chatgpt-tab();
     .bulk-approval();
   }
+}
+
+html {
+  // Overrides
+  .overrides();
 }

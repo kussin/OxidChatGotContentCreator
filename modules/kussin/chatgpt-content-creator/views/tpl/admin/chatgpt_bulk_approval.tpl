@@ -1,7 +1,8 @@
 [{include file="headitem.tpl" title="GENERAL_ADMIN_TITLE"|oxmultilangassign}]
-<link rel="stylesheet" href="[{$oViewConf->getModuleUrl('kussin','chatgpt-content-creator/out/src/css/admin.css')}]">
+[{include file="materialize.tpl"}]
+<link type="text/css" rel="stylesheet" href="[{$oViewConf->getModuleUrl('kussin','chatgpt-content-creator/out/src/css/admin.css')}]"  media="screen,projection"/>
 
-<div class="kussin-chatgpt-wrapper" id="kussin-article-chatgpt-tab">
+<div class="kussin-chatgpt-wrapper materialize-overrides" id="kussin-article-chatgpt-tab">
     <h2>[{oxmultilang ident="KUSSIN_CHATGPT_CONTENT_CREATOR"}] - [{oxmultilang ident="KUSSIN_CHATGPT_BULK_APPROVAL"}]</h2>
 
     <form name="myedit" id="myedit" action="[{ $oViewConf->getSelfLink() }]" method="post">
