@@ -42,6 +42,8 @@ $aModule = array(
     'controllers' => array(
         'article_chatgpt' => Kussin\ChatGpt\Controller\Admin\ArticleChatGPT::class,
         'chatgpt_bulk_approval' => Kussin\ChatGpt\Controller\Admin\ChatGPTBulkApproval::class,
+        'chatgpt_popup' => Kussin\ChatGpt\Controller\ChatGPTPopup::class,
+        'chatgpt_preview' => Kussin\ChatGpt\Controller\ChatGPTPreview::class,
         'process' => Kussin\ChatGpt\Cron\Process::class,
     ),
 
@@ -52,6 +54,12 @@ $aModule = array(
         // INCLUDES
         'materialize.tpl' => 'kussin/chatgpt-content-creator/views/tpl/admin/inc/materialize.tpl',
         'chatgpt_bulk_actions.tpl' => 'kussin/chatgpt-content-creator/views/tpl/admin/inc/chatgpt_bulk_actions.tpl',
+
+        // POPUP
+        'chatgpt_popup.tpl' => 'kussin/chatgpt-content-creator/views/tpl/chatgpt_popup.tpl',
+
+        // IFRAME
+        'chatgpt_preview.tpl' => 'kussin/chatgpt-content-creator/views/tpl/chatgpt_preview.tpl',
     ),
 
     'blocks' => array(

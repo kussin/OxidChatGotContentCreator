@@ -1,0 +1,54 @@
+// Theme components
+
+// Overrides
+
+body {
+  .kussin-chatgpt-wrapper {
+
+    &#kussin-chatgpt-popup {
+
+      iframe.kussin-chatgpt-preview-iframe {
+        margin: 25px 0;
+        width: 100%;
+        height: 420px;
+
+        &#kussin-chatgpt-preview-iframe {
+
+          &[approved="false"] {
+          }
+          &[approved="true"] {
+            opacity: 0.5;
+          }
+        }
+      }
+
+      form#myedit {
+
+        fieldset {
+          overflow: hidden;
+
+          input[type="submit"] {
+            display: block;
+            margin-right: 10px;
+            float: left;
+
+            &#oRegenerateKussinChatGptButton {
+
+            }
+            &#oOptimizeKussinChatGptButton {
+
+            }
+            &#oApproveKussinChatGptButton {
+              margin: 0;
+              float: right;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+html {
+  // Overrides
+}

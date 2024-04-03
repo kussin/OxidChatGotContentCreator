@@ -1,0 +1,1 @@
+<div class="kussin-chatgpt-wrapper" id="kussin-chatgpt-preview">[{$generated}]</div>

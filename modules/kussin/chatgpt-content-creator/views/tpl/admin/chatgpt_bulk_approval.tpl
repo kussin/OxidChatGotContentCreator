@@ -56,7 +56,13 @@
                         <td>[{$aRow.max_tokens}]</td>
                         <td>[{$aRow.temperature}]</td>
                         <td>[{$aRow.process_ip}]</td>
-                        <td>[{$aRow.status}]</td>
+                        <td>
+                            [{if $aRow.content|count_characters >= 15}]
+                                <a href="#" onClick="KussinChatGPTPopup=window.open('[{$oViewConf->getSelfLink()|cat:"cl=chatgpt_popup"|cat:"&cgptid="|cat:$aRow.id}]','KussinChatGPTPopup','width=1024,height=650'); return false;">[{$aRow.status}]</a>
+                            [{else}]
+                                [{$aRow.status}]
+                            [{/if}]
+                        </td>
                         <td>[{$aRow.created_at}]</td>
                         <td>[{$aRow.updated_at}]</td>
                         <td>

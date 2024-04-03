@@ -8,6 +8,7 @@ use OxidEsales\Eshop\Core\Registry;
 trait GridUtilitiesTrait
 {
     use LoggerTrait;
+    use OxidObjectsTrait;
     use StorageTrait;
 
     private $_iPageLimit = NULL;
@@ -116,7 +117,7 @@ trait GridUtilitiesTrait
 
                 $aGrid[] = array_merge(
                     $aData,
-                    $this->_getAdditionalData($aData['object'], $aData['object_id'])
+                    $this->_getAdditionalData($aData['object'], $aData['object_id'], $aData['lang_id'])
                 );
 
                 //do something
@@ -127,7 +128,7 @@ trait GridUtilitiesTrait
         return $aGrid;
     }
 
-    protected function _getAdditionalData($sObject, $sObjectId)
+    protected function _getAdditionalData($sObject, $sObjectId, $iLang = 0)
     {
         $aAdditionalData = array(
             'name' => $sObjectId,
@@ -142,7 +143,7 @@ trait GridUtilitiesTrait
         switch ($sObject) {
             case 'oxarticles':
             case 'oxartextends':
-                $aAdditionalData['name'] = $oObject->oxarticles__oxtitle->value;
+                $aAdditionalData['name'] = $this->_getObjectTitle($oObject, $sObjectId, $sObject, $iLang);
                 $aAdditionalData['has_preview'] = ((bool) $oObject->oxarticles__oxactive->value && ($oObject->oxarticles__oxstock->value > 0));
                 $aAdditionalData['link'] = $oObject->getLink(NULL, true);
                 break;
