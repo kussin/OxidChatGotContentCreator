@@ -1,13 +1,37 @@
 <div class="kussin-chatgpt-filtering row">
-    <div class="kussin-chatgpt-pagination-search col s5">
-        [{* TODO: Add fulltext search *}]
+    <div class="kussin-chatgpt-filtering-search col s5">
+        <fieldset>
+            <legend>[{oxmultilang ident="KUSSIN_CHATGPT_BULK_ACTION_SEARCH_LEGEND"}]</legend>
 
+            <div class="row">
+                <div class="col s10">
+                    <input type="text" name="searchterm" id="searchterm" size="20" maxlength="128" title="[{oxmultilang ident="KUSSIN_CHATGPT_BULK_ACTION_SEARCHTERM_TITLE"}]" value="[{$searchterm}]" placeholder="[{oxmultilang ident="KUSSIN_CHATGPT_BULK_ACTION_SEARCH_FIELD_PLACEHOLDER"}]">
+                </div>
+                <div class="col s2">
+                    <button type="button" onclick="Javascript:document.myedit.fnc.value='search';Javascript:document.myedit.submit();" class="btn">
+                        [{oxmultilang ident="KUSSIN_CHATGPT_BULK_ACTION_SEARCH_BUTTON_LABEL"}]
+                    </button>
+                </div>
+            </div>
+        </fieldset>
     </div>
-    <div class="kussin-chatgpt-pagination-asn col s5">
-        [{* TODO: Add asn *}]
-
+    <div class="kussin-chatgpt-filtering-asn col s5">
+        <div class="row">
+            <div class="kussin-chatgpt-filtering-asn-manufacturer input-field col s6">
+                <select name="asn_manufacturer" id="asn_manufacturer" title="[{oxmultilang ident="KUSSIN_CHATGPT_BULK_ACTION_ASN_MANUFACTURER_TITLE"}]" onchange="Javascript:document.myedit.fnc.value='manufacturer';Javascript:document.myedit.submit();">
+                    [{* TODO: Add manufacturer options *}]
+                </select>
+                <label for="asn_manufacturer">[{oxmultilang ident="KUSSIN_CHATGPT_BULK_ACTION_ASN_MANUFACTURER_LABEL"}]</label>
+            </div>
+            <div class="kussin-chatgpt-filtering-asn-category input-field col s6">
+                <select name="asn_category" id="asn_category" title="[{oxmultilang ident="KUSSIN_CHATGPT_BULK_ACTION_ASN_CATEGORY_TITLE"}]" onchange="Javascript:document.myedit.fnc.value='category';Javascript:document.myedit.submit();">
+                    [{* TODO: Add category options *}]
+                </select>
+                <label for="asn_category">[{oxmultilang ident="KUSSIN_CHATGPT_BULK_ACTION_ASN_CATEGORY_LABEL"}]</label>
+            </div>
+        </div>
     </div>
-    <div class="kussin-chatgpt-pagination-reset col s2">
+    <div class="kussin-chatgpt-filtering-reset col s2">
         <button type="button" onclick="Javascript:document.myedit.fnc.value='reset';Javascript:document.myedit.submit();" class="btn">
             [{oxmultilang ident="KUSSIN_CHATGPT_BULK_ACTION_RESET_LABEL"}]
         </button>

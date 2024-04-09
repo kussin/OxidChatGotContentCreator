@@ -24,6 +24,9 @@
   color: rgba(255, 255, 255, 0);
   white-space: nowrap;
 }
+.kussin-chatgpt-filtering fieldset > .row {
+  margin-bottom: 0;
+}
 .kussin-chatgpt-pagination .kussin-chatgpt-pagination-pager ul li.kussin-chatgpt-pagination-pager-goto input[type="number"] {
   width: 50px;
 }

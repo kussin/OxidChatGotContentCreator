@@ -157,7 +157,14 @@ trait GridUtilitiesTrait
 
     private function _getSqlWhere()
     {
-        return " ";
+        $sWhere = " ";
+
+        if ($this->_sSearchTerm !== NULL) {
+            // TODO: Add search functionality
+
+        }
+
+        return $sWhere;
     }
 
     private function _getSqlOrderBy()

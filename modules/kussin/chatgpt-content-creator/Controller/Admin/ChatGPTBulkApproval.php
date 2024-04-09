@@ -17,6 +17,7 @@ class ChatGPTBulkApproval extends AdminController
     use OxidObjectsTrait;
     use StorageTrait;
 
+    private $_sSearchTerm = false;
     private $_bActions = false;
 
     protected $_sThisTemplate = 'chatgpt_bulk_approval.tpl';
@@ -40,6 +41,23 @@ class ChatGPTBulkApproval extends AdminController
         $this->_aViewData['grid'] =  $this->_getGrid();
 
         return $this->_sThisTemplate;
+    }
+
+    public function search()
+    {
+        $this->_sSearchTerm = trim(Registry::getRequest()->getRequestEscapedParameter('searchterm'));
+
+        // TODO: Add search functionality
+    }
+
+    public function manufacturer()
+    {
+        // TODO: Add manufacturer functionality
+    }
+
+    public function category()
+    {
+        // TODO: Add category functionality
     }
 
     public function actions()
