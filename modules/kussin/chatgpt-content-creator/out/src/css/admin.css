@@ -1,3 +1,23 @@
+.article-chatgpt-tab#kussin-article-chatgpt-tab iframe.kussin-chatgpt-preview-iframe {
+  margin: 25px 0;
+  width: 100%;
+  height: 280px;
+}
+.article-chatgpt-tab#kussin-article-chatgpt-tab iframe.kussin-chatgpt-preview-iframe#kussin-chatgpt-preview-iframe[approved="true"] {
+  opacity: 0.5;
+}
+.article-chatgpt-tab#kussin-article-chatgpt-tab form#myedit fieldset {
+  overflow: hidden;
+}
+.article-chatgpt-tab#kussin-article-chatgpt-tab form#myedit fieldset input[type="submit"] {
+  display: block;
+  margin-right: 10px;
+  float: left;
+}
+.article-chatgpt-tab#kussin-article-chatgpt-tab form#myedit fieldset input[type="submit"]#oApproveKussinChatGptButton {
+  margin: 0;
+  float: right;
+}
 .bulk-approval#kussin-article-chatgpt-bulk-approval table.kussin-chatgpt-grid tr th label span,
 .bulk-approval#kussin-article-chatgpt-bulk-approval table.kussin-chatgpt-grid tr td label span {
   width: 0px;
@@ -16,6 +36,26 @@
 }
 body .kussin-chatgpt-wrapper {
   /* CHATGPT VIEWS */
+}
+body .kussin-chatgpt-wrapper#kussin-article-chatgpt-tab iframe.kussin-chatgpt-preview-iframe {
+  margin: 25px 0;
+  width: 100%;
+  height: 280px;
+}
+body .kussin-chatgpt-wrapper#kussin-article-chatgpt-tab iframe.kussin-chatgpt-preview-iframe#kussin-chatgpt-preview-iframe[approved="true"] {
+  opacity: 0.5;
+}
+body .kussin-chatgpt-wrapper#kussin-article-chatgpt-tab form#myedit fieldset {
+  overflow: hidden;
+}
+body .kussin-chatgpt-wrapper#kussin-article-chatgpt-tab form#myedit fieldset input[type="submit"] {
+  display: block;
+  margin-right: 10px;
+  float: left;
+}
+body .kussin-chatgpt-wrapper#kussin-article-chatgpt-tab form#myedit fieldset input[type="submit"]#oApproveKussinChatGptButton {
+  margin: 0;
+  float: right;
 }
 body .kussin-chatgpt-wrapper#kussin-article-chatgpt-bulk-approval table.kussin-chatgpt-grid tr th label span,
 body .kussin-chatgpt-wrapper#kussin-article-chatgpt-bulk-approval table.kussin-chatgpt-grid tr td label span {

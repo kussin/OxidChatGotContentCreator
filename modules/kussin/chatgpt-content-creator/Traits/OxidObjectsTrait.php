@@ -39,12 +39,12 @@ trait OxidObjectsTrait
         return strtolower($sObjectId . '__' . $sFieldId . $sLangSuffix);
     }
 
-    private function _getChatGPTData($id): array
+    private function _getChatGPTData($iId): array
     {
-        if (!isset($this->_aChatGPTData[$id])) {
+        if (!isset($this->_aChatGPTData[$iId]) && ($iId > 0)) {
 
             // BUILD SQL QUERY
-            $sQuery  = 'SELECT * FROM kussin_chatgpt_content_creator_queue WHERE id = "' . $id . '" LIMIT 1';
+            $sQuery  = 'SELECT * FROM kussin_chatgpt_content_creator_queue WHERE id = "' . $iId . '" LIMIT 1';
 
             $oResult = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC)->select($sQuery);
 
@@ -52,7 +52,7 @@ trait OxidObjectsTrait
                 while (!$oResult->EOF) {
                     $aData = $oResult->getFields();
 
-                    $this->_aChatGPTData[$id] = $aData;
+                    $this->_aChatGPTData[$iId] = $aData;
                     break;
 
                     //do something
@@ -61,7 +61,7 @@ trait OxidObjectsTrait
             }
         }
 
-        return $this->_aChatGPTData[$id] ?? array();
+        return $this->_aChatGPTData[$iId] ?? array();
     }
 
     protected function _getObjectTitle($oObject, $sObjectId, $sObject = 'oxarticles', $iLang = 0): string
@@ -82,5 +82,27 @@ trait OxidObjectsTrait
             default:
                 return $sObjectId;
         }
+    }
+
+    protected function _isObjectApproved($iId) : bool
+    {
+        // LOAD DATA
+        $aData = $this->_getChatGPTData($iId);
+
+        if (!isset($aData['status'])) {
+            return false;
+        }
+
+        return ($aData['status'] == 'approved') || ($aData['status'] == 'complete');
+    }
+
+    protected function _areButtonsDisabled($iId) : bool
+    {
+        if ($iId <= 0) {
+            // ERROR
+            return TRUE;
+        }
+
+        return $this->_isObjectApproved($iId);
     }
 }

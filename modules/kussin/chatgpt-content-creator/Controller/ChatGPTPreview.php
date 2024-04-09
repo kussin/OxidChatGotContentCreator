@@ -9,9 +9,9 @@ use OxidEsales\EshopCommunity\Application\Controller\Admin\AdminController;
 
 class ChatGPTPreview extends AdminController
 {
-
     use ChatGPTProcessPromptsTrait;
     use OxidObjectsTrait;
+
     protected $_sThisTemplate = 'chatgpt_preview.tpl';
 
     public function render()
@@ -26,10 +26,11 @@ class ChatGPTPreview extends AdminController
 
         if (
             !is_array($aData)
-            || (isset($aData['id']) != $iChatGPTId)
+            || !isset($aData['id'])
+            || ($aData['id'] != $iChatGPTId)
         ) {
             // ERROR
-            die('Invalid ChatGPT ID');
+            die('ERROR: Invalid ChatGPT ID ' . $iChatGPTId);
         }
 
         $this->_aViewData['generated'] = $this->_decodeProcessContent($aData['generated']);
