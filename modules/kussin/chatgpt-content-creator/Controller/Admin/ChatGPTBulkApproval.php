@@ -31,6 +31,7 @@ class ChatGPTBulkApproval extends AdminController
         $this->_bActions = (count($aActions) > 0);
 
         // VIEW DATA
+        $this->_aViewData['searchterm'] = $this->_getStorageKey('admin')['chatgpt_bulk_approval']['chatgpt_bulk_actions']['searchterm'];
         $this->_aViewData['has_actions'] = $this->_bActions;
         $this->_aViewData['actions'] = $aActions;
         $this->_aViewData['page_limits'] =  $this->_getStorageKey('admin')['chatgpt_bulk_approval']['chatgpt_bulk_actions']['page_limits'];
@@ -45,7 +46,10 @@ class ChatGPTBulkApproval extends AdminController
 
     public function search()
     {
-        $this->_sSearchTerm = trim(Registry::getRequest()->getRequestEscapedParameter('searchterm'));
+        $sSearchTerm = trim(Registry::getRequest()->getRequestEscapedParameter('searchterm'));
+
+        // SAVE SEARCH TERM
+        $this->_setStorageKey('admin/chatgpt_bulk_approval/chatgpt_bulk_actions/searchterm', $sSearchTerm);
 
         // TODO: Add search functionality
     }

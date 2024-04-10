@@ -99,7 +99,7 @@ trait GridUtilitiesTrait
         $this->_setStorageKey('admin/chatgpt_bulk_approval/chatgpt_bulk_actions/page', $iPage);
     }
 
-    private function _getGrid()
+    private function _getGrid(): array
     {
         $aGrid = array();
 
@@ -128,7 +128,7 @@ trait GridUtilitiesTrait
         return $aGrid;
     }
 
-    protected function _getAdditionalData($sObject, $sObjectId, $iLang = 0)
+    protected function _getAdditionalData($sObject, $sObjectId, $iLang = 0): array
     {
         $aAdditionalData = array(
             'name' => $sObjectId,
@@ -155,19 +155,58 @@ trait GridUtilitiesTrait
         return $aAdditionalData;
     }
 
-    private function _getSqlWhere()
+    private function _getSqlWhere() : string
     {
-        $sWhere = " ";
+        // LOAD SEARCH TERM
+        $sSearchTerm = $this->_getStorageKey('admin')['chatgpt_bulk_approval']['chatgpt_bulk_actions']['searchterm'];
 
-        if ($this->_sSearchTerm !== NULL) {
-            // TODO: Add search functionality
+        if ($sSearchTerm !== false) {
+            $aObjectIdsFromOxarticles = $this->_searchIn(
+                'oxarticles',
+                ['OXID', 'OXARTNUM', 'OXEAN', 'OXMPN', 'OXTITLE', ],
+                $sSearchTerm
+            );
 
+            // TODO: Add addtional search db tables & fields
+
+
+            // BUILD WHERE CLAUSE
+            return " WHERE `object_id` IN ('" . implode("', '", $aObjectIdsFromOxarticles) . "')";
         }
 
-        return $sWhere;
+        return " ";
     }
 
-    private function _getSqlOrderBy()
+    protected function _searchIn($sTable, $aFields, $sSearchTerm) : array
+    {
+        $aOxids = array();
+
+        // PEPARE WHERE CLAUSE
+        $aWhere = array();
+        foreach ($aFields as $sField) {
+            $aWhere[] = $sField . " LIKE '%" . $sSearchTerm . "%'";
+        }
+
+        // BUILD SQL QUERY
+        $sQuery = "SELECT OXID FROM " . $sTable . " WHERE " . implode(" OR ", $aWhere);
+
+        $oResult = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC)->select($sQuery);
+
+        if ($oResult != false && $oResult->count() > 0) {
+            while (!$oResult->EOF) {
+                $aData = $oResult->getFields();
+
+                $aOxids[] = $aData['OXID'];
+
+                //do something
+                $oResult->fetchRow();
+            }
+        }
+
+        return $aOxids;
+    }
+
+    private function _getSqlOrderBy() : string
     {
         $aSortings = $this->_getStorageKey('admin')['chatgpt_bulk_approval']['chatgpt_bulk_actions']['sorting'];
 
@@ -183,7 +222,7 @@ trait GridUtilitiesTrait
         return " ORDER BY updated_at DESC";
     }
 
-    private function _getSqlLimit()
+    private function _getSqlLimit() : string
     {
         $iPage = $this->_getStorageKey('admin')['chatgpt_bulk_approval']['chatgpt_bulk_actions']['page'];
         $iPageLimit = $this->_getPageLimit();
@@ -193,7 +232,7 @@ trait GridUtilitiesTrait
         return " LIMIT " . $iOffset . ", " . $iPageLimit;
     }
 
-    private function _getPageLimit()
+    private function _getPageLimit() : int
     {
         if ($this->_iPageLimit === NULL) {
             // FALLBACK
@@ -213,7 +252,7 @@ trait GridUtilitiesTrait
         return $this->_iPageLimit;
     }
 
-    private function _getNumberOfPages()
+    private function _getNumberOfPages() : int
     {
         if ($this->_iNumberOfPages === NULL) {
             $this->_iNumberOfPages = 0;
