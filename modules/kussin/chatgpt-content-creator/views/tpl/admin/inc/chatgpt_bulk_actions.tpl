@@ -19,13 +19,21 @@
         <div class="row">
             <div class="kussin-chatgpt-filtering-asn-manufacturer input-field col s6">
                 <select name="asn_manufacturer" id="asn_manufacturer" title="[{oxmultilang ident="KUSSIN_CHATGPT_BULK_ACTION_ASN_MANUFACTURER_TITLE"}]" onchange="Javascript:document.myedit.fnc.value='manufacturer';Javascript:document.myedit.submit();">
-                    [{* TODO: Add manufacturer options *}]
+                    <option value="">[{oxmultilang ident="KUSSIN_CHATGPT_BULK_ACTION_ASN_MANUFACTURER_OPTION_DEFAULT"}]</option>
+
+                    [{foreach from=$manufacturer item=aManufacturer}]
+                        <option value="[{$aManufacturer.value}]" [{if $aManufacturer.selected}]selected="SELECTED"[{/if}] data-status="[{$aManufacturer.status}]">[{$aManufacturer.label}]</option>
+                    [{/foreach}]
                 </select>
                 <label for="asn_manufacturer">[{oxmultilang ident="KUSSIN_CHATGPT_BULK_ACTION_ASN_MANUFACTURER_LABEL"}]</label>
             </div>
             <div class="kussin-chatgpt-filtering-asn-category input-field col s6">
                 <select name="asn_category" id="asn_category" title="[{oxmultilang ident="KUSSIN_CHATGPT_BULK_ACTION_ASN_CATEGORY_TITLE"}]" onchange="Javascript:document.myedit.fnc.value='category';Javascript:document.myedit.submit();">
-                    [{* TODO: Add category options *}]
+                    <option value="">[{oxmultilang ident="KUSSIN_CHATGPT_BULK_ACTION_ASN_CATEGORY_OPTION_DEFAULT"}]</option>
+
+                    [{foreach from=$categories item=aCategory}]
+                        <option value="[{$aCategory.value}]" [{if $aCategory.selected}]selected="SELECTED"[{/if}] data-status="[{$aCategory.status}]">[{$aCategory.label}]</option>
+                    [{/foreach}]
                 </select>
                 <label for="asn_category">[{oxmultilang ident="KUSSIN_CHATGPT_BULK_ACTION_ASN_CATEGORY_LABEL"}]</label>
             </div>

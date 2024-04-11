@@ -32,6 +32,8 @@ class ChatGPTBulkApproval extends AdminController
 
         // VIEW DATA
         $this->_aViewData['searchterm'] = $this->_getStorageKey('admin')['chatgpt_bulk_approval']['chatgpt_bulk_actions']['searchterm'];
+        $this->_aViewData['manufacturer'] = $this->_getManufacturerList();
+        $this->_aViewData['categories'] = $this->_getCategoryList();
         $this->_aViewData['has_actions'] = $this->_bActions;
         $this->_aViewData['actions'] = $aActions;
         $this->_aViewData['page_limits'] =  $this->_getStorageKey('admin')['chatgpt_bulk_approval']['chatgpt_bulk_actions']['page_limits'];
@@ -50,18 +52,64 @@ class ChatGPTBulkApproval extends AdminController
 
         // SAVE SEARCH TERM
         $this->_setStorageKey('admin/chatgpt_bulk_approval/chatgpt_bulk_actions/searchterm', $sSearchTerm);
-
-        // TODO: Add search functionality
     }
 
     public function manufacturer()
     {
+        $sManufacturerId = trim(Registry::getRequest()->getRequestEscapedParameter('asn_manufacturer'));
+
+        // SAVE MANUFACTURER ID
+        $this->_setStorageKey('admin/chatgpt_bulk_approval/chatgpt_bulk_actions/manufacturer', $sManufacturerId);
+
         // TODO: Add manufacturer functionality
+    }
+
+    private function _getManufacturerList() : array
+    {
+        $aManufacturerList = array();
+
+        // CURRENT SELECTED MANUFACTURER
+        $sCurrentSelectedManufacturerId = $this->_getStorageKey('admin')['chatgpt_bulk_approval']['chatgpt_bulk_actions']['manufacturer'];
+
+        // BUILD SQL QUERY
+        $sQuery  = "SELECT DISTINCT `OXID`, `OXACTIVE`, `OXTITLE` FROM oxmanufacturers ORDER BY `OXTITLE` ASC";
+
+        $oResult = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC)->select($sQuery);
+
+        if ($oResult != false && $oResult->count() > 0) {
+            while (!$oResult->EOF) {
+                $aData = $oResult->getFields();
+
+                $aManufacturerList[] = array(
+                    'value' => $aData['OXID'],
+                    'selected' => ($sCurrentSelectedManufacturerId === $aData['OXID']),
+                    'status' => (int) $aData['OXACTIVE'] === 1 ? '1' : '0',
+                    'label' => $aData['OXTITLE'],
+                );
+
+                //do something
+                $oResult->fetchRow();
+            }
+        }
+
+        return $aManufacturerList;
     }
 
     public function category()
     {
+        $sCategoryId = trim(Registry::getRequest()->getRequestEscapedParameter('asn_category'));
+
+        // SAVE CATEGORY ID
+        $this->_setStorageKey('admin/chatgpt_bulk_approval/chatgpt_bulk_actions/category', $sCategoryId);
+
         // TODO: Add category functionality
+    }
+
+    private function _getCategoryList()
+    {
+        // TODO: Add category list
+
+        return array();
     }
 
     public function actions()

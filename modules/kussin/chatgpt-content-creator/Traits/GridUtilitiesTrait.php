@@ -160,24 +160,67 @@ trait GridUtilitiesTrait
         // LOAD SEARCH TERM
         $sSearchTerm = $this->_getStorageKey('admin')['chatgpt_bulk_approval']['chatgpt_bulk_actions']['searchterm'];
 
-        if ($sSearchTerm !== false) {
-            $aObjectIdsFromOxarticles = $this->_searchIn(
-                'oxarticles',
-                ['OXID', 'OXARTNUM', 'OXEAN', 'OXMPN', 'OXTITLE', ],
-                $sSearchTerm
-            );
+        // LOAD MANUFACTURER ID
+        $sManufacturerId = $this->_getStorageKey('admin')['chatgpt_bulk_approval']['chatgpt_bulk_actions']['manufacturer'];
+
+        // LOAD CATEGORY ID
+        $sCategoryId = $this->_getStorageKey('admin')['chatgpt_bulk_approval']['chatgpt_bulk_actions']['category'];
+
+        if (
+            ($sSearchTerm !== '')
+            || ($sManufacturerId !== false)
+            || ($sCategoryId !== false)
+        ) {
+            // INIT
+            $aObjectIds = array();
+
+            if ($sSearchTerm !== ''){
+                $aObjectIdsFromOxarticles = $this->_searchIn(
+                    'oxarticles',
+                    ['OXID', 'OXARTNUM', 'OXEAN', 'OXMPN', 'OXTITLE', ],
+                    $sSearchTerm
+                );
+
+                // HANDOVER
+                $aObjectIds = $aObjectIdsFromOxarticles;
+            }
 
             // TODO: Add addtional search db tables & fields
 
 
+            // TODO: Add search functionality for manufacturer
+            if ($sManufacturerId !== false) {
+                $aObjectIdsFromOxmanufacturer = $this->_searchIn(
+                    'oxarticles',
+                    ['OXMANUFACTURERID'],
+                    $sManufacturerId
+                );
+
+                // HANDOVER
+                $aObjectIds = (count($aObjectIds) > 0) ? array_intersect($aObjectIds, $aObjectIdsFromOxmanufacturer) : $aObjectIdsFromOxmanufacturer;
+            }
+
+            // TODO: Add search functionality for categories
+            if ($sCategoryId !== false) {
+//                $aObjectIdsFromOxobject2category = $this->_searchIn(
+//                    'oxobject2category',
+//                    ['OXCATNID'],
+//                    $sCategoryId,
+//                    'OXOBJECTID'
+//                );
+
+                // HANDOVER
+//                $aObjectIds = (count($aObjectIds) > 0) ? array_intersect($aObjectIds, $aObjectIdsFromOxobject2category) : $aObjectIdsFromOxobject2category;
+            }
+
             // BUILD WHERE CLAUSE
-            return " WHERE `object_id` IN ('" . implode("', '", $aObjectIdsFromOxarticles) . "')";
+            return " WHERE `object_id` IN ('" . implode("', '", $aObjectIds) . "')";
         }
 
         return " ";
     }
 
-    protected function _searchIn($sTable, $aFields, $sSearchTerm) : array
+    protected function _searchIn($sTable, $aFields, $sSearchTerm, $sReturnedFiled = 'OXID') : array
     {
         $aOxids = array();
 
@@ -188,7 +231,7 @@ trait GridUtilitiesTrait
         }
 
         // BUILD SQL QUERY
-        $sQuery = "SELECT OXID FROM " . $sTable . " WHERE " . implode(" OR ", $aWhere);
+        $sQuery = "SELECT " . $sReturnedFiled . " FROM " . $sTable . " WHERE " . implode(" OR ", $aWhere);
 
         $oResult = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC)->select($sQuery);
 
@@ -196,7 +239,7 @@ trait GridUtilitiesTrait
             while (!$oResult->EOF) {
                 $aData = $oResult->getFields();
 
-                $aOxids[] = $aData['OXID'];
+                $aOxids[] = $aData[$sReturnedFiled];
 
                 //do something
                 $oResult->fetchRow();
