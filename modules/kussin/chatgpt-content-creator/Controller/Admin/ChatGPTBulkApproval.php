@@ -107,9 +107,34 @@ class ChatGPTBulkApproval extends AdminController
 
     private function _getCategoryList()
     {
-        // TODO: Add category list
+        $aCategoryList = array();
 
-        return array();
+        // CURRENT SELECTED CATEGORY
+        $sCurrentSelectedCategoryId = $this->_getStorageKey('admin')['chatgpt_bulk_approval']['chatgpt_bulk_actions']['category'];
+
+        // BUILD SQL QUERY
+        $sQuery  = "SELECT DISTINCT `OXID`, `OXPARENTID`, `OXACTIVE`, `OXHIDDEN`, `OXTITLE` FROM oxcategories WHERE (`OXPARENTID` LIKE 'oxrootid') ORDER BY `OXSORT` ASC";
+
+        $oResult = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC)->select($sQuery);
+
+        if ($oResult != false && $oResult->count() > 0) {
+            while (!$oResult->EOF) {
+                $aData = $oResult->getFields();
+
+                $aCategoryList[] = array(
+                    'value' => $aData['OXID'],
+                    'selected' => ($sCurrentSelectedCategoryId === $aData['OXID']),
+                    'status' => (int) $aData['OXACTIVE'] === 1 ? '1' : '0',
+                    'hidden' => (int) $aData['OXHIDDEN'] === 1 ? '1' : '0',
+                    'label' => $aData['OXTITLE'],
+                );
+
+                //do something
+                $oResult->fetchRow();
+            }
+        }
+
+        return $aCategoryList;
     }
 
     public function actions()

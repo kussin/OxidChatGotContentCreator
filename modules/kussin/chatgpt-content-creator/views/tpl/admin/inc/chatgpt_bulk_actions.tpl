@@ -32,7 +32,7 @@
                     <option value="">[{oxmultilang ident="KUSSIN_CHATGPT_BULK_ACTION_ASN_CATEGORY_OPTION_DEFAULT"}]</option>
 
                     [{foreach from=$categories item=aCategory}]
-                        <option value="[{$aCategory.value}]" [{if $aCategory.selected}]selected="SELECTED"[{/if}] data-status="[{$aCategory.status}]">[{$aCategory.label}]</option>
+                        <option value="[{$aCategory.value}]" [{if $aCategory.selected}]selected="SELECTED"[{/if}] data-status="[{$aCategory.status}]" data-hidden="[{$aCategory.hidden}]">[{$aCategory.label}]</option>
                     [{/foreach}]
                 </select>
                 <label for="asn_category">[{oxmultilang ident="KUSSIN_CHATGPT_BULK_ACTION_ASN_CATEGORY_LABEL"}]</label>
