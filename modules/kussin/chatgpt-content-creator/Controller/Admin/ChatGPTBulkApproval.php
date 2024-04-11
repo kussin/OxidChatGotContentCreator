@@ -107,15 +107,20 @@ class ChatGPTBulkApproval extends AdminController
 
     private function _getCategoryList()
     {
-        $aCategoryList = array();
-
         // CURRENT SELECTED CATEGORY
         $sCurrentSelectedCategoryId = $this->_getStorageKey('admin')['chatgpt_bulk_approval']['chatgpt_bulk_actions']['category'];
 
-        // BUILD SQL QUERY
-        $sQuery  = "SELECT DISTINCT `OXID`, `OXPARENTID`, `OXACTIVE`, `OXHIDDEN`, `OXTITLE` FROM oxcategories WHERE (`OXPARENTID` LIKE 'oxrootid') ORDER BY `OXSORT` ASC";
+        return $this->_getSubCategoryList($sCurrentSelectedCategoryId);
+    }
 
-        $oResult = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC)->select($sQuery);
+    protected function _getSubCategoryList($sCurrentSelectedCategoryId, $sParentId = 'oxrootid')
+    {
+        $aCategoryList = array();
+
+        // BUILD SQL QUERY
+        $sQuery  = "SELECT DISTINCT `OXID`, `OXPARENTID`, `OXACTIVE`, `OXHIDDEN`, `OXTITLE` FROM oxcategories WHERE (`OXPARENTID` LIKE ?) ORDER BY `OXSORT` ASC";
+
+        $oResult = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC)->select($sQuery, array($sParentId));
 
         if ($oResult != false && $oResult->count() > 0) {
             while (!$oResult->EOF) {
@@ -127,6 +132,7 @@ class ChatGPTBulkApproval extends AdminController
                     'status' => (int) $aData['OXACTIVE'] === 1 ? '1' : '0',
                     'hidden' => (int) $aData['OXHIDDEN'] === 1 ? '1' : '0',
                     'label' => $aData['OXTITLE'],
+                    'subcategories' => $this->_getSubCategoryList($sCurrentSelectedCategoryId, $aData['OXID']),
                 );
 
                 //do something
@@ -134,7 +140,7 @@ class ChatGPTBulkApproval extends AdminController
             }
         }
 
-        return $aCategoryList;
+        return (count($aCategoryList) > 0) ? $aCategoryList : false;
     }
 
     public function actions()

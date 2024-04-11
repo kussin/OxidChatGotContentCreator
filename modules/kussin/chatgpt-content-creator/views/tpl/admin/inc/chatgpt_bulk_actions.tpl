@@ -33,6 +33,32 @@
 
                     [{foreach from=$categories item=aCategory}]
                         <option value="[{$aCategory.value}]" [{if $aCategory.selected}]selected="SELECTED"[{/if}] data-status="[{$aCategory.status}]" data-hidden="[{$aCategory.hidden}]">[{$aCategory.label}]</option>
+
+                        [{if $aCategory.subcategories}]
+                            <optgroup label="[{oxmultilang ident="KUSSIN_CHATGPT_BULK_ACTION_ASN_CATEGORY_OPTGROUP_LABEL"}]">
+                                [{foreach from=$aCategory.subcategories item=aSubcategoryLvL1}]
+                                    <option value="[{$aSubcategoryLvL1.value}]" [{if $aSubcategoryLvL1.selected}]selected="SELECTED"[{/if}] data-status="[{$aSubcategoryLvL1.status}]" data-hidden="[{$aSubcategoryLvL1.hidden}]">[{$aSubcategoryLvL1.label}]</option>
+
+                                    [{if $aSubcategoryLvL1.subcategories}]
+                                        <optgroup label="[{oxmultilang ident="KUSSIN_CHATGPT_BULK_ACTION_ASN_CATEGORY_OPTGROUP_LABEL"}]">
+                                            [{foreach from=$aSubcategoryLvL1.subcategories item=aSubcategoryLvL2}]
+                                                <option value="[{$aSubcategoryLvL2.value}]" [{if $aSubcategoryLvL2.selected}]selected="SELECTED"[{/if}] data-status="[{$aSubcategoryLvL2.status}]" data-hidden="[{$aSubcategoryLvL2.hidden}]">[{$aSubcategoryLvL2.label}]</option>
+
+                                                [{if $aSubcategoryLvL2.subcategories}]
+                                                    <optgroup label="[{oxmultilang ident="KUSSIN_CHATGPT_BULK_ACTION_ASN_CATEGORY_OPTGROUP_LABEL"}]">
+                                                        [{foreach from=$aSubcategoryLvL2.subcategories item=aSubcategoryLvL3}]
+                                                            <option value="[{$aSubcategoryLvL3.value}]" [{if $aSubcategoryLvL3.selected}]selected="SELECTED"[{/if}] data-status="[{$aSubcategoryLvL3.status}]" data-hidden="[{$aSubcategoryLvL3.hidden}]">[{$aSubcategoryLvL3.label}]</option>
+                                                        [{/foreach}]
+                                                    </optgroup>
+                                                [{/if}]
+
+                                            [{/foreach}]
+                                        </optgroup>
+                                    [{/if}]
+
+                                [{/foreach}]
+                            </optgroup>
+                        [{/if}]
                     [{/foreach}]
                 </select>
                 <label for="asn_category">[{oxmultilang ident="KUSSIN_CHATGPT_BULK_ACTION_ASN_CATEGORY_LABEL"}]</label>
