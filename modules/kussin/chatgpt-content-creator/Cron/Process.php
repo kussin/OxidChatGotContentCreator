@@ -222,8 +222,16 @@ class Process extends FrontendController
 
     protected function _replaceContent() {
         $iLimit = (int) Registry::getConfig()->getConfigParam('iKussinChatGptProcessLimitMaxReplacements');
+        $bAutoApprove = (bool) Registry::getConfig()->getConfigParam('blKussinChatGptProcessQueueAutoApprovedEnabled');
 
-        $sQuery = 'SELECT `id`, `object`, `object_id`, `field`, `shop_id`, `lang_id`, `generated` FROM kussin_chatgpt_content_creator_queue WHERE ( (`generated` IS NOT NULL) AND (`generated` NOT LIKE "") ) AND (`status` = "' . self::PROCESS_APPROVED_STATUS . '") ORDER BY `updated_at` ASC LIMIT ' . $iLimit . ';';
+        if ($bAutoApprove) {
+            // AUTO APPROVE
+            $sQuery = 'SELECT `id`, `object`, `object_id`, `field`, `shop_id`, `lang_id`, `generated` FROM kussin_chatgpt_content_creator_queue WHERE ( (`generated` IS NOT NULL) AND (`generated` NOT LIKE "") ) AND (`status` = "' . self::PROCESS_GENERATED_STATUS . '") ORDER BY `updated_at` ASC LIMIT ' . $iLimit . ';';
+
+        } else {
+            // MANUAL APPROVE (DEFAULT)
+            $sQuery = 'SELECT `id`, `object`, `object_id`, `field`, `shop_id`, `lang_id`, `generated` FROM kussin_chatgpt_content_creator_queue WHERE ( (`generated` IS NOT NULL) AND (`generated` NOT LIKE "") ) AND (`status` = "' . self::PROCESS_APPROVED_STATUS . '") ORDER BY `updated_at` ASC LIMIT ' . $iLimit . ';';
+        }
 
         foreach ($this->_getCustomDbResult($sQuery) as $aItem) {
             $oObject = $this->_getOxidObject($aItem[1]);

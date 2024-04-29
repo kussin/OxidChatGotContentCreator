@@ -34,6 +34,7 @@ $aLang = array(
     'SHOP_MODULE_iKussinChatGptProcessLimitMaxGenerations' => 'Max. data rows to generate ai content',
     'SHOP_MODULE_iKussinChatGptProcessLimitMaxReplacements' => 'Max. data rows to replace with ai content',
     'SHOP_MODULE_sKussinChatGptProcessProductAttributesForbiddenValues' => 'Comma-separated list of forbidden attribute values',
+    'SHOP_MODULE_blKussinChatGptProcessQueueAutoApprovedEnabled' => 'Enable auto publish for process queue',
 
     'SHOP_MODULE_GROUP_sKussinChatGptDebugSettings' => 'Debug settings',
     'SHOP_MODULE_blKussinChatGptDebugEnabled' => 'Enable debug mode',

@@ -258,6 +258,12 @@ $aModule = array(
             'value' => 'unknown',
         ),
         array(
+            'group' => 'sKussinChatGptProcessSettings',
+            'name' => 'blKussinChatGptProcessQueueAutoApprovedEnabled',
+            'type' => 'bool',
+            'value' => 0,
+        ),
+        array(
             'group' => 'sKussinChatGptDebugSettings',
             'name' => 'blKussinChatGptDebugEnabled',
             'type' => 'bool',
