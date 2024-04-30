@@ -41,7 +41,9 @@
   "require": {
     "php": ">=7.4",
     "oxid-esales/oxideshop-ce": "^6.0",
-    "ext-json": "*"
+    "ext-json": "*",
+    "phpoffice/phpspreadsheet": "*",
+    "kussin/article-data-enhancer": "*"
   },
   "autoload": {
     "psr-4": {
