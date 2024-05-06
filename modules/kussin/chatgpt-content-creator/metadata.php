@@ -42,6 +42,7 @@ $aModule = array(
     'controllers' => array(
         'article_chatgpt' => Kussin\ChatGpt\Controller\Admin\ArticleChatGPT::class,
         'chatgpt_bulk_approval' => Kussin\ChatGpt\Controller\Admin\ChatGPTBulkApproval::class,
+        'chatgpt_exporter' => Kussin\ChatGpt\Controller\Admin\ChatGPTExporter::class,
         'chatgpt_popup' => Kussin\ChatGpt\Controller\ChatGPTPopup::class,
         'chatgpt_preview' => Kussin\ChatGpt\Controller\ChatGPTPreview::class,
         'process' => Kussin\ChatGpt\Cron\Process::class,
@@ -49,6 +50,7 @@ $aModule = array(
 
     'templates' => array(
         'chatgpt_bulk_approval.tpl' => 'kussin/chatgpt-content-creator/views/tpl/admin/chatgpt_bulk_approval.tpl',
+        'chatgpt_exporter.tpl' => 'kussin/chatgpt-content-creator/views/tpl/admin/chatgpt_exporter.tpl',
         'article_chatgpt.tpl' => 'kussin/chatgpt-content-creator/views/tpl/admin/article_chatgpt.tpl',
 
         // INCLUDES

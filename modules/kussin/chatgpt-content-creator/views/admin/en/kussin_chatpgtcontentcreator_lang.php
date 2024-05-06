@@ -7,6 +7,7 @@ $aLang = array(
     // ADMIN MENU
     'KUSSIN_CHATGPT_CONTENT_CREATOR' => 'KUSSIN | ChatGPT Content Creator',
     'KUSSIN_CHATGPT_BULK_APPROVAL' => 'Bulk approval',
+    'KUSSIN_CHATGPT_EXPORTER' => 'Content Exporter',
     'KUSSIN_CHATGPT_ARTICLE_APPROVAL' => 'ChatGPT approval',
 
     'KUSSIN_CHATGPT_CONTENT_CREATOR_LEGEND' => 'KUSSIN | ChatGPT Content Creator',
