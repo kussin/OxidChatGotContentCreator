@@ -28,7 +28,7 @@ class ManufacturerMain extends ManufacturerMain_parent
 
     public function kussinchatgptlongdesc()
     {
-        $iMaxTokens = (int) Registry::getConfig()->getConfigParam('iKussinPositionApiMaxTokens');
+        $iMaxTokens = (int) Registry::getConfig()->getConfigParam('iKussinChatGptApiMaxTokens');
 
         // PROMPT
         $oLang = Registry::getLang();

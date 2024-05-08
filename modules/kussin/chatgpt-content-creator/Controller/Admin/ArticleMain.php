@@ -2,6 +2,7 @@
 
 namespace Kussin\ChatGpt\Controller\Admin;
 
+use Kussin\ChatGpt\Traits\ArticleDataEnhancerTrait;
 use Kussin\ChatGpt\Traits\ChatGPTClientTrait;
 use Kussin\ChatGpt\Traits\LanguageTrait;
 use Kussin\ChatGpt\Traits\LoggerTrait;
@@ -11,6 +12,7 @@ use OxidEsales\Eshop\Core\Registry;
 
 class ArticleMain extends ArticleMain_parent
 {
+    use ArticleDataEnhancerTrait;
     use ChatGPTClientTrait;
     use LanguageTrait;
     use LoggerTrait;
@@ -29,7 +31,7 @@ class ArticleMain extends ArticleMain_parent
 
     public function kussinchatgptlongdesc()
     {
-        $iMaxTokens = (int) Registry::getConfig()->getConfigParam('iKussinPositionApiMaxTokens');
+        $iMaxTokens = (int) Registry::getConfig()->getConfigParam('iKussinChatGptApiMaxTokens');
         $sPrompt = trim(Registry::getConfig()->getConfigParam('sKussinChatGptPromptLongDescription' . $this->_getLanguageCode($iLang)));
 
         if ($sPrompt == '') {
@@ -55,6 +57,10 @@ class ArticleMain extends ArticleMain_parent
             $this->_kussinLoadArticle()->getManufacturer()->oxmanufacturers__oxtitle->value,
             $iMaxTokens
         );
+
+        // EXTENT PROMPT W/ ENHANCED ARTICLE DATA
+        $sArticleIdKey = trim(Registry::getConfig()->getConfigParam('sKussinChatGptArticleDataEnhancerArticleIdKey'));
+        $sPrompt .= $this->_getEnhancedArticlePrompt($this->_kussinLoadArticle()->{$sArticleIdKey}->value);
 
         // GET CHATGPT CONTENT
         $aResponse = $this->_kussinGetChatGptContent($sPrompt, FALSE, FALSE, floor($iMaxTokens * 1.1), TRUE);
@@ -86,7 +92,7 @@ class ArticleMain extends ArticleMain_parent
 
     public function kussinchatgptoptimizedesc()
     {
-        $iMaxTokens = (int) Registry::getConfig()->getConfigParam('iKussinPositionApiMaxTokens');
+        $iMaxTokens = (int) Registry::getConfig()->getConfigParam('iKussinChatGptApiMaxTokens');
         $sPrompt = trim(Registry::getConfig()->getConfigParam('sKussinChatGptPromptOptimizeContent' . $this->_getLanguageCode($iLang)));
 
         if ($sPrompt == '') {
@@ -108,6 +114,10 @@ class ArticleMain extends ArticleMain_parent
             $sPrompt,
             $this->_kussinLoadArticle()->getLongDescription(),
         );
+
+        // EXTENT PROMPT W/ ENHANCED ARTICLE DATA
+        $sArticleIdKey = trim(Registry::getConfig()->getConfigParam('sKussinChatGptArticleDataEnhancerArticleIdKey'));
+        $sPrompt .= $this->_getEnhancedArticlePrompt($this->_kussinLoadArticle()->{$sArticleIdKey}->value);
 
         // GET CHATGPT CONTENT
         $aResponse = $this->_kussinGetChatGptContent($sPrompt, FALSE, FALSE, floor($iMaxTokens * 1.1), TRUE);

@@ -16,6 +16,8 @@ $aLang = array(
     'KUSSIN_CHATGPT_MANUFACTURER_SHORT_DESCRIPTION_PROMPT' => 'Create an manufacturer short description for "%s" of "%s". - And please without an intro and with max. 255 characters.',
     'KUSSIN_CHATGPT_VENDOR_SHORT_DESCRIPTION_PROMPT' => 'Create an vendor short description for "%s" of "%s". - And please without an intro and with max. 255 characters.',
 
+    'KUSSIN_CHATGPT_ENHANCED_ARTICLE_DATA_PROMPT' => 'Enhanced product information from the manufacturer is available in the following JSON string (Important: No internal information such as purchase prices or availability may be taken from the manufacturer information): `%s`',
+
     'KUSSIN_CHATGPT_LONG_DESCRIPTION_INSTRUCTION_PROMPT' => implode(PHP_EOL, array(
         'Structure as follows:',
         '1. Main advantage in a short sentence as concise and concrete as possible in `<p>` formatting.',

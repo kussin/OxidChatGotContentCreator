@@ -7,6 +7,7 @@ use OxidEsales\Eshop\Core\Registry;
 
 trait ChatGPTProcessPromptsTrait
 {
+    use ArticleDataEnhancerTrait;
     use LanguageTrait;
 
     protected function _getProcessMaxTokens($sFieldId, $iMaxTokens = 350) : int
@@ -73,6 +74,11 @@ trait ChatGPTProcessPromptsTrait
                     $sPrompt = $this->_getChatGptProcessPrompt4LongDescription($iLang);
                     $aValues[] = $this->_encodeProcessSpecialChars($oObject->oxarticles__oxtitle->value);
                     $aValues[] = $this->_encodeProcessSpecialChars($oObject->getManufacturer()->oxmanufacturers__oxtitle->value);
+
+                    // EXTENT PROMPT W/ ENHANCED ARTICLE DATA
+                    $sArticleIdKey = trim(Registry::getConfig()->getConfigParam('sKussinChatGptArticleDataEnhancerArticleIdKey'));
+                    $sPrompt .= $this->_getEnhancedArticlePrompt($oObject->{$sArticleIdKey}->value);
+
                     break;
             }
         }

@@ -129,9 +129,21 @@ $aModule = array(
         ),
         array(
             'group' => 'sKussinChatGptSettings',
-            'name' => 'iKussinPositionApiMaxTokens',
+            'name' => 'iKussinChatGptApiMaxTokens',
             'type' => 'str',
             'value' => 350,
+        ),
+        array(
+            'group' => 'sKussinChatGptSettings',
+            'name' => 'blKussinChatGptArticleDataEnhancerEnabled',
+            'type' => 'bool',
+            'value' => 0,
+        ),
+        array(
+            'group' => 'sKussinChatGptSettings',
+            'name' => 'sKussinChatGptArticleDataEnhancerArticleIdKey',
+            'type' => 'str',
+            'value' => 'oxarticles__oxartnum',
         ),
         array(
             'group' => 'sKussinChatGptFrontendSettings',

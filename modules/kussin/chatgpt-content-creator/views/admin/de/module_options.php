@@ -6,7 +6,9 @@ $aLang = array(
     'SHOP_MODULE_sKussinChatGptApiKey' => 'ChatGPT API KEY',
     'SHOP_MODULE_sKussinChatGptApiModel' => 'ChatGPT API Model',
     'SHOP_MODULE_dKussinChatGptApiTemperature' => 'ChatGPT API Temperature',
-    'SHOP_MODULE_iKussinPositionApiMaxTokens' => 'ChatGPT API max. Tokens',
+    'SHOP_MODULE_iKussinChatGptApiMaxTokens' => 'ChatGPT API max. Tokens',
+    'SHOP_MODULE_blKussinChatGptArticleDataEnhancerEnabled' => 'Kussin | Article Data Enhancer for OXID eShop aktivieren',
+    'SHOP_MODULE_sKussinChatGptArticleDataEnhancerArticleIdKey' => 'Artikel-ID-Key (z.B. oxarticles__oxartnum) für Kussin | Article Data Enhancer für OXID eShop',
 
     'SHOP_MODULE_GROUP_sKussinChatGptFrontendSettings' => 'Shop (Frontend) Einstellungen',
     'SHOP_MODULE_blKussinChatGptFrontendDisclaimerEnabled' => 'Disclaimer aktivieren',

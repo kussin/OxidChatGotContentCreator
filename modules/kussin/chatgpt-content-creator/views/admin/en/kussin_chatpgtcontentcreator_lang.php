@@ -28,6 +28,8 @@ $aLang = array(
 
     'KUSSIN_CHATGPT_OPTIMIZE_CONTENT_PROMPT' => 'Optimize the following content for our website: %s',
 
+    'KUSSIN_CHATGPT_ENHANCED_ARTICLE_DATA_PROMPT' => 'Enhanced product information from the manufacturer is available in the following JSON string (Important: No internal information such as purchase prices or availability may be taken from the manufacturer information): `%s`',
+
     'KUSSIN_CHATGPT_LONG_DESCRIPTION_INSTRUCTION_PROMPT' => implode(PHP_EOL, array(
         'Structure as follows:',
         '1. Main advantage in a short sentence as concise and concrete as possible in `<p>` formatting.',
