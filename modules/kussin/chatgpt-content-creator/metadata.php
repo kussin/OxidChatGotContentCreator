@@ -55,6 +55,7 @@ $aModule = array(
 
         // INCLUDES
         'materialize.tpl' => 'kussin/chatgpt-content-creator/views/tpl/admin/inc/materialize.tpl',
+        'loader.tpl' => 'kussin/chatgpt-content-creator/views/tpl/admin/inc/loader.tpl',
         'chatgpt_bulk_actions.tpl' => 'kussin/chatgpt-content-creator/views/tpl/admin/inc/chatgpt_bulk_actions.tpl',
 
         // POPUP
