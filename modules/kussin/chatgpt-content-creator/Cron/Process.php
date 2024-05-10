@@ -34,6 +34,8 @@ class Process extends FrontendController
     protected const PROCESS_CANCELED_STATUS = 'cancaled';
     protected const PROCESS_ERROR_STATUS = 'error';
 
+    protected const MAX_TOKENS = 4096;
+
     private $_sProcessSelectionQueryVarname = 'sKussinChatGptProcessSelectionQuery';
     
     /**
@@ -197,7 +199,6 @@ class Process extends FrontendController
 
                         $this->_debug('Generated ChatGPT ai content for: ' . $sOxid);
                     } else {
-                        // ERROR
                         $this->_warning('Could not generate ChatGPT ai content for: ' . $sOxid);
                     }
 
@@ -208,10 +209,31 @@ class Process extends FrontendController
                         'response' => $oException,
                     ));
 
-                    // SAVE PROMPT
+                    // SAVE
                     $sUpdateQuery = 'UPDATE kussin_chatgpt_content_creator_queue SET `process_ip` = "' . $this->_getClientIp() . '", `status` = "' . self::PROCESS_ERROR_STATUS . '" WHERE (`id` = "' . $aItem[0] . '");';
                     DatabaseProvider::getDb()->execute($sUpdateQuery);
                 }
+
+            } elseif ($aResponse['error'] == 900) {
+                // WARNING: MAX TOKEN LIMIT REACHED
+                if ($iMaxTokens < self::MAX_TOKENS) {
+                    $sUpdateQuery = 'UPDATE kussin_chatgpt_content_creator_queue SET `process_ip` = "' . $this->_getClientIp() . '", `max_tokens` = ' . self::MAX_TOKENS . ' WHERE (`id` = "' . $aItem[0] . '");';
+                    DatabaseProvider::getDb()->execute($sUpdateQuery);
+
+                    $this->_warning('ChatGPT max token limit extended, set to max tokens for content: ' . $sOxid);
+                } else {
+                    $sUpdateQuery = 'UPDATE kussin_chatgpt_content_creator_queue SET `process_ip` = "' . $this->_getClientIp() . '", `status` = "' . self::PROCESS_ERROR_STATUS . '" WHERE (`id` = "' . $aItem[0] . '");';
+                    DatabaseProvider::getDb()->execute($sUpdateQuery);
+
+                    $this->_error('ChatGPT max token limit extended for content: ' . $sOxid);
+                }
+
+            } else {
+                // ERROR
+                $sUpdateQuery = 'UPDATE kussin_chatgpt_content_creator_queue SET `process_ip` = "' . $this->_getClientIp() . '", `status` = "' . self::PROCESS_ERROR_STATUS . '" WHERE (`id` = "' . $aItem[0] . '");';
+                DatabaseProvider::getDb()->execute($sUpdateQuery);
+
+                $this->_error('Could not generate ChatGPT ai content for (Error code: ' . $aResponse['error'] . '): ' . $sOxid);
             }
 
             // CLEAR

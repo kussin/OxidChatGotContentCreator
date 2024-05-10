@@ -99,14 +99,24 @@ class ChatGPT
         $response = curl_exec($this->oCurl);
         $response = json_decode($response, true);
 
+        // CUSTOM ERROR CODES
+        if (isset($response['error']['message']) && $response['error']['code'] == '') {
+            if (strpos($response['error']['message'], 'Please reduce your prompt; or completion length.') !== false) {
+                $response['error']['code'] = 900;
+            } else {
+                $response['error']['code'] = 999;
+            }
+        }
+
+        $output['data'] = $response['choices'][0]['text'] ?? null;
+        $output['continue'] = $response['choices'][0]['finish_reason'] == 'length';
+        $output['error'] = $response['error']['code'] ?? null;
+
         $this->_debug(array(
             'method' => __CLASS__ . '::' . __FUNCTION__,
             'response' => $response,
         ));
 
-        $output['data'] = $response['choices'][0]['text'] ?? null;
-        $output['continue'] = $response['choices'][0]['finish_reason'] == 'length';
-        $output['error'] = $response['error']['code'] ?? null;
         return $output;
     }
 
