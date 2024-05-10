@@ -16,6 +16,8 @@ $aLang = array(
     'KUSSIN_ARTICLE_MAIN_CHATGPT_OPTIMIZE_LONG_DESCRIPTION' => 'Create optimized Long Description',
     'KUSSIN_ARTICLE_MAIN_CHATGPT_SHORT_DESCRIPTION' => 'Create new Short Description',
 
+    'KUSSIN_CHATGPT_LOADING_TEXT' => 'Generating ai content ...',
+
     'KUSSIN_CHATGPT_LONG_DESCRIPTION_PROMPT' => 'Create an article long description for "%s" from "%s". - And please without an intro and with max. %s words.',
     'KUSSIN_CHATGPT_SHORT_DESCRIPTION_PROMPT' => 'Create an article short description for "%s" from "%s". - And please without an intro and with max. %s words.',
     'KUSSIN_CHATGPT_PRODUCT_SEARCHKEYS_PROMPT' => 'Create a comma-separated CSV list of synonyms for "%s" from "%s" without size, volume, liter, or quantity indications, without brand/manufacturer or individual product features such as color, and without duplicates.',

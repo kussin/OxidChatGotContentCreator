@@ -6,4 +6,9 @@
 [{*oxscript include=$oViewConf->getModuleUrl('kussin','chatgpt-content-creator/out/src/js/loader.js')*}]
 <script type="text/javascript" src="[{$oViewConf->getModuleUrl('kussin','chatgpt-content-creator/out/src/js/loader.js')}]"></script>
 
-<div id="kussin-chatgpt-loader" class="kussin-chatgpt-loader-wrapper" style="display: none;background-image: url([{$oViewConf->getModuleUrl('kussin','chatgpt-content-creator/out/src/img/loader.gif')}]);"></div>
+<div id="kussin-chatgpt-loader" class="kussin-chatgpt-loader-wrapper" style="display: none;">
+    <div class="kussin-chatgpt-loader-content">
+        <div class="kussin-chatgpt-loader-spinner" style="background-image: url([{$oViewConf->getModuleUrl('kussin','chatgpt-content-creator/out/src/img/loader.png')}]);"></div>
+        <div class="kussin-chatgpt-loader-text">[{oxmultilang ident="KUSSIN_CHATGPT_LOADING_TEXT"}]</div>
+    </div>
+</div>
