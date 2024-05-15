@@ -13,4 +13,12 @@ trait LanguageTrait
 
         return strtoupper($oLang->getLanguageAbbr($iLang));
     }
+
+    protected function _getTranslationLanguage($iTranslationId, $iLang) : string
+    {
+        // GET LANGUAGES
+        $aLanguages = array_values(Registry::getConfig()->getConfigParam('aLanguages'));
+
+        return $aLanguages[$iTranslationId];
+    }
 }

@@ -47,6 +47,30 @@ trait ChatGPTProcessPromptsTrait
             $sPrompt = $this->_getChatGptProcessPrompt4OptimizeContent($iLang);
             $aValues[] = $this->_encodeProcessSpecialChars($oObject->{$sFieldId}->value);
 
+        } elseif ($sMode == 'translate') {
+            // TRANSLATE CONTENT
+            $aValues[] = $this->_encodeProcessSpecialChars($oObject->oxarticles__oxtitle->value);
+            $aValues[] = $this->_encodeProcessSpecialChars($oObject->oxarticles__oxean->value);
+            $aValues[] = $this->_encodeProcessSpecialChars($oObject->getManufacturer()->oxmanufacturers__oxtitle->value);
+            $aValues[] = $this->_getTranslationLanguage((int) substr($sFieldId, -1), $iLang);
+
+            switch (str_replace(array('_1', '_2', '_3', '_4', '_5'), '', $sFieldId)) {
+                case 'oxarticles__oxtitle':
+                    $sPrompt = $this->_getChatGptProcessPrompt4TranslationTitle($iLang);
+                    break;
+
+                case 'oxarticles__oxshortdesc':
+                        $sPrompt = $this->_getChatGptProcessPrompt4TranslationShortDescription($iLang);
+                        $aValues[] = $this->_encodeProcessSpecialChars(strip_tags($oObject->oxarticles__oxshortdesc->value));
+                        break;
+
+                default:
+                case 'oxartextends__oxlongdesc':
+                    $sPrompt = $this->_getChatGptProcessPrompt4TranslationLongDescription($iLang);
+                    $aValues[] = $this->_encodeProcessSpecialChars(strip_tags($oObject->getLongDescription()));
+                    break;
+            }
+
         } else {
             // CREATE CONTENT
             switch (str_replace(array('_1', '_2', '_3', '_4', '_5'), '', $sFieldId)) {
@@ -185,6 +209,48 @@ trait ChatGPTProcessPromptsTrait
             // FALLBACK
             $oLang = Registry::getLang();
             $sPrompt = $oLang->translateString('KUSSIN_CHATGPT_OPTIMIZE_CONTENT_PROMPT', $iLang);
+        }
+
+        return $sPrompt;
+    }
+
+    protected function _getChatGptProcessPrompt4TranslationTitle($iLang = 0)
+    {
+        // TODO: ADD CUSTOM TRANSLATION PROMPT
+        $sPrompt = '';
+
+        if ($sPrompt == '') {
+            // FALLBACK
+            $oLang = Registry::getLang();
+            $sPrompt = $oLang->translateString('KUSSIN_CHATGPT_TRANSLATION_TITLE_PROMPT', $iLang);
+        }
+
+        return $sPrompt;
+    }
+
+    protected function _getChatGptProcessPrompt4TranslationShortDescription($iLang = 0)
+    {
+        // TODO: ADD CUSTOM TRANSLATION PROMPT
+        $sPrompt = '';
+
+        if ($sPrompt == '') {
+            // FALLBACK
+            $oLang = Registry::getLang();
+            $sPrompt = $oLang->translateString('KUSSIN_CHATGPT_TRANSLATION_SHORT_DESCRIPTION_PROMPT', $iLang);
+        }
+
+        return $sPrompt;
+    }
+
+    protected function _getChatGptProcessPrompt4TranslationLongDescription($iLang = 0)
+    {
+        // TODO: ADD CUSTOM TRANSLATION PROMPT
+        $sPrompt = '';
+
+        if ($sPrompt == '') {
+            // FALLBACK
+            $oLang = Registry::getLang();
+            $sPrompt = $oLang->translateString('KUSSIN_CHATGPT_TRANSLATION_LONG_TRANSLATION_PROMPT', $iLang);
         }
 
         return $sPrompt;

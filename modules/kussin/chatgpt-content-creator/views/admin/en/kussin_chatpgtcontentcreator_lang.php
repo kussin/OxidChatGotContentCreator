@@ -28,6 +28,10 @@ $aLang = array(
     'KUSSIN_CHATGPT_MANUFACTURER_SHORT_DESCRIPTION_PROMPT' => 'Create an manufacturer short description for "%s" of "%s". - And please without an intro and with max. 255 characters.',
     'KUSSIN_CHATGPT_VENDOR_SHORT_DESCRIPTION_PROMPT' => 'Create an vendor short description for "%s" of "%s". - And please without an intro and with max. 255 characters.',
 
+    'KUSSIN_CHATGPT_TRANSLATION_TITLE_PROMPT' => 'Translate only article name "%s" (EAN: "%s") from "%s" into "%s" - and please without an intro.',
+    'KUSSIN_CHATGPT_TRANSLATION_LONG_TRANSLATION_PROMPT' => 'Translate only the article long description for "%s" (EAN: "%s") from "%s" into "%s" - and please without an intro: "%s".',
+    'KUSSIN_CHATGPT_TRANSLATION_SHORT_DESCRIPTION_PROMPT' => 'Translate only the article short description for "%s" (EAN: "%s") from "%s" into "%s" - and please without an intro: "%s".',
+
     'KUSSIN_CHATGPT_OPTIMIZE_CONTENT_PROMPT' => 'Optimize the following content for our website: %s',
 
     'KUSSIN_CHATGPT_ENHANCED_ARTICLE_DATA_PROMPT' => 'Enhanced product information from the manufacturer is available in the following JSON string (Important: No internal information such as purchase prices or availability may be taken from the manufacturer information): `%s`',
