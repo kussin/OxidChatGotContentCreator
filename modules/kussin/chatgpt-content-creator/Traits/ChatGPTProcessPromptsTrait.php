@@ -50,7 +50,6 @@ trait ChatGPTProcessPromptsTrait
         } elseif ($sMode == 'translate') {
             // TRANSLATE CONTENT
             $aValues[] = $this->_encodeProcessSpecialChars($oObject->oxarticles__oxtitle->value);
-            $aValues[] = $this->_encodeProcessSpecialChars($oObject->oxarticles__oxean->value);
             $aValues[] = $this->_encodeProcessSpecialChars($oObject->getManufacturer()->oxmanufacturers__oxtitle->value);
             $aValues[] = $this->_getTranslationLanguage((int) substr($sFieldId, -1), $iLang);
 
