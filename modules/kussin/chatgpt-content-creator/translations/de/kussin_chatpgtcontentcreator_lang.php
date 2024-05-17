@@ -16,9 +16,9 @@ $aLang = array(
     'KUSSIN_CHATGPT_MANUFACTURER_SHORT_DESCRIPTION_PROMPT' => 'Erstelle eine Marken-Kurzbeschreibung für "%s" von "%s". - Und bitte ohne Intro und mit max. 255 Zeichen.',
     'KUSSIN_CHATGPT_VENDOR_SHORT_DESCRIPTION_PROMPT' => 'Erstelle eine Hersteller-Kurzbeschreibung für "%s" von "%s". - Und bitte ohne Intro und mit max. 255 Zeichen.',
 
-    'KUSSIN_CHATGPT_TRANSLATION_TITLE_PROMPT' => 'Übersetze nur den Artikelnamen "%s" (EAN: "%s") von "%s" in "%s" - und bitte ohne Intro.',
-    'KUSSIN_CHATGPT_TRANSLATION_LONG_TRANSLATION_PROMPT' => 'Übersetze nur die folgende Artikel-Langbeschreibung für den Artikel "%s" (EAN: "%s") von "%s" in "%s" - und bitte ohne Intro: "%s"',
-    'KUSSIN_CHATGPT_TRANSLATION_SHORT_DESCRIPTION_PROMPT' => 'Übersetze nur die folgende Artikel-Kurzbeschreibung für den Artikel "%s" (EAN: "%s") von "%s" in "%s" - und bitte ohne Intro: "%s"',
+    'KUSSIN_CHATGPT_TRANSLATION_TITLE_PROMPT' => 'Übersetze nur den Artikelnamen "%s" von "%s" in "%s" - und bitte ohne Intro.',
+    'KUSSIN_CHATGPT_TRANSLATION_LONG_TRANSLATION_PROMPT' => 'Übersetze nur die folgende Artikel-Langbeschreibung für den Artikel "%s" von "%s" in "%s" - und bitte ohne Intro: "%s"',
+    'KUSSIN_CHATGPT_TRANSLATION_SHORT_DESCRIPTION_PROMPT' => 'Übersetze nur die folgende Artikel-Kurzbeschreibung für den Artikel "%s" von "%s" in "%s" - und bitte ohne Intro: "%s"',
 
     'KUSSIN_CHATGPT_ENHANCED_ARTICLE_DATA_PROMPT' => 'Ergänzende Produktinformationen vom Hersteller stehen im folgenden JSON String zur Verfügung (Wichtig: Es dürfen keine internen Informationen wie Einkaufspreise oder Verfügbarkeit auf den Herstellerinformationen übernommen werden): `%s`',
 
