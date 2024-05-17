@@ -7,6 +7,7 @@ use OxidEsales\Eshop\Core\Registry;
 
 trait GridUtilitiesTrait
 {
+    use ChatGPTProcessPromptsTrait;
     use LoggerTrait;
     use OxidObjectsTrait;
     use StorageTrait;
@@ -117,7 +118,8 @@ trait GridUtilitiesTrait
 
                 $aGrid[] = array_merge(
                     $aData,
-                    $this->_getAdditionalData($aData['object'], $aData['object_id'], $aData['lang_id'])
+                    $this->_getAdditionalData($aData['object'], $aData['object_id'], $aData['lang_id']),
+                    $this->_getGeneratedPreview($aData['generated'])
                 );
 
                 //do something
@@ -132,6 +134,7 @@ trait GridUtilitiesTrait
     {
         $aAdditionalData = array(
             'name' => $sObjectId,
+            'has_popup' => false,
             'has_preview' => false,
             'link' => '',
         );
@@ -144,6 +147,7 @@ trait GridUtilitiesTrait
             case 'oxarticles':
             case 'oxartextends':
                 $aAdditionalData['name'] = $this->_getObjectTitle($oObject, $sObjectId, $sObject, $iLang);
+                $aAdditionalData['has_popup'] = ($sObject == 'oxartextends');
                 $aAdditionalData['has_preview'] = ((bool) $oObject->oxarticles__oxactive->value && ($oObject->oxarticles__oxstock->value > 0));
                 $aAdditionalData['link'] = $oObject->getLink(NULL, true);
                 break;
@@ -151,6 +155,15 @@ trait GridUtilitiesTrait
             default:
                 break;
         }
+
+        return $aAdditionalData;
+    }
+
+    protected function _getGeneratedPreview($sGeneratedData): array
+    {
+        $aAdditionalData = array(
+            'generated_data' => $this->_decodeProcessContent($sGeneratedData),
+        );
 
         return $aAdditionalData;
     }

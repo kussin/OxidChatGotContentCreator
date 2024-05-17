@@ -20,13 +20,22 @@ trait SavingContentTypesTrait
         // DECODE CONTENT
         $sGeneratedContent = $this->_decodeProcessContent($sGeneratedContentHash);
 
-        // LOAD OBJECT
-        $oObject->load($sOxid);
+        // GET CONTENT & LANGUAGE
+        $iLang = (int) substr($sFieldId, -1);
+        if ($iLang > 0) {
+            // LOAD OBJECT IN LANGUAGE
+            $sFieldId = substr($sFieldId, 0, -2);
+
+            $oObject->loadInLang($iLang, $sOxid);
+        } else {
+            // LOAD OBJECT
+            $oObject->load($sOxid);
+        }
 
         // SAVE CONTENT
         $oContent = new Field($sGeneratedContent);
 
-        if ($sFieldId == 'oxlongdesc') {
+        if (($sFieldId == 'oxlongdesc') || ($sFieldId == 'oxartextends__oxlongdesc')) {
             $oObject->setArticleLongDesc($oContent->getRawValue());
         } else {
             $oObject->{$sFieldId} = new Field($oContent);

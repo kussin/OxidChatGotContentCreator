@@ -57,8 +57,10 @@
                         <td>[{$aRow.temperature}]</td>
                         <td>[{$aRow.process_ip}]</td>
                         <td>
-                            [{if $aRow.content|count_characters >= 15}]
+                            [{if $aRow.has_popup}]
                                 <a href="#" onClick="KussinChatGPTPopup=window.open('[{$oViewConf->getSelfLink()|cat:"cl=chatgpt_popup"|cat:"&cgptid="|cat:$aRow.id}]','KussinChatGPTPopup','width=1024,height=650'); return false;">[{$aRow.status}]</a>
+                            [{elseif $aRow.generated_data|count_characters >= 15}]
+                                <a href="javascript:void(0)" title="[{$aRow.generated_data}]">[{$aRow.status}]</a>
                             [{else}]
                                 [{$aRow.status}]
                             [{/if}]
