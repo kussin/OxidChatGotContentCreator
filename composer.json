@@ -43,6 +43,7 @@
     "oxid-esales/oxideshop-ce": "^6.0",
     "ext-json": "*",
     "phpoffice/phpspreadsheet": "*",
+	"qunemedia/chatgpt-connector": "*",
     "kussin/article-data-enhancer": "*"
   },
   "autoload": {
