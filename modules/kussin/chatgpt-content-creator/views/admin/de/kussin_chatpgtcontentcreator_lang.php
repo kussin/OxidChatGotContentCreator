@@ -18,35 +18,6 @@ $aLang = array(
 
     'KUSSIN_CHATGPT_LOADING_TEXT' => 'Generierung des KI-Contents ...',
 
-    'KUSSIN_CHATGPT_LONG_DESCRIPTION_PROMPT' => 'Erstelle eine Artikel-Langbeschreibung für "%s" von "%s". - Und bitte ohne Intro und mit max. %s Wörtern.',
-    'KUSSIN_CHATGPT_SHORT_DESCRIPTION_PROMPT' => 'Erstelle eine Artikel-Kurzbeschreibung für "%s" von "%s". - Und bitte ohne Intro und mit max. %s Wörtern.',
-    'KUSSIN_CHATGPT_PRODUCT_SEARCHKEYS_PROMPT' => 'Erstelle eine kommaseparierte CSV-Liste von Synonymen für "%s" vom "%s" ohne Größen-, Volumen, Liter- oder Mengenangaben, ohne Marke/Hersteller oder individuelle Produktmerkmale wie Farbe und ohne Dopplungen.',
-    'KUSSIN_CHATGPT_PRODUCT_ATTRIBUTES_PROMPT' => 'Versuche für die folgenden Attribute, für den Artikel "%s" (Hersteller-SKU: %s) von "%s", Werten zu ermitteln und erstelle ein daraus einen JSON; Werte, die "unbekannt" sind als `null` zurückgeben: ',
-    'KUSSIN_CHATGPT_CATGEORY_LONG_DESCRIPTION_PROMPT' => 'Erstelle eine Kategorie-Langbeschreibung für "%s" von "%s". - Und bitte ohne Intro und mit max. %s Wörtern.',
-    'KUSSIN_CHATGPT_CATGEORY_SHORT_DESCRIPTION_PROMPT' => 'Erstelle eine Kategorie-Kurzbeschreibung für "%s" von "%s". - Und bitte ohne Intro und mit max. 255 Zeichen.',
-    'KUSSIN_CHATGPT_MANUFACTURER_LONG_DESCRIPTION_PROMPT' => 'Erstelle eine Marken-Langbeschreibung für "%s" von "%s". - Und bitte ohne Intro und mit max. %s Wörtern.',
-    'KUSSIN_CHATGPT_MANUFACTURER_SHORT_DESCRIPTION_PROMPT' => 'Erstelle eine Marken-Kurzbeschreibung für "%s" von "%s". - Und bitte ohne Intro und mit max. 255 Zeichen.',
-    'KUSSIN_CHATGPT_VENDOR_SHORT_DESCRIPTION_PROMPT' => 'Erstelle eine Hersteller-Kurzbeschreibung für "%s" von "%s". - Und bitte ohne Intro und mit max. 255 Zeichen.',
-
-    'KUSSIN_CHATGPT_TRANSLATION_TITLE_PROMPT' => 'Übersetze nur den Artikelnamen "%s" von "%s" in "%s" - und bitte ohne Intro.',
-    'KUSSIN_CHATGPT_TRANSLATION_LONG_TRANSLATION_PROMPT' => 'Übersetze nur die folgende Artikel-Langbeschreibung für den Artikel "%s" von "%s" in "%s" - und bitte ohne Intro: "%s"',
-    'KUSSIN_CHATGPT_TRANSLATION_SHORT_DESCRIPTION_PROMPT' => 'Übersetze nur die folgende Artikel-Kurzbeschreibung für den Artikel "%s" von "%s" in "%s" - und bitte ohne Intro: "%s"',
-
-    'KUSSIN_CHATGPT_OPTIMIZE_CONTENT_PROMPT' => 'Optimiere den folgenden Inhalte für unserer Website: %s',
-
-    'KUSSIN_CHATGPT_ENHANCED_ARTICLE_DATA_PROMPT' => 'Ergänzende Produktinformationen vom Hersteller stehen im folgenden JSON String zur Verfügung (Wichtig: Es dürfen keine internen Informationen wie Einkaufspreise oder Verfügbarkeit auf den Herstellerinformationen übernommen werden): `%s`',
-
-    'KUSSIN_CHATGPT_LONG_DESCRIPTION_INSTRUCTION_PROMPT' => implode(PHP_EOL, array(
-        'Aufbau wie folgt:',
-        '1. Hauptvorteil in einem kurzen Satz möglichst prägnant und konkret in `<p>` Formatierung.',
-        '2. Listenelemente mit Features und dem Vorteil, den das Feature bringt.',
-        '3. Pro Feature ein Absatz bestehend aus einer `<h2>` Überschrift (Vorteil des Features + Metapher)',
-        'und einem kurzen Text, der das Feature mit alltagsnahem Storytelling untermauert.',
-        'Wichtig: Keine `<h1>` Überschrift.',
-        '4. Verwende keine HTML Entities wie `&uuml;` oder `&auml;` und auch keine einfachen oder doppelten Anführungszeichen.',
-    )),
-    'KUSSIN_CHATGPT_LONG_DESCRIPTION_CONTINUE_PROMPT' => 'Setzen bitte deine vorherige Antwort fort.',
-
     'KUSSIN_CHATGPT_BULK_ACTION_SEARCH_LEGEND' => 'Suche',
     'KUSSIN_CHATGPT_BULK_ACTION_SEARCHTERM_TITLE' => 'Suchbegriff (z.B. OXID, Artikelnummer, Name)',
     'KUSSIN_CHATGPT_BULK_ACTION_SEARCH_FIELD_PLACEHOLDER' => 'Suchbegriff eingeben',

@@ -10,6 +10,8 @@ use OxidEsales\Eshop\Application\Controller\Admin\CategoryMain;
 use OxidEsales\Eshop\Application\Controller\Admin\CategoryText;
 use OxidEsales\Eshop\Application\Controller\Admin\ManufacturerMain;
 use OxidEsales\Eshop\Application\Controller\Admin\VendorMain;
+use QuneMedia\ChatGpt\Connector\OpenAiModels;
+use QuneMedia\ChatGpt\Prompts\Prompt;
 
 // FILE PATH
 $sModulePath = dirname(__FILE__);
@@ -119,8 +121,9 @@ $aModule = array(
         array(
             'group' => 'sKussinChatGptSettings',
             'name' => 'sKussinChatGptApiModel',
-            'type' => 'str',
-            'value' => 'gpt-3.5-turbo-instruct',
+            'type' => 'select',
+            'value' => OpenAiModels::getDefaultModel(),
+            'constraints' => implode('|', OpenAiModels::getConstraints()),
         ),
         array(
             'group' => 'sKussinChatGptSettings',
@@ -162,61 +165,61 @@ $aModule = array(
             'group' => 'sKussinChatGptPromptSettings',
             'name' => 'sKussinChatGptPromptLongDescriptionDE',
             'type' => 'str',
-            'value' => 'Erstelle eine Artikel-Langbeschreibung für "%s" von "%s". - Und bitte ohne Intro und mit max. %s Wörtern.',
+            'value' => Prompt::load()->get('LONG_DESCRIPTION', 'de_DE'),
         ),
         array(
             'group' => 'sKussinChatGptPromptSettings',
             'name' => 'sKussinChatGptPromptLongDescriptionEN',
             'type' => 'str',
-            'value' => 'Create an article long description for "%s" from "%s". - And please without an intro and with max. %s words.',
+            'value' => Prompt::load()->get('LONG_DESCRIPTION', 'en_US'),
         ),
         array(
             'group' => 'sKussinChatGptPromptSettings',
             'name' => 'sKussinChatGptPromptShortDescriptionDE',
             'type' => 'str',
-            'value' => 'Erstelle eine Artikel-Kurzbeschreibung für "%s" von "%s". - Und bitte ohne Intro und mit max. %s Wörtern.',
+            'value' => Prompt::load()->get('SHORT_DESCRIPTION', 'de_DE'),
         ),
         array(
             'group' => 'sKussinChatGptPromptSettings',
             'name' => 'sKussinChatGptPromptShortDescriptionEN',
             'type' => 'str',
-            'value' => 'Create an article short description for "%s" from "%s". - And please without an intro and with max. %s words.',
+            'value' => Prompt::load()->get('SHORT_DESCRIPTION', 'en_US'),
         ),
         array(
             'group' => 'sKussinChatGptPromptSettings',
             'name' => 'sKussinChatGptPromptProductSearchKeysDE',
             'type' => 'str',
-            'value' => 'Erstelle eine kommaseparierte CSV-Liste von Synonymen für "%s" vom "%s" ohne Größen-, Volumen, Liter- oder Mengenangaben, ohne Marke/Hersteller oder individuelle Produktmerkmale wie Farbe und ohne Dopplungen.',
+            'value' => Prompt::load()->get('PRODUCT_SEARCHKEYS', 'de_DE'),
         ),
         array(
             'group' => 'sKussinChatGptPromptSettings',
             'name' => 'sKussinChatGptPromptProductSearchKeysEN',
             'type' => 'str',
-            'value' => 'Create a comma-separated CSV list of synonyms for "%s" from "%s" without size, volume, liter, or quantity indications, without brand/manufacturer or individual product features such as color, and without duplicates.',
+            'value' => Prompt::load()->get('PRODUCT_SEARCHKEYS', 'en_US'),
         ),
         array(
             'group' => 'sKussinChatGptPromptSettings',
             'name' => 'sKussinChatGptPromptProductAttributesDE',
             'type' => 'str',
-            'value' => 'Versuche für die folgenden Attribute, für den Artikel "%s" (Hersteller-SKU: %s) von "%s", Werten zu ermitteln und erstelle ein daraus einen JSON; Werte, die "unbekannt" sind als `null` zurückgeben: ',
+            'value' => Prompt::load()->get('PRODUCT_ATTRIBUTES', 'de_DE'),
         ),
         array(
             'group' => 'sKussinChatGptPromptSettings',
             'name' => 'sKussinChatGptPromptProductAttributesEN',
             'type' => 'str',
-            'value' => 'Try to determine values for the following attributes for the article "%s" (Manufacturer SKU: %s) from "%s" and create a JSON from it; return values that are `null` as null: ',
+            'value' => Prompt::load()->get('PRODUCT_ATTRIBUTES', 'en_US'),
         ),
         array(
             'group' => 'sKussinChatGptPromptSettings',
             'name' => 'sKussinChatGptPromptOptimizeContentDE',
             'type' => 'str',
-            'value' => 'Optimiere den folgenden Inhalte für unserer Website: %s',
+            'value' => Prompt::load()->get('OPTIMIZE_CONTENT', 'de_DE'),
         ),
         array(
             'group' => 'sKussinChatGptPromptSettings',
             'name' => 'sKussinChatGptPromptOptimizeContentEN',
             'type' => 'str',
-            'value' => 'Optimize the following content for our website: %s',
+            'value' => Prompt::load()->get('OPTIMIZE_CONTENT', 'en_US'),
         ),
         array(
             'group' => 'sKussinChatGptProcessSettings',
@@ -233,8 +236,9 @@ $aModule = array(
         array(
             'group' => 'sKussinChatGptProcessSettings',
             'name' => 'sKussinChatGptProcessModel',
-            'type' => 'str',
-            'value' => 'gpt-3.5-turbo-instruct',
+            'type' => 'select',
+            'value' => OpenAiModels::getDefaultModel(),
+            'constraints' => implode('|', OpenAiModels::getConstraints()),
         ),
         array(
             'group' => 'sKussinChatGptProcessSettings',
