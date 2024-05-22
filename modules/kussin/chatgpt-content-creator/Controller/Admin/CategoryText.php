@@ -7,6 +7,8 @@ use Kussin\ChatGpt\Traits\LoggerTrait;
 use OxidEsales\Eshop\Application\Model\Category;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
+use QuneMedia\ChatGpt\Prompts\LanguageMapper;
+use QuneMedia\ChatGpt\Prompts\Prompt;
 
 class CategoryText extends CategoryText_parent
 {
@@ -31,7 +33,8 @@ class CategoryText extends CategoryText_parent
 
         // PROMPT
         $oLang = Registry::getLang();
-        $sPrompt = $oLang->translateString('KUSSIN_CHATGPT_CATGEORY_LONG_DESCRIPTION_PROMPT', $oLang->getBaseLanguage());
+        $sLocaleCode = LanguageMapper::getLocaleCode($oLang->getLanguageAbbr($oLang->getBaseLanguage()));
+        $sPrompt = Prompt::load()->get('CATGEORY_LONG_DESCRIPTION', $sLocaleCode);
 
         $this->_info(array(
             'method' => __CLASS__ . '::' . __FUNCTION__,

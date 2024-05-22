@@ -4,6 +4,8 @@ namespace Kussin\ChatGpt\Traits;
 
 use Kussin\ArticleDataEnhancer\Core\Data;
 use OxidEsales\Eshop\Core\Registry;
+use QuneMedia\ChatGpt\Prompts\LanguageMapper;
+use QuneMedia\ChatGpt\Prompts\Prompt;
 
 trait ArticleDataEnhancerTrait
 {
@@ -30,7 +32,8 @@ trait ArticleDataEnhancerTrait
         }
 
         $oLang = Registry::getLang();
-        $sPrompt = $oLang->translateString('KUSSIN_CHATGPT_ENHANCED_ARTICLE_DATA_PROMPT', $oLang->getBaseLanguage());
+        $sLocaleCode = LanguageMapper::getLocaleCode($oLang->getLanguageAbbr($oLang->getBaseLanguage()));
+        $sPrompt = Prompt::load()->get('ENHANCED_ARTICLE', $sLocaleCode);
 
         return PHP_EOL . sprintf(
             $sPrompt,

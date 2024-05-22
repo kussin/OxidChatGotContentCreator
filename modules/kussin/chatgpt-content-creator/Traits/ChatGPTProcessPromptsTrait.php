@@ -4,6 +4,8 @@ namespace Kussin\ChatGpt\Traits;
 
 use OxidEsales\Eshop\Application\Model\Attribute;
 use OxidEsales\Eshop\Core\Registry;
+use QuneMedia\ChatGpt\Prompts\LanguageMapper;
+use QuneMedia\ChatGpt\Prompts\Prompt;
 
 trait ChatGPTProcessPromptsTrait
 {
@@ -142,7 +144,8 @@ trait ChatGPTProcessPromptsTrait
         if ($sPrompt == '') {
             // FALLBACK
             $oLang = Registry::getLang();
-            $sPrompt = $oLang->translateString('KUSSIN_CHATGPT_SHORT_DESCRIPTION_PROMPT', $iLang);
+            $sLocaleCode = LanguageMapper::getLocaleCode($oLang->getLanguageAbbr($iLang));
+            $sPrompt = Prompt::load()->get('SHORT_DESCRIPTION', $sLocaleCode);
         }
 
         return $sPrompt;
@@ -155,7 +158,8 @@ trait ChatGPTProcessPromptsTrait
         if ($sPrompt == '') {
             // FALLBACK
             $oLang = Registry::getLang();
-            $sPrompt = $oLang->translateString('KUSSIN_CHATGPT_LONG_DESCRIPTION_PROMPT', $iLang);
+            $sLocaleCode = LanguageMapper::getLocaleCode($oLang->getLanguageAbbr($iLang));
+            $sPrompt = Prompt::load()->get('LONG_DESCRIPTION', $sLocaleCode);
         }
 
         return $sPrompt;
@@ -168,7 +172,8 @@ trait ChatGPTProcessPromptsTrait
         if ($sPrompt == '') {
             // FALLBACK
             $oLang = Registry::getLang();
-            $sPrompt = $oLang->translateString('KUSSIN_CHATGPT_PRODUCT_SEARCHKEYS_PROMPT', $iLang);
+            $sLocaleCode = LanguageMapper::getLocaleCode($oLang->getLanguageAbbr($iLang));
+            $sPrompt = Prompt::load()->get('PRODUCT_SEARCHKEYS', $sLocaleCode);
         }
 
         return $sPrompt;
@@ -181,7 +186,8 @@ trait ChatGPTProcessPromptsTrait
         if ($sPrompt == '') {
             // FALLBACK
             $oLang = Registry::getLang();
-            $sPrompt = $oLang->translateString('KUSSIN_CHATGPT_PRODUCT_ATTRIBUTES_PROMPT', $iLang);
+            $sLocaleCode = LanguageMapper::getLocaleCode($oLang->getLanguageAbbr($iLang));
+            $sPrompt = Prompt::load()->get('PRODUCT_ATTRIBUTES', $sLocaleCode);
         }
 
         // ADD ATTRIBUTE NAMES
@@ -207,7 +213,8 @@ trait ChatGPTProcessPromptsTrait
         if ($sPrompt == '') {
             // FALLBACK
             $oLang = Registry::getLang();
-            $sPrompt = $oLang->translateString('KUSSIN_CHATGPT_OPTIMIZE_CONTENT_PROMPT', $iLang);
+            $sLocaleCode = LanguageMapper::getLocaleCode($oLang->getLanguageAbbr($iLang));
+            $sPrompt = Prompt::load()->get('OPTIMIZE_CONTENT', $sLocaleCode);
         }
 
         return $sPrompt;
@@ -221,7 +228,8 @@ trait ChatGPTProcessPromptsTrait
         if ($sPrompt == '') {
             // FALLBACK
             $oLang = Registry::getLang();
-            $sPrompt = $oLang->translateString('KUSSIN_CHATGPT_TRANSLATION_TITLE_PROMPT', $iLang);
+            $sLocaleCode = LanguageMapper::getLocaleCode($oLang->getLanguageAbbr($iLang));
+            $sPrompt = Prompt::load()->get('TRANSLATION_TITLE', $sLocaleCode);
         }
 
         return $sPrompt;
@@ -235,7 +243,8 @@ trait ChatGPTProcessPromptsTrait
         if ($sPrompt == '') {
             // FALLBACK
             $oLang = Registry::getLang();
-            $sPrompt = $oLang->translateString('KUSSIN_CHATGPT_TRANSLATION_SHORT_DESCRIPTION_PROMPT', $iLang);
+            $sLocaleCode = LanguageMapper::getLocaleCode($oLang->getLanguageAbbr($iLang));
+            $sPrompt = Prompt::load()->get('TRANSLATION_SHORT_DESCRIPTION', $sLocaleCode);
         }
 
         return $sPrompt;
@@ -249,7 +258,8 @@ trait ChatGPTProcessPromptsTrait
         if ($sPrompt == '') {
             // FALLBACK
             $oLang = Registry::getLang();
-            $sPrompt = $oLang->translateString('KUSSIN_CHATGPT_TRANSLATION_LONG_TRANSLATION_PROMPT', $iLang);
+            $sLocaleCode = LanguageMapper::getLocaleCode($oLang->getLanguageAbbr($iLang));
+            $sPrompt = Prompt::load()->get('TRANSLATION_LONG_TRANSLATION', $sLocaleCode);
         }
 
         return $sPrompt;

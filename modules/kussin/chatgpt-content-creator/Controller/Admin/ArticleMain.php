@@ -9,6 +9,8 @@ use Kussin\ChatGpt\Traits\LoggerTrait;
 use OxidEsales\Eshop\Application\Model\Article;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
+use QuneMedia\ChatGpt\Prompts\LanguageMapper;
+use QuneMedia\ChatGpt\Prompts\Prompt;
 
 class ArticleMain extends ArticleMain_parent
 {
@@ -37,7 +39,8 @@ class ArticleMain extends ArticleMain_parent
         if ($sPrompt == '') {
             // FALLBACK
             $oLang = Registry::getLang();
-            $sPrompt = $oLang->translateString('KUSSIN_CHATGPT_LONG_DESCRIPTION_PROMPT', $oLang->getBaseLanguage());
+            $sLocaleCode = LanguageMapper::getLocaleCode($oLang->getLanguageAbbr($oLang->getBaseLanguage()));
+            $sPrompt = Prompt::load()->get('LONG_DESCRIPTION', $sLocaleCode);
         }
 
         $this->_info(array(
@@ -98,7 +101,8 @@ class ArticleMain extends ArticleMain_parent
         if ($sPrompt == '') {
             // FALLBACK
             $oLang = Registry::getLang();
-            $sPrompt = $oLang->translateString('KUSSIN_CHATGPT_OPTIMIZE_CONTENT_PROMPT', $oLang->getBaseLanguage());
+            $sLocaleCode = LanguageMapper::getLocaleCode($oLang->getLanguageAbbr($oLang->getBaseLanguage()));
+            $sPrompt = Prompt::load()->get('OPTIMIZE_CONTENT', $sLocaleCode);
         }
 
         $this->_info(array(
@@ -156,7 +160,8 @@ class ArticleMain extends ArticleMain_parent
         if ($sPrompt == '') {
             // FALLBACK
             $oLang = Registry::getLang();
-            $sPrompt = $oLang->translateString('KUSSIN_CHATGPT_SHORT_DESCRIPTION_PROMPT', $oLang->getBaseLanguage());
+            $sLocaleCode = LanguageMapper::getLocaleCode($oLang->getLanguageAbbr($oLang->getBaseLanguage()));
+            $sPrompt = Prompt::load()->get('SHORT_DESCRIPTION', $sLocaleCode);
         }
 
         $this->_info(array(

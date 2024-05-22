@@ -8,6 +8,8 @@ use OxidEsales\Eshop\Application\Model\Category;
 use OxidEsales\Eshop\Application\Model\Manufacturer;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
+use QuneMedia\ChatGpt\Prompts\LanguageMapper;
+use QuneMedia\ChatGpt\Prompts\Prompt;
 
 class ManufacturerMain extends ManufacturerMain_parent
 {
@@ -32,7 +34,8 @@ class ManufacturerMain extends ManufacturerMain_parent
 
         // PROMPT
         $oLang = Registry::getLang();
-        $sPrompt = $oLang->translateString('KUSSIN_CHATGPT_MANUFACTURER_LONG_DESCRIPTION_PROMPT', $oLang->getBaseLanguage());
+        $sLocaleCode = LanguageMapper::getLocaleCode($oLang->getLanguageAbbr($oLang->getBaseLanguage()));
+        $sPrompt = Prompt::load()->get('MANUFACTURER_LONG_DESCRIPTION', $sLocaleCode);
 
         $this->_info(array(
             'method' => __CLASS__ . '::' . __FUNCTION__,
@@ -86,7 +89,8 @@ class ManufacturerMain extends ManufacturerMain_parent
 
         // PROMPT
         $oLang = Registry::getLang();
-        $sPrompt = $oLang->translateString('KUSSIN_CHATGPT_MANUFACTURER_SHORT_DESCRIPTION_PROMPT', $oLang->getBaseLanguage());
+        $sLocaleCode = LanguageMapper::getLocaleCode($oLang->getLanguageAbbr($oLang->getBaseLanguage()));
+        $sPrompt = Prompt::load()->get('MANUFACTURER_SHORT_DESCRIPTION', $sLocaleCode);
 
         $this->_info(array(
             'method' => __CLASS__ . '::' . __FUNCTION__,

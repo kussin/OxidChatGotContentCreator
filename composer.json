@@ -44,6 +44,7 @@
     "ext-json": "*",
     "phpoffice/phpspreadsheet": "*",
 	"qunemedia/chatgpt-connector": "*",
+	"qunemedia/chatgpt-prompts": "*",
     "kussin/article-data-enhancer": "*"
   },
   "autoload": {
