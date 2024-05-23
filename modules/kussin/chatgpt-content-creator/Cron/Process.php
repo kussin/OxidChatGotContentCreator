@@ -14,6 +14,8 @@ use OxidEsales\Eshop\Application\Model\Article;
 use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
+use QuneMedia\ChatGpt\Connector\ChatGPT;
+use QuneMedia\ChatGpt\Connector\OpenAiModels;
 
 class Process extends FrontendController
 {
@@ -153,7 +155,13 @@ class Process extends FrontendController
             ]);
 
             // SAVE PROMPT
-            $sUpdateQuery = 'UPDATE kussin_chatgpt_content_creator_queue SET `prompt` = "' . $sPrompt . '", `process_ip` = "' . $this->_getClientIp() . '", `status` = "' . self::PROCESS_PROCESSING_STATUS . '" WHERE (`id` = "' . $aItem[0] . '");';
+            if ($sMode == 'translate') {
+                // TRANSLATION
+                $sUpdateQuery = 'UPDATE kussin_chatgpt_content_creator_queue SET `prompt` = "' . $sPrompt . '", `model` = "' . OpenAiModels::getDefaultTranslationModel() . '", `process_ip` = "' . $this->_getClientIp() . '", `status` = "' . self::PROCESS_PROCESSING_STATUS . '" WHERE (`id` = "' . $aItem[0] . '");';
+            } else {
+                // DEFAULT
+                $sUpdateQuery = 'UPDATE kussin_chatgpt_content_creator_queue SET `prompt` = "' . $sPrompt . '", `process_ip` = "' . $this->_getClientIp() . '", `status` = "' . self::PROCESS_PROCESSING_STATUS . '" WHERE (`id` = "' . $aItem[0] . '");';
+            }
             DatabaseProvider::getDb()->execute($sUpdateQuery);
 
             // CLEAR
@@ -165,23 +173,24 @@ class Process extends FrontendController
     protected function _generateContent() {
         $iLimit = (int) Registry::getConfig()->getConfigParam('iKussinChatGptProcessLimitMaxGenerations');
 
-        $sQuery = 'SELECT `id`, `object`, `object_id`, `field`, `shop_id`, `lang_id`, `prompt`, `model`, `max_tokens`, `temperature` FROM kussin_chatgpt_content_creator_queue WHERE (`status` = "' . self::PROCESS_PROCESSING_STATUS . '") ORDER BY `updated_at` ASC LIMIT ' . $iLimit . ';';
+        $sQuery = 'SELECT `id`, `object`, `object_id`, `field`, `shop_id`, `lang_id`, `mode`, `prompt`, `model`, `max_tokens`, `temperature` FROM kussin_chatgpt_content_creator_queue WHERE (`status` = "' . self::PROCESS_PROCESSING_STATUS . '") ORDER BY `updated_at` ASC LIMIT ' . $iLimit . ';';
 
         foreach ($this->_getCustomDbResult($sQuery) as $aItem) {
             $oObject = $this->_getOxidObject($aItem[1]);
             $sOxid = $aItem[2];
             $sFieldId = $this->_getOxidFieldId($aItem[1], $aItem[3], $aItem[5]);
             $iLang = (int) $aItem[5];
-            $sPrompt = $aItem[6];
-            $sModel = $aItem[7];
-            $iMaxTokens = $this->_getProcessMaxTokens($aItem[3], (int) $aItem[8]);
-            $dTemperature = (double) $aItem[9];
+            $sMode = $aItem[6];
+            $sPrompt = $aItem[7];
+            $sModel = $aItem[8];
+            $iMaxTokens = $this->_getProcessMaxTokens($aItem[3], (int) $aItem[9]);
+            $dTemperature = (double) $aItem[10];
 
             // LOAD OBJECT
             $oObject->loadInLang($iLang, $sOxid);
 
             // ChatGPT API REQUEST
-            $aResponse = $this->_kussinGetChatGptContent($sPrompt, $sModel, $dTemperature, $iMaxTokens, $this->_useHtml($aItem[3]));
+            $aResponse = $this->_kussinGetChatGptContent($sPrompt, $sModel, $dTemperature, $iMaxTokens, $this->_useHtml($aItem[3]), $sMode);
 
             if ($aResponse['error'] == NULL) {
 

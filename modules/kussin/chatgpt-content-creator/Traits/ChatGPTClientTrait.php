@@ -9,12 +9,15 @@ trait ChatGPTClientTrait
 {
     private $_oChatGptClient = null;
 
-    private function _kussinGetChatGptContent($sPrompt, $sModel = FALSE, $dTemperature = FALSE, $iMaxTokens = FALSE, $bHtml = FALSE, $iLang = null)
+    private function _kussinGetChatGptContent($sPrompt, $sModel = FALSE, $dTemperature = FALSE, $iMaxTokens = FALSE, $bHtml = FALSE, $iLang = null, $sMode = 'text')
     {
         // LOAD CHATGPT CLIENT
         if ($this->_oChatGptClient === null) {
             $this->_oChatGptClient = new ChatGPT();
         }
+
+        // SET MODE
+        $this->_oChatGptClient->setMode(($sMode == 'translate' ? 'translation' : 'text'));
 
         return $this->_oChatGptClient->getCompleteTextResponse(
             $sPrompt,
