@@ -19,6 +19,9 @@ trait LanguageTrait
         // GET LANGUAGES
         $aLanguages = array_values(Registry::getConfig()->getConfigParam('aLanguages'));
 
+        // FIX
+        $iTranslationId = $iTranslationId - 1;
+
         return $aLanguages[$iTranslationId];
     }
 }
