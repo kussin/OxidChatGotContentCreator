@@ -27,10 +27,19 @@ class ChatGPT extends \QuneMedia\ChatGpt\Connector\ChatGPT
         ));
 
         if (
-            ($aCompleteTextResponse['continue'] === true)
+            ($aCompleteTextResponse['id'] !== null)
+            && ($aCompleteTextResponse['continue'] === true)
             && ($this->_iInfinityLoopCount < self::MAX_CONTINUE_REQUESTS)
         ) {
-            $aContinueTextResponse = $this->getCompleteTextResponse($this->_getContinuePrompt($iLang), $sModel, $dTemperature, $iMaxTokens, $bHtml);
+            // CONTINUE PROMPT
+            $sContinuePrompt = $this->_getContinuePrompt($iLang, $aCompleteTextResponse['id']);
+
+            $this->_debug(array(
+                'method' => __CLASS__ . '::' . __FUNCTION__,
+                'prompt' => $sContinuePrompt,
+            ));
+
+            $aContinueTextResponse = $this->getCompleteTextResponse($sContinuePrompt, $sModel, $dTemperature, $iMaxTokens, $bHtml);
             $aCompleteTextResponse['data'] .= $aContinueTextResponse['data'];
 
             $this->_iInfinityLoopCount++;

@@ -107,7 +107,7 @@ class ArticleMain extends ArticleMain_parent
 
         $this->_info(array(
             'method' => __CLASS__ . '::' . __FUNCTION__,
-            'prompt' => $oException,
+            'prompt' => $sPrompt,
             'params' => array(
                 'title' => $this->_kussinLoadArticle()->getLongDescription(),
             ),

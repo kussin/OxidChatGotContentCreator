@@ -3,6 +3,8 @@
 namespace Kussin\ChatGpt\Traits;
 
 use OxidEsales\Eshop\Core\Registry;
+use QuneMedia\ChatGpt\Prompts\LanguageMapper;
+use QuneMedia\ChatGpt\Prompts\Prompt;
 
 trait ChatGPTInstructionTrait
 {
@@ -14,10 +16,13 @@ trait ChatGPTInstructionTrait
             $iLang = $oLang->getBaseLanguage();
         }
 
-        return $oLang->translateString('KUSSIN_CHATGPT_LONG_DESCRIPTION_INSTRUCTION_PROMPT', $iLang);
+        return Prompt::load()->get(
+            'LONG_DESCRIPTION_INSTRUCTION',
+            LanguageMapper::getLocaleCode($oLang->getLanguageAbbr($iLang))
+        );
     }
 
-    private function _getContinuePrompt($iLang = null)
+    private function _getContinuePrompt($iLang = null, $sResponseId = null)
     {
         $oLang = Registry::getLang();
 
@@ -25,6 +30,12 @@ trait ChatGPTInstructionTrait
             $iLang = $oLang->getBaseLanguage();
         }
 
-        return $oLang->translateString('KUSSIN_CHATGPT_LONG_DESCRIPTION_CONTINUE_PROMPT', $iLang);
+        return sprintf(
+            Prompt::load()->get(
+                'LONG_DESCRIPTION_CONTINUE',
+                LanguageMapper::getLocaleCode($oLang->getLanguageAbbr($iLang))
+            ),
+            $sResponseId
+        );
     }
 }
