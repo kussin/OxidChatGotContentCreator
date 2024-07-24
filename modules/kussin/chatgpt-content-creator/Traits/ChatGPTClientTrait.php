@@ -4,6 +4,9 @@ namespace Kussin\ChatGpt\Traits;
 
 use Kussin\ChatGpt\libs\PHPChatGPT\ChatGPT;
 use OxidEsales\Eshop\Core\Registry;
+use QuneMedia\ChatGpt\Prompts\LanguageMapper;
+use QuneMedia\ChatGpt\Prompts\Prompt;
+use Smalot\PdfParser\Parser;
 
 trait ChatGPTClientTrait
 {
@@ -39,13 +42,16 @@ trait ChatGPTClientTrait
         }
 
         // STEP 1 - PROVIDE CONTEXT
-        $sPromptWithContext = impode("\n\n", array(
-            'context' => $this->_getChatGptContext(),
+        $sPromptWithContext = implode("\n\n", array(
+            'context' => $this->_getChatGptContext($iLang),
             'prompt' => $sPrompt,
         ));
 
         // STEP 2 - GET BASIC AI RESPONSE
-//        $aCompleteTextResponse = $this->_getChatGptBasicResponse($aCompleteTextResponse['data'], $sModel, $dTemperature, $iMaxTokens, $iLang);
+//        $aCompleteTextResponse = $this->_getChatGptBasicResponse($sPromptWithContext, $sModel, $dTemperature, $iMaxTokens, $iLang);
+        $aCompleteTextResponse = array(
+            'data' => $sPromptWithContext,
+        );
 
         // STEP 3 - ADD HTML MARKUP
         if ($bHtml) {
@@ -75,19 +81,72 @@ trait ChatGPTClientTrait
         );
     }
 
-    protected function _getChatGptContext(): string
+    protected function _getChatGptContext($iLang = null): string
     {
-        $sContext = Registry::getConfig()->getConfigParam('sKussinChatGptContext');
+        $sChatGptContext = Registry::getConfig()->getConfigParam('sKussinChatGptPromptContext');
+
+        if (filter_var($sChatGptContext, FILTER_VALIDATE_URL)) {
+            // URL
+            $sTmpFile = tempnam(sys_get_temp_dir(), 'pdf');
+            file_put_contents($sTmpFile, file_get_contents($sChatGptContext));
+
+            $sContext = $this->_getFileContent($sTmpFile);
+
+            // CLEANUP
+            if (isset($sTmpFile)) {
+                unlink($sTmpFile);
+            }
+
+        } elseif (file_exists($sChatGptContext)) {
+            // FILE
+            $sContext = $this->_getFileContent(realpath($sChatGptContext));
+
+        } else {
+            // TEXT
+            $sContext = $sChatGptContext;
+        }
 
         // LOG
         $this->_debug(array(
             'method' => __CLASS__ . '::' . __FUNCTION__,
             'step' => $this->_iAiGenerationSteps++ . ' - ADD CONTEXT',
-            'input' => null,
+            'input' => $sChatGptContext,
             'context' => $sContext,
         ));
 
-        return $sContext;
+        // MISSING CONTEXT
+        if (empty($sContext)) {
+            return '';
+        }
+
+        // FALLBACK
+        $oLang = Registry::getLang();
+        $sLocaleCode = LanguageMapper::getLocaleCode($oLang->getLanguageAbbr($iLang ?? $oLang->getBaseLanguage()));
+        $sPrompt = Prompt::load()->get('CONTEXT', $sLocaleCode);
+
+        return sprintf(
+            $sPrompt,
+            implode("\n\n", array(
+                '',
+                '--- START OF CONTEXT ---',
+                'context' => $sContext,
+                '--- END OF CONTEXT ---',
+            ))
+        );
+    }
+
+    protected function _getFileContent($sFilename) : string
+    {
+        return $this->_getPdfContent($sFilename);
+    }
+
+    protected function _getPdfContent($sFilename) : string
+    {
+        // LOAD PDF
+        $oParser = new Parser();
+        $oPdf = $oParser->parseFile($sFilename);
+
+        return $oPdf->getText();
     }
 
     protected function _getChatGptBasicResponse($sPrompt, $sModel = 'gpt-3.5-turbo-instruct', $dTemperature = 0.7, $iMaxTokens = 1000, $iLang = null): array
