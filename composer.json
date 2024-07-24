@@ -1,6 +1,6 @@
 {
   "name": "kussin/chatgpt-content-creator",
-  "version": "0.0.5",
+  "version": "0.0.5.1",
   "description": "Kussin | ChatGPT Content Creator for OXID eShop",
   "type": "oxideshop-module",
   "keywords": [
@@ -45,6 +45,7 @@
     "phpoffice/phpspreadsheet": "*",
 	"qunemedia/chatgpt-connector": "*",
 	"qunemedia/chatgpt-prompts": "*",
+	"smalot/pdfparser": "*",
     "kussin/article-data-enhancer": "*"
   },
   "autoload": {

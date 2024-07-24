@@ -19,6 +19,9 @@ $aLang = array(
     'SHOP_MODULE_blKussinChatGptFrontendDisclaimerEnabled' => 'Disclaimer aktivieren',
     'SHOP_MODULE_sKussinChatGptFrontendDisclaimerCmsId' => 'Disclaimer Content Id',
 
+    'SHOP_MODULE_GROUP_sKussinChatGptPromptContextSettings' => 'Prompt Kontext Einstellungen',
+    'SHOP_MODULE_sKussinChatGptPromptContext' => 'Kontext zu Prompt hinzufügen (z.B. Firmeninformationen)',
+
     'SHOP_MODULE_GROUP_sKussinChatGptPromptSettings' => 'Prompt Einstellungen',
     'SHOP_MODULE_sKussinChatGptPromptLongDescriptionDE' => 'Prompt für Artikel-Langbeschreibung (Deutsch)',
     'SHOP_MODULE_sKussinChatGptPromptLongDescriptionEN' => 'Prompt für Artikel-Langbeschreibung (Englisch)',

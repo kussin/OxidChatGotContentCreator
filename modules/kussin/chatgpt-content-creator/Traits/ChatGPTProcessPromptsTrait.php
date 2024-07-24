@@ -52,12 +52,10 @@ trait ChatGPTProcessPromptsTrait
         } elseif ($sMode == 'translate') {
             // TRANSLATE CONTENT
             $aValues[] = $this->_encodeProcessSpecialChars($oObject->oxarticles__oxtitle->value);
-            $aValues[] = $this->_encodeProcessSpecialChars(
-                $this->_validateManufacturer4ChatGptProcessPrompt($oObject->getManufacturer()->oxmanufacturers__oxtitle->value)
-            );
+            $aValues[] = $this->_encodeProcessSpecialChars($oObject->getManufacturer()->oxmanufacturers__oxtitle->value);
             $aValues[] = $this->_getTranslationLanguage((int) substr($sFieldId, -1), $iLang);
 
-            switch (str_replace(array('_1', '_2', '_3', '_4', '_5', '_6', '_7', '_8', '_9'), '', $sFieldId)) {
+            switch (str_replace(array('_1', '_2', '_3', '_4', '_5'), '', $sFieldId)) {
                 case 'oxarticles__oxtitle':
                     $sPrompt = $this->_getChatGptProcessPrompt4TranslationTitle($iLang);
                     break;
@@ -265,17 +263,5 @@ trait ChatGPTProcessPromptsTrait
         }
 
         return $sPrompt;
-    }
-
-    protected function _validateManufacturer4ChatGptProcessPrompt($sManufacturer)
-    {
-        if (empty($sManufacturer)) {
-            // LOAD SHOP
-            $oShop = Registry::getConfig()->getActiveShop();
-
-            return trim($oShop->oxshops__oxcompany->value);
-        }
-
-        return $sManufacturer;
     }
 }

@@ -39,9 +39,10 @@ trait ChatGPTClientTrait
         }
 
         // STEP 1 - PROVIDE CONTEXT
-        $aCompleteTextResponse = [
-            'data' => $sPrompt,
-        ];
+        $sPromptWithContext = impode("\n\n", array(
+            'context' => $this->_getChatGptContext(),
+            'prompt' => $sPrompt,
+        ));
 
         // STEP 2 - GET BASIC AI RESPONSE
 //        $aCompleteTextResponse = $this->_getChatGptBasicResponse($aCompleteTextResponse['data'], $sModel, $dTemperature, $iMaxTokens, $iLang);
@@ -72,6 +73,21 @@ trait ChatGPTClientTrait
             $bHtml,
             $iLang
         );
+    }
+
+    protected function _getChatGptContext(): string
+    {
+        $sContext = Registry::getConfig()->getConfigParam('sKussinChatGptContext');
+
+        // LOG
+        $this->_debug(array(
+            'method' => __CLASS__ . '::' . __FUNCTION__,
+            'step' => $this->_iAiGenerationSteps++ . ' - ADD CONTEXT',
+            'input' => null,
+            'context' => $sContext,
+        ));
+
+        return $sContext;
     }
 
     protected function _getChatGptBasicResponse($sPrompt, $sModel = 'gpt-3.5-turbo-instruct', $dTemperature = 0.7, $iMaxTokens = 1000, $iLang = null): array
