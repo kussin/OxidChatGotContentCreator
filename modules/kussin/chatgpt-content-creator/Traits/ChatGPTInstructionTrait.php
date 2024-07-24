@@ -21,21 +21,4 @@ trait ChatGPTInstructionTrait
             LanguageMapper::getLocaleCode($oLang->getLanguageAbbr($iLang))
         );
     }
-
-    private function _getContinuePrompt($iLang = null, $sResponseId = null)
-    {
-        $oLang = Registry::getLang();
-
-        if ($iLang === null) {
-            $iLang = $oLang->getBaseLanguage();
-        }
-
-        return sprintf(
-            Prompt::load()->get(
-                'LONG_DESCRIPTION_CONTINUE',
-                LanguageMapper::getLocaleCode($oLang->getLanguageAbbr($iLang))
-            ),
-            $sResponseId
-        );
-    }
 }
