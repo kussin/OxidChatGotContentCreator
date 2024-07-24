@@ -66,7 +66,7 @@ class ArticleMain extends ArticleMain_parent
         $sPrompt .= $this->_getEnhancedArticlePrompt($this->_kussinLoadArticle()->{$sArticleIdKey}->value);
 
         // GET CHATGPT CONTENT
-        $aResponse = $this->_kussinGetChatGptContent($sPrompt, FALSE, FALSE, floor($iMaxTokens * 1.1), TRUE);
+        $aResponse = $this->_kussinGetChatGptContentLongDescription($sPrompt, FALSE, FALSE, floor($iMaxTokens * 1.1), TRUE);
 
         if ($aResponse['error'] == NULL) {
 
