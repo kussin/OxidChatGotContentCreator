@@ -34,7 +34,8 @@ trait OxidObjectsTrait
     private function _getOxidFieldId($sObjectId, $sFieldId, $iLang = 0): string
     {
         // SET LANG SUFFIX
-        $sLangSuffix = ($iLang > 0) ? '_' . $iLang : '';
+//        $sLangSuffix = ($iLang > 0) ? '_' . $iLang : '';
+        $sLangSuffix = '';
 
         return strtolower($sObjectId . '__' . $sFieldId . $sLangSuffix);
     }

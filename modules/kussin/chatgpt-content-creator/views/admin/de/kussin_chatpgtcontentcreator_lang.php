@@ -16,6 +16,11 @@ $aLang = array(
     'KUSSIN_ARTICLE_MAIN_CHATGPT_OPTIMIZE_LONG_DESCRIPTION' => 'Optimierte Langbeschreibung erstellen',
     'KUSSIN_ARTICLE_MAIN_CHATGPT_SHORT_DESCRIPTION' => 'Neue Kurzbeschreibung erstellen',
 
+    'KUSSIN_CHATGPT_TRANSLATER_LEGEND' => 'KUSSIN | ChatGPT Übersetzer',
+    'KUSSIN_ARTICLE_MAIN_CHATGPT_TRANSLATE_TITLE' => 'Übersetze Titel',
+    'KUSSIN_ARTICLE_MAIN_CHATGPT_TRANSLATE_LONG_DESCRIPTION' => 'Übersetze Langbeschreibung',
+    'KUSSIN_ARTICLE_MAIN_CHATGPT_TRANSLATE_SHORT_DESCRIPTION' => 'Übersetze Kurzbeschreibung',
+
     'KUSSIN_CHATGPT_LOADING_TEXT' => 'Generierung des KI-Contents ...',
 
     'KUSSIN_CHATGPT_BULK_ACTION_SEARCH_LEGEND' => 'Suche',

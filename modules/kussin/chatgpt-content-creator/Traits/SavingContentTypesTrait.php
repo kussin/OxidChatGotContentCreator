@@ -9,9 +9,11 @@ use OxidEsales\Eshop\Core\Registry;
 
 trait SavingContentTypesTrait
 {
+    use ChatGPTPromptOptimizerTrait;
     use ChatGPTProcessPromptsTrait;
     use CustomDbTrait;
     use JsonTrait;
+    use LoggerTrait;
 
     protected $_aForbiddenValues = array('null', 'n/a', 'n.v.');
 
@@ -19,6 +21,8 @@ trait SavingContentTypesTrait
     {
         // DECODE CONTENT
         $sGeneratedContent = $this->_decodeProcessContent($sGeneratedContentHash);
+
+        $this->_debug('Ai content for ' . $sOxid . ' svae in field `' . $sFieldId . '`: ' . $sGeneratedContent);
 
         // GET CONTENT & LANGUAGE
         $iLang = (int) substr($sFieldId, -1);
@@ -33,7 +37,7 @@ trait SavingContentTypesTrait
         }
 
         // SAVE CONTENT
-        $oContent = new Field($sGeneratedContent);
+        $oContent = new Field($this->_optimizeResponse($sGeneratedContent));
 
         if (($sFieldId == 'oxlongdesc') || ($sFieldId == 'oxartextends__oxlongdesc')) {
             $oObject->setArticleLongDesc($oContent->getRawValue());

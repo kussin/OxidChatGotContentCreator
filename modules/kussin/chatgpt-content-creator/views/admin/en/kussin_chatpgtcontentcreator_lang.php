@@ -16,6 +16,11 @@ $aLang = array(
     'KUSSIN_ARTICLE_MAIN_CHATGPT_OPTIMIZE_LONG_DESCRIPTION' => 'Create optimized Long Description',
     'KUSSIN_ARTICLE_MAIN_CHATGPT_SHORT_DESCRIPTION' => 'Create new Short Description',
 
+    'KUSSIN_CHATGPT_TRANSLATER_LEGEND' => 'KUSSIN | ChatGPT Translator',
+    'KUSSIN_ARTICLE_MAIN_CHATGPT_TRANSLATE_TITLE' => 'Translate Title',
+    'KUSSIN_ARTICLE_MAIN_CHATGPT_TRANSLATE_LONG_DESCRIPTION' => 'Translate Long Description',
+    'KUSSIN_ARTICLE_MAIN_CHATGPT_TRANSLATE_SHORT_DESCRIPTION' => 'Translate Short Description',
+
     'KUSSIN_CHATGPT_LOADING_TEXT' => 'Generating ai content ...',
 
     'KUSSIN_CHATGPT_BULK_ACTION_SEARCH_LEGEND' => 'Search',

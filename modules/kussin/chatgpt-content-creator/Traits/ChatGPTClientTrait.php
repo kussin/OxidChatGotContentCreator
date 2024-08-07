@@ -43,7 +43,7 @@ trait ChatGPTClientTrait
 
         // STEP 1 - PROVIDE CONTEXT
         $sPromptWithContext = implode("\n\n", array(
-            'context' => $this->_getChatGptContext($iLang),
+            'context' => $this->_getChatGptContext(),
             'prompt' => $sPrompt,
         ));
 
@@ -64,7 +64,7 @@ trait ChatGPTClientTrait
         return $aCompleteTextResponse;
     }
 
-    private function _createTextRequest($sPrompt, $sModel, $dTemperature, $iMaxTokens, $bHtml, $iLang): array
+    private function _createTextRequest($sPrompt, $sModel = FALSE, $dTemperature = FALSE, $iMaxTokens = FALSE, $bHtml = FALSE, $iLang = NULL): array
     {
         // LOAD CHATGPT CLIENT
         if ($this->_oChatGptClient === null) {
@@ -81,8 +81,12 @@ trait ChatGPTClientTrait
         );
     }
 
-    protected function _getChatGptContext($iLang = null): string
+    protected function _getChatGptContext(): string
     {
+        // LOAD PARAMS
+        $sBaseLocaleCode = Registry::getRequest()->getRequestEscapedParameter('baselocalecode');
+        $sEditLocaleCode = Registry::getRequest()->getRequestEscapedParameter('editlocalecode');
+
         $sChatGptContext = Registry::getConfig()->getConfigParam('sKussinChatGptPromptContext');
 
         if (filter_var($sChatGptContext, FILTER_VALIDATE_URL)) {
@@ -106,6 +110,30 @@ trait ChatGPTClientTrait
             $sContext = $sChatGptContext;
         }
 
+        // MISSING CONTEXT
+        if (empty($sContext)) {
+            return '';
+        }
+
+        // LOAD PROMPT
+        $sPrompt = Prompt::load()->get('CONTEXT', $sEditLocaleCode);
+
+        // TRANSLATE CONTEXT
+        if ($sBaseLocaleCode != $sEditLocaleCode) {
+            $sContextPrompt = sprintf(
+                Prompt::load()->get('CONTEXT_TRANSLATE', $sEditLocaleCode),
+                Prompt::load()->get('LABEL___' . $sBaseLocaleCode, $sEditLocaleCode),
+                $sContext
+            );
+
+            $aResponse = $this->_createTextRequest($sContextPrompt);
+
+            // REPLACE CONTEXT
+            if ($aResponse['error'] == NULL) {
+                $sContext = $aResponse['data'];
+            }
+        }
+
         // LOG
         $this->_debug(array(
             'method' => __CLASS__ . '::' . __FUNCTION__,
@@ -114,23 +142,13 @@ trait ChatGPTClientTrait
             'context' => $sContext,
         ));
 
-        // MISSING CONTEXT
-        if (empty($sContext)) {
-            return '';
-        }
-
-        // FALLBACK
-        $oLang = Registry::getLang();
-        $sLocaleCode = LanguageMapper::getLocaleCode($oLang->getLanguageAbbr($iLang ?? $oLang->getBaseLanguage()));
-        $sPrompt = Prompt::load()->get('CONTEXT', $sLocaleCode);
-
         return sprintf(
             $sPrompt,
             implode("\n\n", array(
                 '',
-                '--- START OF CONTEXT ---',
-                'context' => $sContext,
-                '--- END OF CONTEXT ---',
+                Prompt::load()->get('CONTEXT_START', $sEditLocaleCode),
+                $sContext,
+                Prompt::load()->get('CONTEXT_END', $sEditLocaleCode)
             ))
         );
     }

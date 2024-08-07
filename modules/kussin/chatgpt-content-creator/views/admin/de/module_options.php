@@ -21,6 +21,7 @@ $aLang = array(
 
     'SHOP_MODULE_GROUP_sKussinChatGptPromptContextSettings' => 'Prompt Kontext Einstellungen',
     'SHOP_MODULE_sKussinChatGptPromptContext' => 'Kontext zu Prompt hinzufügen (z.B. Firmeninformationen)',
+    'SHOP_MODULE_sKussinChatGptPromptAdditionalTranslationContext' => 'Zusätzlicher Kontext für Übersetzung (z.B. Anweisungen für Übersetzer)',
 
     'SHOP_MODULE_GROUP_sKussinChatGptPromptSettings' => 'Prompt Einstellungen',
     'SHOP_MODULE_sKussinChatGptPromptLongDescriptionDE' => 'Prompt für Artikel-Langbeschreibung (Deutsch)',

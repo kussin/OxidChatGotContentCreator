@@ -140,7 +140,7 @@ class Process extends FrontendController
             $iLang = (int) $aItem[5];
 
             // LOAD OBJECT
-            $oObject->loadInLang($iLang, $sOxid);
+            $oObject->load($sOxid);
 
             // GET PROMPT
             $sPrompt = $this->_getProcessPrompts($sMode, $oObject, $sFieldId, $iLang, $aItem[7]);
@@ -272,7 +272,7 @@ class Process extends FrontendController
 
             $this->_debug('Current $sFieldId for Object ID ' . $sOxid . ': ' . $sFieldId);
 
-            switch (str_replace(array('_1', '_2', '_3', '_4', '_5'), '', $sFieldId)) {
+            switch (str_replace(array('_1', '_2', '_3', '_4', '_5', '_6', '_7'), '', $sFieldId)) {
                 case 'oxarticles__oxattribute':
                     $sObjectLink = $this->_savingProductAttributeContentType($oObject, $aItem[2], (int) $aItem[5], $aItem[6]);
                     break;

@@ -11,6 +11,7 @@ trait ChatGPTProcessPromptsTrait
 {
     use ArticleDataEnhancerTrait;
     use LanguageTrait;
+    use ChatGPTPromptOptimizerTrait;
 
     protected function _getProcessMaxTokens($sFieldId, $iMaxTokens = 350) : int
     {
@@ -44,6 +45,10 @@ trait ChatGPTProcessPromptsTrait
     {
         $aValues = array();
 
+        // GET LOCALE CODES
+        $sBaseLocaleCode = 'de_DE';
+        $sEditLocaleCode = LanguageMapper::getLocaleCode($this->_getLanguageCode($iLang));
+
         if ($sMode == 'optimize') {
             // OPTIMIZE CONTENT
             $sPrompt = $this->_getChatGptProcessPrompt4OptimizeContent($iLang);
@@ -51,11 +56,10 @@ trait ChatGPTProcessPromptsTrait
 
         } elseif ($sMode == 'translate') {
             // TRANSLATE CONTENT
-            $aValues[] = $this->_encodeProcessSpecialChars($oObject->oxarticles__oxtitle->value);
-            $aValues[] = $this->_encodeProcessSpecialChars($oObject->getManufacturer()->oxmanufacturers__oxtitle->value);
-            $aValues[] = $this->_getTranslationLanguage((int) substr($sFieldId, -1), $iLang);
+            $aValues[] = $this->_optimizePromptValue($oObject->oxarticles__oxtitle->value); // ARTIKELNAME
+            $aValues[] = Prompt::load()->get('LABEL___' . $sBaseLocaleCode, $sEditLocaleCode); // AUSGANGSSPRACHE
 
-            switch (str_replace(array('_1', '_2', '_3', '_4', '_5'), '', $sFieldId)) {
+            switch (str_replace(array('_1', '_2', '_3', '_4', '_5', '_6', '_7'), '', $sFieldId)) {
                 case 'oxarticles__oxtitle':
                     $sPrompt = $this->_getChatGptProcessPrompt4TranslationTitle($iLang);
                     break;
@@ -74,7 +78,7 @@ trait ChatGPTProcessPromptsTrait
 
         } else {
             // CREATE CONTENT
-            switch (str_replace(array('_1', '_2', '_3', '_4', '_5'), '', $sFieldId)) {
+            switch (str_replace(array('_1', '_2', '_3', '_4', '_5', '_6', '_7'), '', $sFieldId)) {
                 case 'oxarticles__oxattribute':
                     $sPrompt = $this->_getChatGptProcessPrompt4Attributes($iLang);
                     $aValues[] = $this->_encodeProcessSpecialChars($oObject->oxarticles__oxtitle->value);
@@ -232,6 +236,9 @@ trait ChatGPTProcessPromptsTrait
             $sPrompt = Prompt::load()->get('TRANSLATION_TITLE', $sLocaleCode);
         }
 
+        // ADDITIONAL CONTEXT
+        $sPrompt = $this->_addAdditionalContext4ProcessPromptTranslation() . $sPrompt;
+
         return $sPrompt;
     }
 
@@ -246,6 +253,9 @@ trait ChatGPTProcessPromptsTrait
             $sLocaleCode = LanguageMapper::getLocaleCode($oLang->getLanguageAbbr($iLang));
             $sPrompt = Prompt::load()->get('TRANSLATION_SHORT_DESCRIPTION', $sLocaleCode);
         }
+
+        // ADDITIONAL CONTEXT
+        $sPrompt = $this->_addAdditionalContext4ProcessPromptTranslation() . $sPrompt;
 
         return $sPrompt;
     }
@@ -262,6 +272,21 @@ trait ChatGPTProcessPromptsTrait
             $sPrompt = Prompt::load()->get('TRANSLATION_LONG_TRANSLATION', $sLocaleCode);
         }
 
+        // ADDITIONAL CONTEXT
+        $sPrompt = $this->_addAdditionalContext4ProcessPromptTranslation() . $sPrompt;
+
         return $sPrompt;
+    }
+
+    protected function _addAdditionalContext4ProcessPromptTranslation()
+    {
+        // ADDITIONAL CONTEXT
+        $sAdditionalContext = trim(Registry::getConfig()->getConfigParam('sKussinChatGptPromptAdditionalTranslationContext'));
+
+        if ($sAdditionalContext == '') {
+            return '';
+        }
+
+        return $sAdditionalContext . "\n\n";
     }
 }

@@ -24,7 +24,7 @@ $aModule = array(
     'title'        => 'Kussin | ChatGPT Content Creator for OXID eShop',
     'description'  => 'ChatGPT Integration for OXID eShop',
     'thumbnail'    => 'module.png',
-    'version'      => '0.0.5.1',
+    'version'      => '0.0.6.1',
     'author'       => 'Daniel Kussin',
     'url'          => 'https://www.kussin.de',
     'email'        => 'daniel.kussin@kussin.de',
@@ -164,6 +164,12 @@ $aModule = array(
         array(
             'group' => 'sKussinChatGptPromptContextSettings',
             'name' => 'sKussinChatGptPromptContext',
+            'type' => 'str',
+            'value' => '',
+        ),
+        array(
+            'group' => 'sKussinChatGptPromptContextSettings',
+            'name' => 'sKussinChatGptPromptAdditionalTranslationContext',
             'type' => 'str',
             'value' => '',
         ),
